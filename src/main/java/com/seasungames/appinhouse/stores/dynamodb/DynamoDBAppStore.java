@@ -45,24 +45,24 @@ public class DynamoDBAppStore implements IAppStore {
         ProvisionedThroughput throughput = new ProvisionedThroughput(1L, 1L);
 
         CreateTableRequest req = new CreateTableRequest()
-            .withTableName(tableName)
-            .withKeySchema(new KeySchemaElement(AppTable.HASH_KEY_APPID, KeyType.HASH))
-            .withAttributeDefinitions(new AttributeDefinition(AppTable.HASH_KEY_APPID, ScalarAttributeType.S))
-            .withProvisionedThroughput(throughput);
+                .withTableName(tableName)
+                .withKeySchema(new KeySchemaElement(AppTable.HASH_KEY_APPID, KeyType.HASH))
+                .withAttributeDefinitions(new AttributeDefinition(AppTable.HASH_KEY_APPID, ScalarAttributeType.S))
+                .withProvisionedThroughput(throughput);
 
         try {
             if (TableUtils.createTableIfNotExists(this.ddb, req)) {
                 TableUtils.waitUntilActive(this.ddb, tableName);
             }
         } catch (InterruptedException e) {
-            LOG.info("Creating dynamodb table: {} , reason: {}" , tableName, e.getMessage());
+            LOG.info("Creating dynamodb table: {} , reason: {}", tableName, e.getMessage());
         }
 
     }
 
     /**
      * Impl
-     * **/
+     **/
 
     @Override
     public List<AppVo> GetAppsList() {
@@ -70,10 +70,10 @@ public class DynamoDBAppStore implements IAppStore {
         AppVo appVO = null;
 
         ScanRequest scanRequest = new ScanRequest()
-            .withTableName(tableName);
+                .withTableName(tableName);
 
         ScanResult result = ddb.scan(scanRequest);
-        for (Map<String, AttributeValue> item : result.getItems()){
+        for (Map<String, AttributeValue> item : result.getItems()) {
             appVO = new AppVo();
             appVO.setAppId(item.get(AppTable.HASH_KEY_APPID).getS());
             appVO.setDesc(item.get(AppTable.ATTRIBUTE_DESC).getS());
@@ -88,10 +88,10 @@ public class DynamoDBAppStore implements IAppStore {
     public int CreateApps(AppVo vo) {
         try {
             PutItemOutcome outcome = table.putItem(new Item().withPrimaryKey(AppTable.HASH_KEY_APPID, vo.getAppId())
-                .with(AppTable.ATTRIBUTE_DESC, vo.getDesc())
-                .with(AppTable.ATTRIBUTE_ALIAS, vo.getAlias()));
+                    .with(AppTable.ATTRIBUTE_DESC, vo.getDesc())
+                    .with(AppTable.ATTRIBUTE_ALIAS, vo.getAlias()));
             return 0;
-        }catch (Exception e) {
+        } catch (Exception e) {
             return 1;
         }
     }
@@ -99,38 +99,31 @@ public class DynamoDBAppStore implements IAppStore {
     @Override
     public int DeleteApps(String appId) {
         DeleteItemSpec deleteItemSpec = new DeleteItemSpec()
-            .withPrimaryKey(new PrimaryKey(AppTable.HASH_KEY_APPID, appId));
+                .withPrimaryKey(new PrimaryKey(AppTable.HASH_KEY_APPID, appId));
 
         try {
-            System.out.println("Attempting a conditional delete...");
             table.deleteItem(deleteItemSpec);
-            System.out.println("DeleteItem succeeded");
+            return 0;
+        } catch (Exception e) {
+            return 1;
         }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-        return 0;
     }
 
     @Override
-    public String UpdateApps(AppVo vo) {
+    public int UpdateApps(AppVo vo) {
         UpdateItemSpec updateItemSpec = new UpdateItemSpec()
-            .withPrimaryKey(new PrimaryKey(AppTable.HASH_KEY_APPID,vo))
-            .withUpdateExpression("set #desc = :d, #alias = :a")
-            .withNameMap(new NameMap().with("#desc", AppTable.ATTRIBUTE_DESC).with("#alias",AppTable.ATTRIBUTE_ALIAS))
-            .withValueMap(new ValueMap().withString(":d", vo.getDesc()).withString(":a", vo.getAlias()))
-            .withReturnValues(ReturnValue.UPDATED_NEW);
+                .withPrimaryKey(new PrimaryKey(AppTable.HASH_KEY_APPID, vo.getAppId()))
+                .withUpdateExpression("set #desc = :d, #alias = :a")
+                .withNameMap(new NameMap().with("#desc", AppTable.ATTRIBUTE_DESC).with("#alias", AppTable.ATTRIBUTE_ALIAS))
+                .withValueMap(new ValueMap().withString(":d", vo.getDesc()).withString(":a", vo.getAlias()))
+                .withReturnValues(ReturnValue.UPDATED_NEW);
 
         try {
-            System.out.println("Attempting a conditional update...");
             UpdateItemOutcome outcome = table.updateItem(updateItemSpec);
-            System.out.println("UpdateItem succeeded:\n" + outcome.getItem().toJSONPretty());
-
+            return 0;
+        } catch (Exception e) {
+            return 1;
         }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-        return "";
     }
 
     @Override
@@ -139,8 +132,7 @@ public class DynamoDBAppStore implements IAppStore {
         try {
             Item outcome = table.getItem(spec);
             return outcome.toJSON();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return "";
         }
     }

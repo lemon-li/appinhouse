@@ -45,7 +45,6 @@ public class RoutesManager {
         /***
          webroot
          ***/
-        //router.route().failureHandler()
         router.route("/").handler(this::Index);
         router.route("/app/:app").handler(appHandler::IndexApp);
         router.route("/app/:id/platform/:pf/:version").handler(versionHandler::IndexVersion);

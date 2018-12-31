@@ -11,7 +11,7 @@ public interface IAppStore {
 
     List<AppVo> GetAppsList();
 
-    String UpdateApps(AppVo vo);
+    int UpdateApps(AppVo vo);
 
     int CreateApps(AppVo vo);
 

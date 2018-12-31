@@ -7,6 +7,7 @@ import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+import org.apache.http.protocol.HTTP;
 
 import java.util.List;
 
@@ -27,8 +28,9 @@ public class RouteAppHandler {
 
     /**
      * API
-     * */
+     */
     public void ApiGetApps(RoutingContext rc) {
+
         dbManager.appTable.GetAppsList();
         List<AppVo> appLists = dbManager.appTable.GetAppsList();
         JsonArray jsonArray = new JsonArray(appLists);
@@ -40,7 +42,11 @@ public class RouteAppHandler {
         String appId = rc.request().getParam("id");
         String appJson = dbManager.appTable.GetApps(appId);
 
-        rc.response().end(appJson);
+        if (appJson.isEmpty()) {
+            rc.response().end(appJson);
+        } else {
+            rc.response().setStatusCode(200).end();
+        }
     }
 
     public void ApiCreateApps(RoutingContext rc) {
@@ -48,28 +54,21 @@ public class RouteAppHandler {
         String desc = rc.request().getParam("desc");
         String alias = rc.request().getParam("alias");
 
-        if(appId.isEmpty()) {
-
+        if (appId.isEmpty() || desc.isEmpty() || alias.isEmpty()) {
+            rc.response().setStatusCode(400).end();
         }
 
-        if(desc.isEmpty()) {
-
-        }
-
-        if(alias.isEmpty()) {
-
-        }
-
-        AppVo appVO = new AppVo();
-        appVO.setAppId(appId);
-        appVO.setDesc(desc);
-        appVO.setAlias(alias);
+        AppVo appVO = new AppVo(appId, desc, alias);
 
         int result = dbManager.appTable.CreateApps(appVO);
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.put("code", result);
 
-        rc.response().end(jsonObject.toString());
+        if (isSuccess(result)) {
+            rc.response().setStatusCode(201).end();
+        } else {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.put("code", result);
+            rc.response().end(jsonObject.toString());
+        }
     }
 
     public void ApiUpdateApps(RoutingContext rc) {
@@ -77,10 +76,33 @@ public class RouteAppHandler {
         String desc = rc.request().getParam("desc");
         String alias = rc.request().getParam("alias");
 
+        AppVo appVO = new AppVo(appId, desc, alias);
 
+        int result = dbManager.appTable.UpdateApps(appVO);
+
+        if (isSuccess(result)) {
+            rc.response().setStatusCode(202).end();
+        } else {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.put("code", result);
+            rc.response().end(jsonObject.toString());
+        }
     }
 
     public void ApiDeleteApps(RoutingContext rc) {
-        rc.response().end("Hello World");
+        String appId = rc.request().getParam("id");
+        int result = dbManager.appTable.DeleteApps(appId);
+
+        if (isSuccess(result)) {
+            rc.response().setStatusCode(204).end();
+        } else {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.put("code", result);
+            rc.response().end(jsonObject.toString());
+        }
+    }
+
+    private boolean isSuccess(int result) {
+        return result == 0 ? true : false;
     }
 }
