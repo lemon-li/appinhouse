@@ -67,8 +67,9 @@ public class RoutesManager {
         router.put("/api/apps").handler(appHandler::ApiUpdateApps);
         router.delete("/api/apps").handler(appHandler::ApiDeleteApps);
 
-        router.post("/api/version").handler(versionHandler::ApiVersion);
-        router.get("/api/:id/ios/:version").handler(versionHandler::ApiIOSVersion);
+        router.get("/api/version/:id/latest").handler(versionHandler::ApiLatestVersion);
+        router.get("/api/version/:id/:platform/history").handler(versionHandler::ApiHistoryVersion);
+        router.post("/api/version").handler(versionHandler::ApiCreateVersion);
 
         return this;
     }

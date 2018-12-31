@@ -20,22 +20,38 @@ public class RouteVersionHandler {
         rc.response().sendFile(PathUtils.getAssetsPath("/version.html"));
     }
 
-    public void ApiVersion(RoutingContext rc) {
+    public void ApiLatestVersion(RoutingContext rc) {
+        String appId = rc.request().getParam("id");
+
+        dbManager.versionTable.GetLatestList(appId);
 
     }
 
+    public void ApiHistoryVersion(RoutingContext rc) {
+        String appId = rc.request().getParam("id");
+        String platform = rc.request().getParam("platform");
+
+        dbManager.versionTable.GetLatestList(appId);
+    }
+
     /***
-        IOS Rules , Gen .plist file
+     Attention: IOS Rules , need a .plist file
      */
-    public void ApiIOSVersion(RoutingContext rc) {
+    public void ApiCreateVersion(RoutingContext rc) {
+
+        String appId = rc.request().getParam("id");
+        String platform = rc.request().getParam("platform");
+        String download_url = rc.request().getParam("");
+        String jenkins_url = rc.request().getParam("platform");
+
 
         var json = new JsonObject();
-        json.put("test","file");
+        json.put("test", "file");
 
         rc.response()
-            .putHeader("content-type",
-                "application/x-plist; charset=utf-8")
-            .end(json.encodePrettily());
+                .putHeader("content-type",
+                        "application/x-plist; charset=utf-8")
+                .end(json.encodePrettily());
 
     }
 }
