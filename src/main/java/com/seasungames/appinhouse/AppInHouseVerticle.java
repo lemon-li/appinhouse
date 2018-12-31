@@ -28,21 +28,24 @@ public class AppInHouseVerticle extends AbstractVerticle {
 
         Future<Void> future = Future.future();
 
-        future.setHandler(ar ->{
+        future.compose(ar -> {
             webServer = vertx.createHttpServer();
 
             dbManager = CreateDynamoDBManager();
 
             routesManager = CreateRoutesManager();
 
-            webServer.requestHandler(routesManager.GetRouter()).listen(PORT);
+            webServer.requestHandler(routesManager.GetRouter()).listen(PORT, res -> {
+                if (res.succeeded()) {
+                    log.info("WebServer started listening at {}", PORT);
+                    startFuture.complete();
+                } else {
+                    log.error("Could not start a HTTP server", res.cause());
+                }
+            });
+        }, startFuture);
 
-            log.info("WebServer started listening at {}", PORT);
-
-            startFuture.complete();
-        });
-
-        ConfigManager.AsyncLoadConfig(vertx,future);
+        ConfigManager.AsyncLoadConfig(vertx, future);
     }
 
     private DynamoDBManager CreateDynamoDBManager() {
