@@ -7,6 +7,7 @@ import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
+import com.seasungames.appinhouse.constants.PlatformConstant;
 import com.seasungames.appinhouse.models.VersionVo;
 import com.seasungames.appinhouse.stores.IVersion;
 import com.seasungames.appinhouse.stores.dynamodb.tables.VersionTable;
@@ -40,7 +41,6 @@ public class DynamoDBVersionStore implements IVersion {
 
         LOG.info("Creating dynamodb table: " + tableName);
 
-
         // Attribute definitions
         ArrayList<AttributeDefinition> attributeDefinitions = new ArrayList<>();
 
@@ -49,9 +49,6 @@ public class DynamoDBVersionStore implements IVersion {
                 .withAttributeType("S"));
         attributeDefinitions.add(new AttributeDefinition()
                 .withAttributeName(VersionTable.RANGE_KEY_VERSION)
-                .withAttributeType("S"));
-        attributeDefinitions.add(new AttributeDefinition()
-                .withAttributeName(VersionTable.SECONDARY_INDEX_VERSION)
                 .withAttributeType("S"));
 
         // Table key schema
@@ -63,25 +60,13 @@ public class DynamoDBVersionStore implements IVersion {
                 .withAttributeName(VersionTable.RANGE_KEY_VERSION)
                 .withKeyType(KeyType.RANGE));
 
-        // PlatformIndex
-        GlobalSecondaryIndex platformIndex = new GlobalSecondaryIndex()
-                .withIndexName(indexName)
-                .withProvisionedThroughput(new ProvisionedThroughput()
-                        .withReadCapacityUnits((long) 10)
-                        .withWriteCapacityUnits((long) 1))
-                .withKeySchema(new KeySchemaElement().withAttributeName(VersionTable.SECONDARY_INDEX_VERSION).withKeyType(KeyType.HASH),
-                        new KeySchemaElement().withAttributeName(VersionTable.HASH_KEY_APPID).withKeyType(KeyType.RANGE))
-                .withProjection(new Projection().withProjectionType(ProjectionType.ALL));
-
-        //
         CreateTableRequest req = new CreateTableRequest()
                 .withTableName(tableName)
                 .withProvisionedThroughput(new ProvisionedThroughput()
                         .withReadCapacityUnits((long) 5)
                         .withWriteCapacityUnits((long) 1))
                 .withAttributeDefinitions(attributeDefinitions)
-                .withKeySchema(tableKeySchema)
-                .withGlobalSecondaryIndexes(platformIndex);
+                .withKeySchema(tableKeySchema);
 
         try {
             if (TableUtils.createTableIfNotExists(this.ddb, req)) {
@@ -90,6 +75,10 @@ public class DynamoDBVersionStore implements IVersion {
         } catch (InterruptedException e) {
             LOG.info("Creating dynamodb table: {} , reason: {}", tableName, e.getMessage());
         }
+    }
+
+    private String GetPrimaryKey(String id, String platform) {
+        return id + "_" + platform;
     }
 
     /**
@@ -106,8 +95,8 @@ public class DynamoDBVersionStore implements IVersion {
 
         try {
             Item item = new Item().withPrimaryKey(VersionTable.HASH_KEY_APPID,
-                    vo.getAppId(), VersionTable.RANGE_KEY_VERSION, vo.getVersion())
-                    .withString(VersionTable.SECONDARY_INDEX_VERSION, vo.getPlatform())
+                    GetPrimaryKey(vo.getAppId(), vo.getPlatform()), VersionTable.RANGE_KEY_VERSION, vo.getVersion())
+                    .withString(VersionTable.ATTRIBUTE_PLATFORM, vo.getPlatform())
                     .withMap(VersionTable.ATTRIBUTE_JSON_INFO, infoMap);
 
             PutItemOutcome outcome = table.putItem(item); //check new or replace.
@@ -121,19 +110,39 @@ public class DynamoDBVersionStore implements IVersion {
 
     @Override
     public String GetLatestList(String appId) {
-        return null;
+
+        QuerySpec querySpec = new QuerySpec();
+        ItemCollection<QueryOutcome> items = null;
+        Iterator<Item> iterator = null;
+
+        List<String> jsonList = new ArrayList<>(PlatformConstant.values().length);
+
+        for (PlatformConstant platform : PlatformConstant.values()) {
+            querySpec.withKeyConditionExpression("#id = :v_id")
+                    .withNameMap(new NameMap().with("#id", VersionTable.HASH_KEY_APPID))
+                    .withValueMap(new ValueMap().withString(":v_id", GetPrimaryKey(appId, platform.getPlatform())))
+                    .withScanIndexForward(false)
+                    .setMaxResultSize(1);
+
+            items = table.query(querySpec);
+            iterator = items.iterator();
+
+            while (iterator.hasNext()) {
+                jsonList.add(iterator.next().toJSON());
+            }
+        }
+        return new JsonArray(jsonList).toString();
     }
 
     @Override
     public String GetPlatformList(String appId, String platform) {
-        Index index = table.getIndex(indexName);
-
         QuerySpec querySpec = new QuerySpec();
-        querySpec.withKeyConditionExpression("#platform = :v_platform and #id = :v_id")
-                .withNameMap(new NameMap().with("#platform", VersionTable.SECONDARY_INDEX_VERSION).with("#id", VersionTable.HASH_KEY_APPID))
-                .withValueMap(new ValueMap().withString(":v_platform", platform).withString(":v_id", appId));
+        querySpec.withKeyConditionExpression("#id = :v_id")
+                .withNameMap(new NameMap().with("#id", VersionTable.HASH_KEY_APPID))
+                .withValueMap(new ValueMap().withString(":v_id", GetPrimaryKey(appId, platform)))
+                .withScanIndexForward(false);
 
-        ItemCollection<QueryOutcome> items = index.query(querySpec);
+        ItemCollection<QueryOutcome> items = table.query(querySpec);
 
         Iterator<Item> iterator = items.iterator();
 

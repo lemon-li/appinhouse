@@ -26,8 +26,9 @@ public class RouteVersionHandler {
     public void ApiLatestVersion(RoutingContext rc) {
         String appId = rc.request().getParam("id");
 
-        dbManager.versionTable.GetLatestList(appId);
+        String result = dbManager.versionTable.GetLatestList(appId);
 
+        rc.response().setStatusCode(200).end(result);
     }
 
     public void ApiHistoryVersion(RoutingContext rc) {

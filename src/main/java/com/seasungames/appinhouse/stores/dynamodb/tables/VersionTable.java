@@ -7,9 +7,9 @@ public class VersionTable {
 
     public static final String HASH_KEY_APPID = "Id";
 
-    public static final String SECONDARY_INDEX_VERSION = "platform";
-
     public static final String RANGE_KEY_VERSION = "version";
+
+    public static final String ATTRIBUTE_PLATFORM = "platform";
 
     public static final String ATTRIBUTE_JSON_INFO = "info";
 
