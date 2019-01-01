@@ -7,8 +7,6 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.seasungames.appinhouse.stores.IAppStore;
 import com.seasungames.appinhouse.stores.IVersion;
 
-import java.util.concurrent.Future;
-
 /**
  * Created by lile on 12/28/2018
  */

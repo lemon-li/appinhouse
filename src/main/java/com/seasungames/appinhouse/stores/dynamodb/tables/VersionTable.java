@@ -11,9 +11,13 @@ public class VersionTable {
 
     public static final String RANGE_KEY_VERSION = "version";
 
+    public static final String ATTRIBUTE_JSON_INFO = "info";
+
     public static final String ATTRIBUTE_DOWNLOAD_URL = "download_url";
 
     public static final String ATTRIBUTE_JENKINS_URL = "jenkins_url";
 
     public static final String ATTRIBUTE_PLIST = "plist";
+
+    public static final String ATTRIBUTE_TIME = "create_time";
 }

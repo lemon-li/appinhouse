@@ -8,7 +8,7 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 
 import com.seasungames.appinhouse.routes.handlers.RouteAppHandler;
-import com.seasungames.appinhouse.router.handlers.RouteVersionHandler;
+import com.seasungames.appinhouse.routes.handlers.RouteVersionHandler;
 
 import io.vertx.ext.web.RoutingContext;
 
@@ -67,9 +67,9 @@ public class RoutesManager {
         router.put("/api/apps").handler(appHandler::ApiUpdateApps);
         router.delete("/api/apps").handler(appHandler::ApiDeleteApps);
 
-        router.get("/api/version/:id/latest").handler(versionHandler::ApiLatestVersion);
-        router.get("/api/version/:id/:platform/history").handler(versionHandler::ApiHistoryVersion);
-        router.post("/api/version").handler(versionHandler::ApiCreateVersion);
+        router.get("/api/versions/:id/latest").handler(versionHandler::ApiLatestVersion);
+        router.get("/api/versions/:id/:platform/history").handler(versionHandler::ApiHistoryVersion);
+        router.post("/api/versions").handler(versionHandler::ApiCreateVersion);
 
         return this;
     }

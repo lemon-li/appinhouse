@@ -1,6 +1,5 @@
 package com.seasungames.appinhouse.stores.dynamodb;
 
-import com.amazonaws.AmazonClientException;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
@@ -88,8 +87,8 @@ public class DynamoDBAppStore implements IAppStore {
     public int CreateApps(AppVo vo) {
         try {
             PutItemOutcome outcome = table.putItem(new Item().withPrimaryKey(AppTable.HASH_KEY_APPID, vo.getAppId())
-                    .with(AppTable.ATTRIBUTE_DESC, vo.getDesc())
-                    .with(AppTable.ATTRIBUTE_ALIAS, vo.getAlias()));
+                    .withString(AppTable.ATTRIBUTE_DESC, vo.getDesc())
+                    .withString(AppTable.ATTRIBUTE_ALIAS, vo.getAlias()));
             return 0;
         } catch (Exception e) {
             return 1;
