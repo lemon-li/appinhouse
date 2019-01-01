@@ -32,7 +32,6 @@ public class RouteVersionHandler {
     }
 
     public void ApiHistoryVersion(RoutingContext rc) {
-
         String appId = rc.request().getParam("id");
         String platform = rc.request().getParam("platform");
 
@@ -45,19 +44,16 @@ public class RouteVersionHandler {
      Attention: IOS Rules , need a .plist file
      */
     public void ApiCreateVersion(RoutingContext rc) {
-
         String appId = rc.request().getParam("id");
         String platform = rc.request().getParam("platform");
         String version = rc.request().getParam("version");
         String download_url = rc.request().getParam("download_url");
         String jenkins_url = rc.request().getParam("jenkins_url");
-
         String plist = "plist";
         int create_time = (int) (new Date().getTime() / 1000);
 
         VersionVo vo = new VersionVo(appId, platform, version,
                 download_url, jenkins_url, plist, create_time);
-
 
         int result = dbManager.versionTable.CreateVersion(vo);
 
@@ -66,8 +62,10 @@ public class RouteVersionHandler {
         } else {
             rc.response().setStatusCode(404).end();
         }
+    }
 
-        /*
+    public void GetPlist(RoutingContext rc) {
+    /*
         var json = new JsonObject();
         json.put("test", "file");
 

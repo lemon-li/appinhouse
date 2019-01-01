@@ -14,7 +14,6 @@ public class ConfigManager {
     private static JsonObject jsonConfig;
 
     public static void AsyncLoadConfig(Vertx vertx, Handler<AsyncResult<Void>> resultHandler) {
-
         jsonConfig = vertx.getOrCreateContext().config();
 
         if (jsonConfig.isEmpty()) {

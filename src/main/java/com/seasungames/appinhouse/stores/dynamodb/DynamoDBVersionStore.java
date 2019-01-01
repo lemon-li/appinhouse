@@ -38,7 +38,6 @@ public class DynamoDBVersionStore implements IVersion {
     }
 
     private void CreateTable() {
-
         LOG.info("Creating dynamodb table: " + tableName);
 
         // Attribute definitions
@@ -110,7 +109,6 @@ public class DynamoDBVersionStore implements IVersion {
 
     @Override
     public String GetLatestList(String appId) {
-
         QuerySpec querySpec = new QuerySpec();
         ItemCollection<QueryOutcome> items = null;
         Iterator<Item> iterator = null;

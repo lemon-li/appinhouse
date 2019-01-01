@@ -38,7 +38,6 @@ public class DynamoDBAppStore implements IAppStore {
     }
 
     private void CreateTable() {
-
         LOG.info("Creating dynamodb table: " + tableName);
 
         ProvisionedThroughput throughput = new ProvisionedThroughput(1L, 1L);
