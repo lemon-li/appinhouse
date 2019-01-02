@@ -1,8 +1,10 @@
 package com.seasungames.appinhouse.routes.handlers;
 
+import com.seasungames.appinhouse.constants.PlatformConstant;
 import com.seasungames.appinhouse.models.VersionVo;
 import com.seasungames.appinhouse.stores.dynamodb.DynamoDBManager;
 import com.seasungames.appinhouse.utils.PathUtils;
+import com.seasungames.appinhouse.utils.PlistUtils;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 
@@ -47,13 +49,19 @@ public class RouteVersionHandler {
         String appId = rc.request().getParam("id");
         String platform = rc.request().getParam("platform");
         String version = rc.request().getParam("version");
-        String download_url = rc.request().getParam("download_url");
-        String jenkins_url = rc.request().getParam("jenkins_url");
-        String plist = "plist";
-        int create_time = (int) (new Date().getTime() / 1000);
+        String desc = rc.request().getParam("desc");
+        String download_url = rc.request().getParam("software_url");
+        String jenkins_url = rc.request().getParam("url");
+        String create_time = rc.request().getParam("time");
 
         VersionVo vo = new VersionVo(appId, platform, version,
-                download_url, jenkins_url, plist, create_time);
+                desc, download_url, jenkins_url, create_time);
+
+        if (vo.isIOS()) {
+            String ios_bundle_id = rc.request().getParam("ios_bundle_id");
+            String ios_title = rc.request().getParam("ios_title");
+            vo.setIos_bundle_id(ios_bundle_id).setIos_title(ios_title);
+        }
 
         int result = dbManager.versionTable.CreateVersion(vo);
 
@@ -65,15 +73,17 @@ public class RouteVersionHandler {
     }
 
     public void GetPlist(RoutingContext rc) {
-    /*
-        var json = new JsonObject();
-        json.put("test", "file");
+        String appId = rc.request().getParam("id");
+        String platform = rc.request().getParam("platform");
+        String version = rc.request().getParam("version");
 
-        rc.response()
-                .putHeader("content-type",
-                        "application/x-plist; charset=utf-8")
-                .end(json.encodePrettily());
+        VersionVo vo = dbManager.versionTable.GetOneApp(appId, platform, version);
 
-        */
+        if (vo != null) {
+            String plist = PlistUtils.GenPlist(vo.getDownload_url(), vo.getIos_bundle_id(), vo.getIos_title());
+            rc.response().putHeader("content-type", "application/x-plist; charset=utf-8").end(plist);
+        } else {
+            rc.response().setStatusCode(404).end();
+        }
     }
 }

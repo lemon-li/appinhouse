@@ -17,7 +17,11 @@ public class VersionTable {
 
     public static final String ATTRIBUTE_JENKINS_URL = "jenkins_url";
 
-    public static final String ATTRIBUTE_PLIST = "plist";
+    public static final String ATTRIBUTE_DESC = "desc";
+
+    public static final String ATTRIBUTE_IOS_BUNDLE_ID = "ios_bundle_id";
+
+    public static final String ATTRIBUTE_IOS_TITLE = "ios_title";
 
     public static final String ATTRIBUTE_TIME = "create_time";
 }

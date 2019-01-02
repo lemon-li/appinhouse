@@ -69,7 +69,8 @@ public class RoutesManager {
 
         router.get("/api/versions/:id/latest").handler(versionHandler::ApiLatestVersion);
         router.get("/api/versions/:id/:platform/history").handler(versionHandler::ApiHistoryVersion);
-        router.post("/api/versions").handler(versionHandler::ApiCreateVersion);
+        router.post("/api/versions/:id/:platform").handler(versionHandler::ApiCreateVersion);
+        router.get("/api/versions/plist/:id/:platform/:version").handler(versionHandler::GetPlist);
 
         return this;
     }

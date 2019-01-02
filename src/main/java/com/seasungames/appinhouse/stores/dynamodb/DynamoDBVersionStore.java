@@ -2,6 +2,7 @@ package com.seasungames.appinhouse.stores.dynamodb;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.document.*;
+import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
@@ -85,12 +86,39 @@ public class DynamoDBVersionStore implements IVersion {
      **/
 
     @Override
+    public VersionVo GetOneApp(String id, String platform, String version) {
+        GetItemSpec spec = new GetItemSpec().withPrimaryKey(VersionTable.HASH_KEY_APPID, GetPrimaryKey(id, platform),
+                VersionTable.RANGE_KEY_VERSION, version);
+
+        try {
+            Item outcome = table.getItem(spec);
+            Map<String,String> info = outcome.getMap(VersionTable.ATTRIBUTE_JSON_INFO);
+
+            VersionVo vo = new VersionVo()
+                    .setDownload_url(info.get(VersionTable.ATTRIBUTE_DOWNLOAD_URL))
+                    .setIos_bundle_id(info.get(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID))
+                    .setIos_title(info.get(VersionTable.ATTRIBUTE_IOS_TITLE));
+
+            return vo;
+        }
+        catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
     public int CreateVersion(VersionVo vo) {
         final Map<String, Object> infoMap = new HashMap<>();
         infoMap.put(VersionTable.ATTRIBUTE_DOWNLOAD_URL, vo.getDownload_url());
         infoMap.put(VersionTable.ATTRIBUTE_JENKINS_URL, vo.getJenkins_url());
-        infoMap.put(VersionTable.ATTRIBUTE_PLIST, vo.getPlist());
         infoMap.put(VersionTable.ATTRIBUTE_TIME, vo.getCreate_time());
+        infoMap.put(VersionTable.ATTRIBUTE_DESC, vo.getDesc());
+
+        if(vo.isIOS()) {
+            infoMap.put(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID, vo.getIos_bundle_id());
+            infoMap.put(VersionTable.ATTRIBUTE_IOS_TITLE, vo.getIos_title());
+        }
 
         try {
             Item item = new Item().withPrimaryKey(VersionTable.HASH_KEY_APPID,

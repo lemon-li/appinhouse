@@ -10,4 +10,6 @@ public interface IVersion {
 
     int CreateVersion(VersionVo vo);
 
+    VersionVo GetOneApp(String appId, String platform, String version);
+
 }
