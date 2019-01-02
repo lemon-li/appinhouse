@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by lile on 12/27/2018
  */
-public class RouteAppHandler {
+public class RouteAppHandler extends IRouteHandler {
 
     private final DynamoDBManager dbManager;
 
@@ -30,7 +30,6 @@ public class RouteAppHandler {
      * API
      */
     public void ApiGetApps(RoutingContext rc) {
-
         dbManager.appTable.GetAppsList();
         List<AppVo> appLists = dbManager.appTable.GetAppsList();
         JsonArray jsonArray = new JsonArray(appLists);
@@ -40,10 +39,11 @@ public class RouteAppHandler {
 
     public void ApiGetApp(RoutingContext rc) {
         String appId = rc.request().getParam("id");
+
         String appJson = dbManager.appTable.GetApps(appId);
 
         if (appJson.isEmpty()) {
-            rc.response().end(appJson);
+            rc.response().setStatusCode(400).end();
         } else {
             rc.response().setStatusCode(200).end();
         }
@@ -62,7 +62,7 @@ public class RouteAppHandler {
 
         int result = dbManager.appTable.CreateApps(appVO);
 
-        if (isSuccess(result)) {
+        if (IsSuccess(result)) {
             rc.response().setStatusCode(201).end();
         } else {
             JsonObject jsonObject = new JsonObject();
@@ -80,7 +80,7 @@ public class RouteAppHandler {
 
         int result = dbManager.appTable.UpdateApps(appVO);
 
-        if (isSuccess(result)) {
+        if (IsSuccess(result)) {
             rc.response().setStatusCode(202).end();
         } else {
             JsonObject jsonObject = new JsonObject();
@@ -93,16 +93,12 @@ public class RouteAppHandler {
         String appId = rc.request().getParam("id");
         int result = dbManager.appTable.DeleteApps(appId);
 
-        if (isSuccess(result)) {
+        if (IsSuccess(result)) {
             rc.response().setStatusCode(204).end();
         } else {
             JsonObject jsonObject = new JsonObject();
             jsonObject.put("code", result);
             rc.response().end(jsonObject.toString());
         }
-    }
-
-    private boolean isSuccess(int result) {
-        return result == 0 ? true : false;
     }
 }

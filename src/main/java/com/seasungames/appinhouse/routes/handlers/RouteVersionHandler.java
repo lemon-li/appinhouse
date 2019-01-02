@@ -13,7 +13,7 @@ import java.util.Date;
 /**
  * Created by lile on 12/27/2018
  */
-public class RouteVersionHandler {
+public class RouteVersionHandler extends IRouteHandler {
 
     private final DynamoDBManager dbManager;
 
@@ -65,7 +65,7 @@ public class RouteVersionHandler {
 
         int result = dbManager.versionTable.CreateVersion(vo);
 
-        if (result == 0) {
+        if (IsSuccess(result)) {
             rc.response().setStatusCode(200).end();
         } else {
             rc.response().setStatusCode(404).end();
