@@ -19,12 +19,10 @@ public class RoutesManager {
 
     private static final Logger log = LoggerFactory.getLogger(RoutesManager.class);
 
-    private final Vertx vertx;
     private final Router router;
     private DynamoDBManager dbManager;
 
     public RoutesManager(Vertx vertx) {
-        this.vertx = vertx;
         this.router = Router.router(vertx);
     }
 

@@ -35,7 +35,7 @@ public class DynamoDBAppStore implements IAppStore {
         this.ddb = ddb;
         table = new DynamoDB(ddb).getTable(tableName);
 
-        if(ConfigManager.createDynamoDBTableOnStartup()) {
+        if (ConfigManager.createDynamoDBTableOnStartup()) {
             CreateTable();
         }
     }
@@ -67,28 +67,31 @@ public class DynamoDBAppStore implements IAppStore {
 
     @Override
     public List<AppVo> GetAppsList() {
-        List<AppVo> appLists = new ArrayList<>(0);
+        List<AppVo> appLists = new ArrayList<>();
         AppVo appVO = null;
 
-        ScanRequest scanRequest = new ScanRequest()
-                .withTableName(tableName);
+        try {
+            ScanRequest scanRequest = new ScanRequest()
+                    .withTableName(tableName);
 
-        ScanResult result = ddb.scan(scanRequest);
-        for (Map<String, AttributeValue> item : result.getItems()) {
-            appVO = new AppVo();
-            appVO.setAppId(item.get(AppTable.HASH_KEY_APPID).getS());
-            appVO.setDesc(item.get(AppTable.ATTRIBUTE_DESC).getS());
-            appVO.setAlias(item.get(AppTable.ATTRIBUTE_ALIAS).getS());
-            appLists.add(appVO);
+            ScanResult result = ddb.scan(scanRequest);
+            for (Map<String, AttributeValue> item : result.getItems()) {
+                appVO = new AppVo();
+                appVO.setAppId(item.get(AppTable.HASH_KEY_APPID).getS());
+                appVO.setDesc(item.get(AppTable.ATTRIBUTE_DESC).getS());
+                appVO.setAlias(item.get(AppTable.ATTRIBUTE_ALIAS).getS());
+                appLists.add(appVO);
+            }
+        } catch (Exception e) {
+            return null;
         }
-
         return appLists;
     }
 
     @Override
     public int CreateApps(AppVo vo) {
         try {
-            PutItemOutcome outcome = table.putItem(new Item().withPrimaryKey(AppTable.HASH_KEY_APPID, vo.getAppId())
+            table.putItem(new Item().withPrimaryKey(AppTable.HASH_KEY_APPID, vo.getAppId())
                     .withString(AppTable.ATTRIBUTE_DESC, vo.getDesc())
                     .withString(AppTable.ATTRIBUTE_ALIAS, vo.getAlias()));
             return 0;
@@ -120,7 +123,7 @@ public class DynamoDBAppStore implements IAppStore {
                 .withReturnValues(ReturnValue.UPDATED_NEW);
 
         try {
-            UpdateItemOutcome outcome = table.updateItem(updateItemSpec);
+            table.updateItem(updateItemSpec);
             return 0;
         } catch (Exception e) {
             return 1;
@@ -130,6 +133,7 @@ public class DynamoDBAppStore implements IAppStore {
     @Override
     public String GetApps(String appId) {
         GetItemSpec spec = new GetItemSpec().withPrimaryKey(AppTable.HASH_KEY_APPID, appId);
+
         try {
             Item outcome = table.getItem(spec);
             return outcome.toJSON();

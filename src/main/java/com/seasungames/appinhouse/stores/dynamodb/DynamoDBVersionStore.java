@@ -30,7 +30,6 @@ public class DynamoDBVersionStore implements IVersion {
 
     private Table table;
     private AmazonDynamoDB ddb;
-    private String indexName = "platform_index";
 
     public DynamoDBVersionStore(AmazonDynamoDB ddb) {
         this.ddb = ddb;
@@ -171,9 +170,7 @@ public class DynamoDBVersionStore implements IVersion {
                 .withScanIndexForward(false);
 
         ItemCollection<QueryOutcome> items = table.query(querySpec);
-
         Iterator<Item> iterator = items.iterator();
-
         List<String> jsonList = new ArrayList<>();
 
         while (iterator.hasNext()) {
