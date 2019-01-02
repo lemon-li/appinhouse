@@ -36,10 +36,6 @@ public class ConfigManager {
      * Configuration API
      * */
 
-    public static String httpHost() {
-        return jsonConfig.getString("http.host", "0.0.0.0");
-    }
-
     public static int httpPort() {
         return jsonConfig.getInteger("http.port", 8082);
     }

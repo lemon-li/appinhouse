@@ -23,7 +23,7 @@ public class RouteAppHandler extends IRouteHandler {
     }
 
     public void IndexApp(RoutingContext rc) {
-        rc.response().sendFile(PathUtils.getAssetsPath("/app.html"));
+        rc.response().sendFile(PathUtils.getAssetsPath("/assets/html/app.html"));
     }
 
     /**

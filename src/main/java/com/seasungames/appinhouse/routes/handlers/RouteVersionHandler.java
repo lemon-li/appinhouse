@@ -22,7 +22,7 @@ public class RouteVersionHandler extends IRouteHandler {
     }
 
     public void IndexVersion(RoutingContext rc) {
-        rc.response().sendFile(PathUtils.getAssetsPath("/version.html"));
+        rc.response().sendFile(PathUtils.getAssetsPath("/assets/html/version.html"));
     }
 
     public void ApiLatestVersion(RoutingContext rc) {
