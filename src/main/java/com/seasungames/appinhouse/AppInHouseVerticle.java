@@ -21,8 +21,6 @@ public class AppInHouseVerticle extends AbstractVerticle {
     private RoutesManager routesManager;
     private HttpServer webServer;
 
-    private final int PORT = 8082;
-
     @Override
     public void start(Future<Void> startFuture) throws Exception {
 
@@ -35,9 +33,9 @@ public class AppInHouseVerticle extends AbstractVerticle {
 
             routesManager = CreateRoutesManager();
 
-            webServer.requestHandler(routesManager.GetRouter()).listen(PORT, res -> {
+            webServer.requestHandler(routesManager.GetRouter()).listen(ConfigManager.httpPort(), res -> {
                 if (res.succeeded()) {
-                    log.info("WebServer started listening at {}", PORT);
+                    log.info("WebServer started listening at {}", ConfigManager.httpPort());
                     startFuture.complete();
                 } else {
                     log.error("Could not start a HTTP server", res.cause());
@@ -63,9 +61,9 @@ public class AppInHouseVerticle extends AbstractVerticle {
         webServer.close(ar -> {
             if (ar.succeeded()) {
                 stopFuture.complete();
-                log.info("WebServer stopped listening at {}", PORT);
+                log.info("WebServer stopped listening at {}", ConfigManager.httpPort());
             } else {
-                log.info("WebServer stopped failed listening at {} , Reason: {}", PORT, ar.cause());
+                log.info("WebServer stopped failed listening at {} , Reason: {}", ConfigManager.httpPort(), ar.cause());
             }
         });
     }

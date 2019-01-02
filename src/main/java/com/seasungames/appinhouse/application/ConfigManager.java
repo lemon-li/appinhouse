@@ -32,7 +32,39 @@ public class ConfigManager {
         }
     }
 
-    public static JsonObject GetConf() {
-        return jsonConfig;
+    /***
+     * Configuration API
+     * */
+
+    public static String httpHost() {
+        return jsonConfig.getString("http.host", "0.0.0.0");
+    }
+
+    public static int httpPort() {
+        return jsonConfig.getInteger("http.port", 8082);
+    }
+
+    public static String dynamoDBRegion() {
+        return jsonConfig.getString("dynamodb.region", "local");
+    }
+
+    public static String dynamoDBLocalhost() {
+        return jsonConfig.getString("dynamodb.local.host", "localhost");
+    }
+
+    public static int dynamoDBLocalPort() {
+        return jsonConfig.getInteger("dynamodb.local.port",8000);
+    }
+
+    public static long dynamoDBTableReadThroughput() {
+        return jsonConfig.getLong("dynamodb.tableReadThroughput",1L);
+    }
+
+    public static long dynamoDBTableWriteThroughput() {
+        return jsonConfig.getLong("dynamodb.tableWriteThroughput",1L);
+    }
+
+    public static boolean createDynamoDBTableOnStartup() {
+        return jsonConfig.getBoolean("dynamodb.createTableOnStartup",false);
     }
 }

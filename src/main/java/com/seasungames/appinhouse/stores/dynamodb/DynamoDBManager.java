@@ -2,8 +2,10 @@ package com.seasungames.appinhouse.stores.dynamodb;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.regions.RegionUtils;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.seasungames.appinhouse.application.ConfigManager;
 import com.seasungames.appinhouse.stores.IAppStore;
 import com.seasungames.appinhouse.stores.IVersion;
 
@@ -17,12 +19,19 @@ public class DynamoDBManager {
     public IAppStore appTable;
     public IVersion versionTable;
 
-
     public DynamoDBManager() {
-        client = (AmazonDynamoDBClient) AmazonDynamoDBClientBuilder.standard()
-            .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:8000", "local"))
-            .withClientConfiguration(getClientConfiguration())
-            .build();
+        String region = ConfigManager.dynamoDBRegion();
+        AmazonDynamoDBClientBuilder builder = AmazonDynamoDBClientBuilder.standard().
+                withClientConfiguration(getClientConfiguration());
+
+        if ("local".equals(region)) {
+            String endpoint = "http://" + ConfigManager.dynamoDBLocalhost() + ":" + ConfigManager.dynamoDBLocalPort();
+            client = (AmazonDynamoDBClient) builder.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endpoint, "local"))
+                    .withClientConfiguration(getClientConfiguration())
+                    .build();
+        } else {
+            client = (AmazonDynamoDBClient) builder.withRegion(region).build();
+        }
 
         InitTables();
     }
@@ -34,8 +43,8 @@ public class DynamoDBManager {
 
     private static ClientConfiguration getClientConfiguration() {
         ClientConfiguration config = new ClientConfiguration()
-            .withGzip(true)
-            .withTcpKeepAlive(true);
+                .withGzip(true)
+                .withTcpKeepAlive(true);
 
         return config;
     }

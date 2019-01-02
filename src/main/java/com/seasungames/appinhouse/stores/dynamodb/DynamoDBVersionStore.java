@@ -8,6 +8,7 @@ import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
+import com.seasungames.appinhouse.application.ConfigManager;
 import com.seasungames.appinhouse.constants.PlatformConstant;
 import com.seasungames.appinhouse.models.VersionVo;
 import com.seasungames.appinhouse.stores.IVersion;
@@ -35,7 +36,9 @@ public class DynamoDBVersionStore implements IVersion {
         this.ddb = ddb;
         table = new DynamoDB(ddb).getTable(tableName);
 
-        CreateTable();
+        if(ConfigManager.createDynamoDBTableOnStartup()) {
+            CreateTable();
+        }
     }
 
     private void CreateTable() {
@@ -63,8 +66,8 @@ public class DynamoDBVersionStore implements IVersion {
         CreateTableRequest req = new CreateTableRequest()
                 .withTableName(tableName)
                 .withProvisionedThroughput(new ProvisionedThroughput()
-                        .withReadCapacityUnits((long) 5)
-                        .withWriteCapacityUnits((long) 1))
+                        .withReadCapacityUnits(ConfigManager.dynamoDBTableReadThroughput())
+                        .withWriteCapacityUnits(ConfigManager.dynamoDBTableWriteThroughput()))
                 .withAttributeDefinitions(attributeDefinitions)
                 .withKeySchema(tableKeySchema);
 
@@ -92,7 +95,7 @@ public class DynamoDBVersionStore implements IVersion {
 
         try {
             Item outcome = table.getItem(spec);
-            Map<String,String> info = outcome.getMap(VersionTable.ATTRIBUTE_JSON_INFO);
+            Map<String, String> info = outcome.getMap(VersionTable.ATTRIBUTE_JSON_INFO);
 
             VersionVo vo = new VersionVo()
                     .setDownload_url(info.get(VersionTable.ATTRIBUTE_DOWNLOAD_URL))
@@ -100,8 +103,7 @@ public class DynamoDBVersionStore implements IVersion {
                     .setIos_title(info.get(VersionTable.ATTRIBUTE_IOS_TITLE));
 
             return vo;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
             return null;
         }
@@ -115,7 +117,7 @@ public class DynamoDBVersionStore implements IVersion {
         infoMap.put(VersionTable.ATTRIBUTE_TIME, vo.getCreate_time());
         infoMap.put(VersionTable.ATTRIBUTE_DESC, vo.getDesc());
 
-        if(vo.isIOS()) {
+        if (vo.isIOS()) {
             infoMap.put(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID, vo.getIos_bundle_id());
             infoMap.put(VersionTable.ATTRIBUTE_IOS_TITLE, vo.getIos_title());
         }

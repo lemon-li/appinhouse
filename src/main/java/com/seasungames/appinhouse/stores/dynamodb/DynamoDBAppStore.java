@@ -9,6 +9,7 @@ import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
+import com.seasungames.appinhouse.application.ConfigManager;
 import com.seasungames.appinhouse.models.AppVo;
 import com.seasungames.appinhouse.stores.IAppStore;
 import com.seasungames.appinhouse.stores.dynamodb.tables.AppTable;
@@ -34,19 +35,21 @@ public class DynamoDBAppStore implements IAppStore {
         this.ddb = ddb;
         table = new DynamoDB(ddb).getTable(tableName);
 
-        CreateTable();
+        if(ConfigManager.createDynamoDBTableOnStartup()) {
+            CreateTable();
+        }
     }
 
     private void CreateTable() {
         LOG.info("Creating dynamodb table: " + tableName);
 
-        ProvisionedThroughput throughput = new ProvisionedThroughput(1L, 1L);
-
         CreateTableRequest req = new CreateTableRequest()
                 .withTableName(tableName)
                 .withKeySchema(new KeySchemaElement(AppTable.HASH_KEY_APPID, KeyType.HASH))
                 .withAttributeDefinitions(new AttributeDefinition(AppTable.HASH_KEY_APPID, ScalarAttributeType.S))
-                .withProvisionedThroughput(throughput);
+                .withProvisionedThroughput(new ProvisionedThroughput()
+                        .withReadCapacityUnits(ConfigManager.dynamoDBTableReadThroughput())
+                        .withWriteCapacityUnits(ConfigManager.dynamoDBTableWriteThroughput()));
 
         try {
             if (TableUtils.createTableIfNotExists(this.ddb, req)) {
