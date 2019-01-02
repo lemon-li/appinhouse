@@ -40,13 +40,12 @@ public class RoutesManager {
         RouteAppHandler appHandler = new RouteAppHandler(this.dbManager);
         RouteVersionHandler versionHandler = new RouteVersionHandler(this.dbManager);
 
-        /***
-         webroot
-         ***/
+        //webroot
         router.route("/").handler(this::Index);
+        router.route().last().handler(this::Error);
         router.route("/app/:app").handler(appHandler::IndexApp);
         router.route("/app/:id/platform/:pf/:version").handler(versionHandler::IndexVersion);
-        router.route("/app/version/:id").handler(versionHandler::GetPlist);
+
         /***
          RESTful API
 
@@ -75,5 +74,9 @@ public class RoutesManager {
 
     private void Index(RoutingContext rc) {
         rc.response().sendFile(PathUtils.getAssetsPath("/index.html"));
+    }
+
+    private void Error(RoutingContext rc) {
+        rc.response().setStatusCode(404).end();
     }
 }
