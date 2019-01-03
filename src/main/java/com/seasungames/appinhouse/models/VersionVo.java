@@ -1,6 +1,6 @@
 package com.seasungames.appinhouse.models;
 
-import com.seasungames.appinhouse.constants.PlatformConstant;
+import com.seasungames.appinhouse.application.PlatformConstant;
 
 public class VersionVo {
 

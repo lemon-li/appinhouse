@@ -1,4 +1,4 @@
-package com.seasungames.appinhouse.constants;
+package com.seasungames.appinhouse.application;
 
 public enum PlatformConstant {
 

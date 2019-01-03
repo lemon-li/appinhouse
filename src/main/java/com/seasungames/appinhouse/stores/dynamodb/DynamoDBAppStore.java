@@ -16,6 +16,7 @@ import com.seasungames.appinhouse.stores.dynamodb.tables.AppTable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,9 @@ public class DynamoDBAppStore implements IAppStore {
 
     private final String tableName = "apps";
 
+    @Inject
+    public ConfigManager conf;
+
     private Table table;
     private AmazonDynamoDB ddb;
 
@@ -35,7 +39,7 @@ public class DynamoDBAppStore implements IAppStore {
         this.ddb = ddb;
         table = new DynamoDB(ddb).getTable(tableName);
 
-        if (ConfigManager.createDynamoDBTableOnStartup()) {
+        if (conf.createDynamoDBTableOnStartup()) {
             CreateTable();
         }
     }
@@ -48,8 +52,8 @@ public class DynamoDBAppStore implements IAppStore {
                 .withKeySchema(new KeySchemaElement(AppTable.HASH_KEY_APPID, KeyType.HASH))
                 .withAttributeDefinitions(new AttributeDefinition(AppTable.HASH_KEY_APPID, ScalarAttributeType.S))
                 .withProvisionedThroughput(new ProvisionedThroughput()
-                        .withReadCapacityUnits(ConfigManager.dynamoDBTableReadThroughput())
-                        .withWriteCapacityUnits(ConfigManager.dynamoDBTableWriteThroughput()));
+                        .withReadCapacityUnits(conf.dynamoDBTableReadThroughput())
+                        .withWriteCapacityUnits(conf.dynamoDBTableWriteThroughput()));
 
         try {
             if (TableUtils.createTableIfNotExists(this.ddb, req)) {

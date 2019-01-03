@@ -1,14 +1,10 @@
 package com.seasungames.appinhouse.routes.handlers;
 
-import com.seasungames.appinhouse.constants.PlatformConstant;
 import com.seasungames.appinhouse.models.VersionVo;
 import com.seasungames.appinhouse.stores.dynamodb.DynamoDBManager;
 import com.seasungames.appinhouse.utils.PathUtils;
 import com.seasungames.appinhouse.utils.PlistUtils;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
-
-import java.util.Date;
 
 /**
  * Created by lile on 12/27/2018

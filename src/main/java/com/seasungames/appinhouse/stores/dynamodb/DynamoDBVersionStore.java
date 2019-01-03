@@ -9,7 +9,7 @@ import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.seasungames.appinhouse.application.ConfigManager;
-import com.seasungames.appinhouse.constants.PlatformConstant;
+import com.seasungames.appinhouse.application.PlatformConstant;
 import com.seasungames.appinhouse.models.VersionVo;
 import com.seasungames.appinhouse.stores.IVersion;
 import com.seasungames.appinhouse.stores.dynamodb.tables.VersionTable;
@@ -17,6 +17,7 @@ import io.vertx.core.json.JsonArray;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
 import java.util.*;
 
 /**
@@ -28,6 +29,9 @@ public class DynamoDBVersionStore implements IVersion {
 
     private final String tableName = "versions";
 
+    @Inject
+    public ConfigManager conf;
+
     private Table table;
     private AmazonDynamoDB ddb;
 
@@ -35,7 +39,7 @@ public class DynamoDBVersionStore implements IVersion {
         this.ddb = ddb;
         table = new DynamoDB(ddb).getTable(tableName);
 
-        if(ConfigManager.createDynamoDBTableOnStartup()) {
+        if(conf.createDynamoDBTableOnStartup()) {
             CreateTable();
         }
     }
@@ -65,8 +69,8 @@ public class DynamoDBVersionStore implements IVersion {
         CreateTableRequest req = new CreateTableRequest()
                 .withTableName(tableName)
                 .withProvisionedThroughput(new ProvisionedThroughput()
-                        .withReadCapacityUnits(ConfigManager.dynamoDBTableReadThroughput())
-                        .withWriteCapacityUnits(ConfigManager.dynamoDBTableWriteThroughput()))
+                        .withReadCapacityUnits(conf.dynamoDBTableReadThroughput())
+                        .withWriteCapacityUnits(conf.dynamoDBTableWriteThroughput()))
                 .withAttributeDefinitions(attributeDefinitions)
                 .withKeySchema(tableKeySchema);
 

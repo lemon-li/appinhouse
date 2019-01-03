@@ -1,0 +1,11 @@
+# HttpServer
+http.host="0.0.0.0"
+http.port=8443
+
+# DynamoDB
+dynamodb.region="local"
+dynamodb.local.host="localhost"
+dynamodb.local.port=8000
+dynamodb.tableReadThroughput=1
+dynamodb.tableWriteThroughput=1
+dynamodb.createTableOnStartup=true
