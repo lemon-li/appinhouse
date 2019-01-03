@@ -9,14 +9,13 @@ import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
-import com.seasungames.appinhouse.application.ConfigManager;
+import com.seasungames.appinhouse.application.Configuration;
 import com.seasungames.appinhouse.models.AppVo;
-import com.seasungames.appinhouse.stores.IAppStore;
+import com.seasungames.appinhouse.stores.App;
 import com.seasungames.appinhouse.stores.dynamodb.tables.AppTable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,27 +23,28 @@ import java.util.Map;
 /**
  * Created by lile on 12/28/2018
  */
-public class DynamoDBAppStore implements IAppStore {
+public class DynamoDBAppStore implements App {
     private static final Logger LOG = LogManager.getLogger(DynamoDBAppStore.class);
 
     private final String tableName = "apps";
 
-    @Inject
-    public ConfigManager conf;
+    private Configuration conf;
 
     private Table table;
     private AmazonDynamoDB ddb;
 
-    public DynamoDBAppStore(AmazonDynamoDB ddb) {
+    public DynamoDBAppStore(AmazonDynamoDB ddb, Configuration conf) {
         this.ddb = ddb;
+        this.conf = conf;
+
         table = new DynamoDB(ddb).getTable(tableName);
 
-        if (conf.createDynamoDBTableOnStartup()) {
-            CreateTable();
+        if (conf.dynamodbcreateTableOnStartup()) {
+            createTable();
         }
     }
 
-    private void CreateTable() {
+    private void createTable() {
         LOG.info("Creating dynamodb table: " + tableName);
 
         CreateTableRequest req = new CreateTableRequest()
@@ -52,8 +52,8 @@ public class DynamoDBAppStore implements IAppStore {
                 .withKeySchema(new KeySchemaElement(AppTable.HASH_KEY_APPID, KeyType.HASH))
                 .withAttributeDefinitions(new AttributeDefinition(AppTable.HASH_KEY_APPID, ScalarAttributeType.S))
                 .withProvisionedThroughput(new ProvisionedThroughput()
-                        .withReadCapacityUnits(conf.dynamoDBTableReadThroughput())
-                        .withWriteCapacityUnits(conf.dynamoDBTableWriteThroughput()));
+                        .withReadCapacityUnits(conf.dynamodbTableReadThroughput())
+                        .withWriteCapacityUnits(conf.dynamodbTableWriteThroughput()));
 
         try {
             if (TableUtils.createTableIfNotExists(this.ddb, req)) {
@@ -70,7 +70,7 @@ public class DynamoDBAppStore implements IAppStore {
      **/
 
     @Override
-    public List<AppVo> GetAppsList() {
+    public List<AppVo> getAppsList() {
         List<AppVo> appLists = new ArrayList<>();
         AppVo appVO = null;
 
@@ -93,7 +93,7 @@ public class DynamoDBAppStore implements IAppStore {
     }
 
     @Override
-    public int CreateApps(AppVo vo) {
+    public int createApps(AppVo vo) {
         try {
             table.putItem(new Item().withPrimaryKey(AppTable.HASH_KEY_APPID, vo.getAppId())
                     .withString(AppTable.ATTRIBUTE_DESC, vo.getDesc())
@@ -105,7 +105,7 @@ public class DynamoDBAppStore implements IAppStore {
     }
 
     @Override
-    public int DeleteApps(String appId) {
+    public int deleteApps(String appId) {
         DeleteItemSpec deleteItemSpec = new DeleteItemSpec()
                 .withPrimaryKey(new PrimaryKey(AppTable.HASH_KEY_APPID, appId));
 
@@ -118,7 +118,7 @@ public class DynamoDBAppStore implements IAppStore {
     }
 
     @Override
-    public int UpdateApps(AppVo vo) {
+    public int updateApps(AppVo vo) {
         UpdateItemSpec updateItemSpec = new UpdateItemSpec()
                 .withPrimaryKey(new PrimaryKey(AppTable.HASH_KEY_APPID, vo.getAppId()))
                 .withUpdateExpression("set #desc = :d, #alias = :a")
@@ -135,7 +135,7 @@ public class DynamoDBAppStore implements IAppStore {
     }
 
     @Override
-    public String GetApps(String appId) {
+    public String getApps(String appId) {
         GetItemSpec spec = new GetItemSpec().withPrimaryKey(AppTable.HASH_KEY_APPID, appId);
 
         try {

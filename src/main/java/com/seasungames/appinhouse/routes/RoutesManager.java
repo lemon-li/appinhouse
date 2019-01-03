@@ -12,8 +12,6 @@ import com.seasungames.appinhouse.routes.handlers.RouteVersionHandler;
 
 import io.vertx.ext.web.RoutingContext;
 
-import javax.inject.Inject;
-
 /**
  * Created by lile on 12/27/2018
  */
@@ -23,26 +21,26 @@ public class RoutesManager {
 
     private final Router router;
 
-    @Inject
-    public DynamoDBManager dbManager;
+    DynamoDBManager dbManager;
 
-    public RoutesManager(Vertx vertx) {
+    public RoutesManager(Vertx vertx, DynamoDBManager dbManager) {
         this.router = Router.router(vertx);
+        this.dbManager = dbManager;
     }
 
-    public Router GetRouter() {
+    public Router getRouter() {
         return this.router;
     }
 
-    public RoutesManager SetRoutes() {
+    public RoutesManager setRoutes() {
         RouteAppHandler appHandler = new RouteAppHandler(this.dbManager);
         RouteVersionHandler versionHandler = new RouteVersionHandler(this.dbManager);
 
         //webroot
-        router.route("/").handler(this::Index);
-        router.route().last().handler(this::Error);
-        router.route("/app/:app").handler(appHandler::IndexApp);
-        router.route("/app/:id/platform/:pf/:version").handler(versionHandler::IndexVersion);
+        router.route("/").handler(this::index);
+        router.route().last().handler(this::error);
+        router.route("/app/:app").handler(appHandler::indexApp);
+        router.route("/app/:id/platform/:pf/:version").handler(versionHandler::indexVersion);
 
         /***
          RESTful API
@@ -56,25 +54,25 @@ public class RoutesManager {
          PUT:     Used for replacing resources or collections. For PUT requests with no body attribute, be sure to set the Content-Length header to zero.
          DELETE:  Used for deleting resources.
          ***/
-        router.get("/api/apps").handler(appHandler::ApiGetApps);
-        router.get("/api/apps/:id").handler(appHandler::ApiGetApp);
-        router.post("/api/apps").handler(appHandler::ApiCreateApps);
-        router.put("/api/apps").handler(appHandler::ApiUpdateApps);
-        router.delete("/api/apps").handler(appHandler::ApiDeleteApps);
+        router.get("/api/apps").handler(appHandler::apiGetApps);
+        router.get("/api/apps/:id").handler(appHandler::apiGetApp);
+        router.post("/api/apps").handler(appHandler::apiCreateApps);
+        router.put("/api/apps").handler(appHandler::apiUpdateApps);
+        router.delete("/api/apps").handler(appHandler::apiDeleteApps);
 
-        router.get("/api/versions/:id/latest").handler(versionHandler::ApiLatestVersion);
-        router.get("/api/versions/:id/:platform/history").handler(versionHandler::ApiHistoryVersion);
-        router.post("/api/versions/:id/:platform").handler(versionHandler::ApiCreateVersion);
-        router.get("/api/versions/plist/:id/:platform/:version").handler(versionHandler::GetPlist);
+        router.get("/api/versions/:id/latest").handler(versionHandler::apiLatestVersion);
+        router.get("/api/versions/:id/:platform/history").handler(versionHandler::apiHistoryVersion);
+        router.post("/api/versions/:id/:platform").handler(versionHandler::apiCreateVersion);
+        router.get("/api/versions/plist/:id/:platform/:version").handler(versionHandler::getPlist);
 
         return this;
     }
 
-    private void Index(RoutingContext rc) {
+    private void index(RoutingContext rc) {
         rc.response().sendFile(PathUtils.getAssetsPath("/index.html"));
     }
 
-    private void Error(RoutingContext rc) {
+    private void error(RoutingContext rc) {
         rc.response().setStatusCode(404).end();
     }
 }

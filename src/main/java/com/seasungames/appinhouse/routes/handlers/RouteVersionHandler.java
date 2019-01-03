@@ -9,7 +9,7 @@ import io.vertx.ext.web.RoutingContext;
 /**
  * Created by lile on 12/27/2018
  */
-public class RouteVersionHandler extends IRouteHandler {
+public class RouteVersionHandler extends RouteHandler {
 
     private final DynamoDBManager dbManager;
 
@@ -17,23 +17,23 @@ public class RouteVersionHandler extends IRouteHandler {
         this.dbManager = dbManager;
     }
 
-    public void IndexVersion(RoutingContext rc) {
+    public void indexVersion(RoutingContext rc) {
         rc.response().sendFile(PathUtils.getAssetsPath("/assets/html/version.html"));
     }
 
-    public void ApiLatestVersion(RoutingContext rc) {
+    public void apiLatestVersion(RoutingContext rc) {
         String appId = rc.request().getParam("id");
 
-        String result = dbManager.versionTable.GetLatestList(appId);
+        String result = dbManager.versionTable.getLatestList(appId);
 
         rc.response().setStatusCode(200).end(result);
     }
 
-    public void ApiHistoryVersion(RoutingContext rc) {
+    public void apiHistoryVersion(RoutingContext rc) {
         String appId = rc.request().getParam("id");
         String platform = rc.request().getParam("platform");
 
-        String result = dbManager.versionTable.GetPlatformList(appId, platform);
+        String result = dbManager.versionTable.getPlatformList(appId, platform);
 
         rc.response().setStatusCode(200).end(result);
     }
@@ -41,7 +41,7 @@ public class RouteVersionHandler extends IRouteHandler {
     /***
      Attention: IOS Rules , need a .plist file
      */
-    public void ApiCreateVersion(RoutingContext rc) {
+    public void apiCreateVersion(RoutingContext rc) {
         String appId = rc.request().getParam("id");
         String platform = rc.request().getParam("platform");
         String version = rc.request().getParam("version");
@@ -59,7 +59,7 @@ public class RouteVersionHandler extends IRouteHandler {
             vo.setIos_bundle_id(ios_bundle_id).setIos_title(ios_title);
         }
 
-        int result = dbManager.versionTable.CreateVersion(vo);
+        int result = dbManager.versionTable.createVersion(vo);
 
         if (IsSuccess(result)) {
             rc.response().setStatusCode(200).end();
@@ -68,15 +68,15 @@ public class RouteVersionHandler extends IRouteHandler {
         }
     }
 
-    public void GetPlist(RoutingContext rc) {
+    public void getPlist(RoutingContext rc) {
         String appId = rc.request().getParam("id");
         String platform = rc.request().getParam("platform");
         String version = rc.request().getParam("version");
 
-        VersionVo vo = dbManager.versionTable.GetOneApp(appId, platform, version);
+        VersionVo vo = dbManager.versionTable.getOneApp(appId, platform, version);
 
         if (vo != null) {
-            String plist = PlistUtils.GenPlist(vo.getDownload_url(), vo.getIos_bundle_id(), vo.getIos_title());
+            String plist = PlistUtils.genPlist(vo.getDownload_url(), vo.getIos_bundle_id(), vo.getIos_title());
             rc.response().putHeader("content-type", "application/x-plist; charset=utf-8").end(plist);
         } else {
             rc.response().setStatusCode(404).end();

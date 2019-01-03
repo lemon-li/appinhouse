@@ -3,18 +3,16 @@ package com.seasungames.appinhouse.routes.handlers;
 import com.seasungames.appinhouse.models.AppVo;
 import com.seasungames.appinhouse.stores.dynamodb.DynamoDBManager;
 import com.seasungames.appinhouse.utils.PathUtils;
-import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
-import org.apache.http.protocol.HTTP;
 
 import java.util.List;
 
 /**
  * Created by lile on 12/27/2018
  */
-public class RouteAppHandler extends IRouteHandler {
+public class RouteAppHandler extends RouteHandler {
 
     private final DynamoDBManager dbManager;
 
@@ -22,25 +20,25 @@ public class RouteAppHandler extends IRouteHandler {
         this.dbManager = dbManager;
     }
 
-    public void IndexApp(RoutingContext rc) {
+    public void indexApp(RoutingContext rc) {
         rc.response().sendFile(PathUtils.getAssetsPath("/assets/html/app.html"));
     }
 
     /**
      * API
      */
-    public void ApiGetApps(RoutingContext rc) {
-        dbManager.appTable.GetAppsList();
-        List<AppVo> appLists = dbManager.appTable.GetAppsList();
+    public void apiGetApps(RoutingContext rc) {
+        dbManager.appTable.getAppsList();
+        List<AppVo> appLists = dbManager.appTable.getAppsList();
         JsonArray jsonArray = new JsonArray(appLists);
 
         rc.response().end(jsonArray.toString());
     }
 
-    public void ApiGetApp(RoutingContext rc) {
+    public void apiGetApp(RoutingContext rc) {
         String appId = rc.request().getParam("id");
 
-        String appJson = dbManager.appTable.GetApps(appId);
+        String appJson = dbManager.appTable.getApps(appId);
 
         if (appJson.isEmpty()) {
             rc.response().setStatusCode(400).end();
@@ -49,7 +47,7 @@ public class RouteAppHandler extends IRouteHandler {
         }
     }
 
-    public void ApiCreateApps(RoutingContext rc) {
+    public void apiCreateApps(RoutingContext rc) {
         String appId = rc.request().getParam("id");
         String desc = rc.request().getParam("desc");
         String alias = rc.request().getParam("alias");
@@ -60,7 +58,7 @@ public class RouteAppHandler extends IRouteHandler {
 
         AppVo appVO = new AppVo(appId, desc, alias);
 
-        int result = dbManager.appTable.CreateApps(appVO);
+        int result = dbManager.appTable.createApps(appVO);
 
         if (IsSuccess(result)) {
             rc.response().setStatusCode(201).end();
@@ -71,14 +69,14 @@ public class RouteAppHandler extends IRouteHandler {
         }
     }
 
-    public void ApiUpdateApps(RoutingContext rc) {
+    public void apiUpdateApps(RoutingContext rc) {
         String appId = rc.request().getParam("id");
         String desc = rc.request().getParam("desc");
         String alias = rc.request().getParam("alias");
 
         AppVo appVO = new AppVo(appId, desc, alias);
 
-        int result = dbManager.appTable.UpdateApps(appVO);
+        int result = dbManager.appTable.updateApps(appVO);
 
         if (IsSuccess(result)) {
             rc.response().setStatusCode(202).end();
@@ -89,9 +87,9 @@ public class RouteAppHandler extends IRouteHandler {
         }
     }
 
-    public void ApiDeleteApps(RoutingContext rc) {
+    public void apiDeleteApps(RoutingContext rc) {
         String appId = rc.request().getParam("id");
-        int result = dbManager.appTable.DeleteApps(appId);
+        int result = dbManager.appTable.deleteApps(appId);
 
         if (IsSuccess(result)) {
             rc.response().setStatusCode(204).end();

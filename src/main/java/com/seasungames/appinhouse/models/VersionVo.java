@@ -26,7 +26,8 @@ public class VersionVo {
 
     }
 
-    public VersionVo(String appId, String platform, String version, String desc, String download_url,
+    public VersionVo(String appId, String platform, String version,
+                     String desc, String download_url,
                      String jenkins_url, String create_time) {
 
         this.appId = appId;

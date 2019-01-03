@@ -39,7 +39,7 @@ import com.dd.plist.*;
 
 public class PlistUtils {
 
-    public static String GenPlist(String url, String bundle_id, String title) {
+    public static String genPlist(String url, String bundle_id, String title) {
         try {
             NSDictionary root = new NSDictionary();
             NSArray items = new NSArray(1);
