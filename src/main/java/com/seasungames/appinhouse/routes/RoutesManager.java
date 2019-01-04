@@ -11,6 +11,7 @@ import com.seasungames.appinhouse.routes.handlers.RouteAppHandler;
 import com.seasungames.appinhouse.routes.handlers.RouteVersionHandler;
 
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.handler.BodyHandler;
 
 /**
  * Created by lile on 12/27/2018
@@ -21,11 +22,17 @@ public class RoutesManager {
 
     private final Router router;
 
+    private static final String API_APPS = "/api/apps";
+    private static final String API_VERSIONS = "/api/versions";
+
     DynamoDBManager dbManager;
 
     public RoutesManager(Vertx vertx, DynamoDBManager dbManager) {
         this.router = Router.router(vertx);
         this.dbManager = dbManager;
+
+        // body handler
+        this.router.route().handler(BodyHandler.create());
     }
 
     public Router getRouter() {
@@ -54,16 +61,16 @@ public class RoutesManager {
          PUT:     Used for replacing resources or collections. For PUT requests with no body attribute, be sure to set the Content-Length header to zero.
          DELETE:  Used for deleting resources.
          ***/
-        router.get("/api/apps").handler(appHandler::apiGetApps);
-        router.get("/api/apps/:id").handler(appHandler::apiGetApp);
-        router.post("/api/apps").handler(appHandler::apiCreateApps);
-        router.put("/api/apps").handler(appHandler::apiUpdateApps);
-        router.delete("/api/apps").handler(appHandler::apiDeleteApps);
+        router.get(API_APPS).handler(appHandler::apiGetApps);
+        router.get(API_APPS + "/:id").handler(appHandler::apiGetApp);
+        router.post(API_APPS).handler(appHandler::apiCreateApps);
+        router.put(API_APPS).handler(appHandler::apiUpdateApps);
+        router.delete(API_APPS).handler(appHandler::apiDeleteApps);
 
-        router.get("/api/versions/:id/latest").handler(versionHandler::apiLatestVersion);
-        router.get("/api/versions/:id/:platform/history").handler(versionHandler::apiHistoryVersion);
-        router.post("/api/versions/:id/:platform").handler(versionHandler::apiCreateVersion);
-        router.get("/api/versions/plist/:id/:platform/:version").handler(versionHandler::getPlist);
+        router.get(API_VERSIONS + "/:id/latest").handler(versionHandler::apiLatestVersion);
+        router.get(API_VERSIONS + "/:id/:platform/history").handler(versionHandler::apiHistoryVersion);
+        router.post(API_VERSIONS + "/:id/:platform").handler(versionHandler::apiCreateVersion);
+        router.get(API_VERSIONS + "/plist/:id/:platform/:version").handler(versionHandler::getPlist);
 
         return this;
     }
