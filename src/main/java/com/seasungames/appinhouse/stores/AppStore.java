@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by lile on 12/28/2018
  */
-public interface App {
+public interface AppStore {
 
     List<AppVo> getAppsList();
 

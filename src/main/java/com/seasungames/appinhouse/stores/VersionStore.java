@@ -2,7 +2,7 @@ package com.seasungames.appinhouse.stores;
 
 import com.seasungames.appinhouse.models.VersionVo;
 
-public interface Version {
+public interface VersionStore {
 
     String getPlatformList(String appId, String platform);
 

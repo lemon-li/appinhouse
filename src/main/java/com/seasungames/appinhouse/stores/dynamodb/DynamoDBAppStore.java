@@ -11,7 +11,7 @@ import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.seasungames.appinhouse.application.Configuration;
 import com.seasungames.appinhouse.models.AppVo;
-import com.seasungames.appinhouse.stores.App;
+import com.seasungames.appinhouse.stores.AppStore;
 import com.seasungames.appinhouse.stores.dynamodb.tables.AppTable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Created by lile on 12/28/2018
  */
-public class DynamoDBAppStore implements App {
+public class DynamoDBAppStore implements AppStore {
     private static final Logger LOG = LogManager.getLogger(DynamoDBAppStore.class);
 
     private final String tableName = "apps";

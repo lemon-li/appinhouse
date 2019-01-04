@@ -5,8 +5,8 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.seasungames.appinhouse.application.Configuration;
-import com.seasungames.appinhouse.stores.App;
-import com.seasungames.appinhouse.stores.Version;
+import com.seasungames.appinhouse.stores.AppStore;
+import com.seasungames.appinhouse.stores.VersionStore;
 
 /**
  * Created by lile on 12/28/2018
@@ -17,8 +17,8 @@ public class DynamoDBManager {
 
     private final Configuration conf;
 
-    public App appTable;
-    public Version versionTable;
+    public AppStore appTable;
+    public VersionStore versionTable;
 
     public DynamoDBManager(Configuration conf) {
         this.conf = conf;

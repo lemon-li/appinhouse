@@ -11,7 +11,7 @@ import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.seasungames.appinhouse.application.Configuration;
 import com.seasungames.appinhouse.application.PlatformConstant;
 import com.seasungames.appinhouse.models.VersionVo;
-import com.seasungames.appinhouse.stores.Version;
+import com.seasungames.appinhouse.stores.VersionStore;
 import com.seasungames.appinhouse.stores.dynamodb.tables.VersionTable;
 import io.vertx.core.json.JsonArray;
 import org.apache.logging.log4j.LogManager;
@@ -22,7 +22,7 @@ import java.util.*;
 /**
  * Created by lile on 12/28/2018
  */
-public class DynamoDBVersionStore implements Version {
+public class DynamoDBVersionStore implements VersionStore {
 
     private static final Logger LOG = LogManager.getLogger(DynamoDBAppStore.class);
 

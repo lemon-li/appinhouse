@@ -28,7 +28,6 @@ public class RouteAppHandler extends RouteHandler {
      * API
      */
     public void apiGetApps(RoutingContext rc) {
-        dbManager.appTable.getAppsList();
         List<AppVo> appLists = dbManager.appTable.getAppsList();
         JsonArray jsonArray = new JsonArray(appLists);
 
