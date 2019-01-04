@@ -39,7 +39,7 @@ public class DynamoDBVersionStore implements VersionStore {
 
         table = new DynamoDB(ddb).getTable(tableName);
 
-        if(conf.dynamodbcreateTableOnStartup()) {
+        if (conf.dynamodbcreateTableOnStartup()) {
             createTable();
         }
     }
@@ -96,20 +96,13 @@ public class DynamoDBVersionStore implements VersionStore {
         GetItemSpec spec = new GetItemSpec().withPrimaryKey(VersionTable.HASH_KEY_APPID, getPrimaryKey(id, platform),
                 VersionTable.RANGE_KEY_VERSION, version);
 
-        try {
-            Item outcome = table.getItem(spec);
-            Map<String, String> info = outcome.getMap(VersionTable.ATTRIBUTE_JSON_INFO);
+        Item outcome = table.getItem(spec);
+        Map<String, String> info = outcome.getMap(VersionTable.ATTRIBUTE_JSON_INFO);
 
-            VersionVo vo = new VersionVo()
-                    .setDownload_url(info.get(VersionTable.ATTRIBUTE_DOWNLOAD_URL))
-                    .setIos_bundle_id(info.get(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID))
-                    .setIos_title(info.get(VersionTable.ATTRIBUTE_IOS_TITLE));
-
-            return vo;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return null;
-        }
+        return new VersionVo()
+                .setDownload_url(info.get(VersionTable.ATTRIBUTE_DOWNLOAD_URL))
+                .setIos_bundle_id(info.get(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID))
+                .setIos_title(info.get(VersionTable.ATTRIBUTE_IOS_TITLE));
     }
 
     @Override
@@ -125,19 +118,13 @@ public class DynamoDBVersionStore implements VersionStore {
             infoMap.put(VersionTable.ATTRIBUTE_IOS_TITLE, vo.getIos_title());
         }
 
-        try {
-            Item item = new Item().withPrimaryKey(VersionTable.HASH_KEY_APPID,
-                    getPrimaryKey(vo.getAppId(), vo.getPlatform()), VersionTable.RANGE_KEY_VERSION, vo.getVersion())
-                    .withString(VersionTable.ATTRIBUTE_PLATFORM, vo.getPlatform())
-                    .withMap(VersionTable.ATTRIBUTE_JSON_INFO, infoMap);
+        Item item = new Item().withPrimaryKey(VersionTable.HASH_KEY_APPID,
+                getPrimaryKey(vo.getAppId(), vo.getPlatform()), VersionTable.RANGE_KEY_VERSION, vo.getVersion())
+                .withString(VersionTable.ATTRIBUTE_PLATFORM, vo.getPlatform())
+                .withMap(VersionTable.ATTRIBUTE_JSON_INFO, infoMap);
 
-            PutItemOutcome outcome = table.putItem(item); //check new or replace.
-            return 0;
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return 1;
-        }
+        PutItemOutcome outcome = table.putItem(item); //check new or replace.
+        return 0;
     }
 
     @Override
