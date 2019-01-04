@@ -22,6 +22,7 @@ public class DynamoDBManager {
 
     public DynamoDBManager(Configuration conf) {
         this.conf = conf;
+        startDB();
     }
 
     public void startDB() {

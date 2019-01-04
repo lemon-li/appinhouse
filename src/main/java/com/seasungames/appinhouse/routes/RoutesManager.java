@@ -1,5 +1,7 @@
 package com.seasungames.appinhouse.routes;
 
+import com.seasungames.appinhouse.services.impl.AppServiceImpl;
+import com.seasungames.appinhouse.services.impl.VersionServiceImpl;
 import com.seasungames.appinhouse.stores.dynamodb.DynamoDBManager;
 import com.seasungames.appinhouse.utils.PathUtils;
 import io.vertx.core.Vertx;
@@ -26,13 +28,15 @@ public class RoutesManager {
     private static final String API_VERSIONS = "/api/versions";
 
     DynamoDBManager dbManager;
+    private AppServiceImpl appService;
+    private VersionServiceImpl versionService;
 
     public RoutesManager(Vertx vertx, DynamoDBManager dbManager) {
         this.router = Router.router(vertx);
         this.dbManager = dbManager;
 
-        // body handler
-        this.router.route().handler(BodyHandler.create());
+        appService = new AppServiceImpl(this.dbManager.appTable);
+        versionService = new VersionServiceImpl(this.dbManager.versionTable);
     }
 
     public Router getRouter() {
@@ -40,15 +44,14 @@ public class RoutesManager {
     }
 
     public RoutesManager setRoutes() {
-        RouteAppHandler appHandler = new RouteAppHandler(this.dbManager);
-        RouteVersionHandler versionHandler = new RouteVersionHandler(this.dbManager);
+        RouteAppHandler appHandler = new RouteAppHandler(appService);
+        RouteVersionHandler versionHandler = new RouteVersionHandler(versionService);
 
         //webroot
         router.route("/").handler(this::index);
+        router.route("/app/:app").handler(appHandler::index);
+        router.route("/app/:id/platform/:pf/:version").handler(versionHandler::index);
         router.route().last().handler(this::error);
-        router.route("/app/:app").handler(appHandler::indexApp);
-        router.route("/app/:id/platform/:pf/:version").handler(versionHandler::indexVersion);
-
         /***
          RESTful API
 

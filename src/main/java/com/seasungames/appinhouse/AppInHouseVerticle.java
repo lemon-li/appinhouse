@@ -35,10 +35,7 @@ public class AppInHouseVerticle extends AbstractVerticle {
     @Override
     public void start(Future<Void> startFuture) throws Exception {
         injectDependencies();
-
         startHttpsServer();
-
-        startDB();
     }
 
     private void injectDependencies() {
@@ -57,10 +54,6 @@ public class AppInHouseVerticle extends AbstractVerticle {
                         log.info("WebServer started failed listening at {} , Reason: {}", conf.httpPort(), ar.cause());
                     }
                 });
-    }
-
-    private void startDB() {
-        dbManager.startDB();
     }
 
     @Override
