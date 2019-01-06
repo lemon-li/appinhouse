@@ -1,10 +1,9 @@
 package com.seasungames.appinhouse.dagger;
 
+import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
 import dagger.Module;
 import dagger.Provides;
 import io.vertx.core.Vertx;
-
-import javax.inject.Singleton;
 
 /**
  * Created by lile on 1/3/2019
@@ -19,7 +18,7 @@ public class VertxModule {
     }
 
     @Provides
-    @Singleton
+    @AppiInHouse
     Vertx provideVertx() {
         return this.vertx;
     }

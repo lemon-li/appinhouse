@@ -1,31 +1,25 @@
-package com.seasungames.appinhouse.stores.dynamodb;
+package com.seasungames.appinhouse.dagger;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.seasungames.appinhouse.application.Configuration;
+import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
 import com.seasungames.appinhouse.stores.AppStore;
 import com.seasungames.appinhouse.stores.VersionStore;
+import com.seasungames.appinhouse.stores.dynamodb.DynamoDBAppStore;
+import com.seasungames.appinhouse.stores.dynamodb.DynamoDBVersionStore;
+import dagger.Module;
+import dagger.Provides;
 
-/**
- * Created by lile on 12/28/2018
- */
-public class DynamoDBManager {
+@Module
+public class DBModule {
 
-    private AmazonDynamoDBClient client;
-
-    private final Configuration conf;
-
-    public AppStore appTable;
-    public VersionStore versionTable;
-
-    public DynamoDBManager(Configuration conf) {
-        this.conf = conf;
-        startDB();
-    }
-
-    public void startDB() {
+    @Provides
+    @AppiInHouse
+    AmazonDynamoDBClient provideAmazonDynamoDB(Configuration conf) {
+        AmazonDynamoDBClient client;
         String region = conf.dynamodbRegion();
         AmazonDynamoDBClientBuilder builder = AmazonDynamoDBClientBuilder.standard().
                 withClientConfiguration(new ClientConfiguration()
@@ -39,12 +33,19 @@ public class DynamoDBManager {
         } else {
             client = (AmazonDynamoDBClient) builder.withRegion(region).build();
         }
-
-        InitTables();
+        return client;
     }
 
-    private void InitTables() {
-        appTable = new DynamoDBAppStore(this.client, conf);
-        versionTable = new DynamoDBVersionStore(this.client, conf);
+    @Provides
+    @AppiInHouse
+    AppStore provideAppStore(AmazonDynamoDBClient client, Configuration conf) {
+        return new DynamoDBAppStore(client, conf);
     }
+
+    @Provides
+    @AppiInHouse
+    VersionStore provideVersionStore(AmazonDynamoDBClient client, Configuration conf) {
+        return new DynamoDBVersionStore(client, conf);
+    }
+
 }

@@ -2,9 +2,9 @@ package com.seasungames.appinhouse;
 
 import com.seasungames.appinhouse.application.Configuration;
 import com.seasungames.appinhouse.dagger.DaggerMainComponent;
+import com.seasungames.appinhouse.dagger.MainComponent;
 import com.seasungames.appinhouse.dagger.VertxModule;
 import com.seasungames.appinhouse.routes.RoutesManager;
-import com.seasungames.appinhouse.stores.dynamodb.DynamoDBManager;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpServer;
@@ -24,9 +24,6 @@ public class AppInHouseVerticle extends AbstractVerticle {
     public Configuration conf;
 
     @Inject
-    public DynamoDBManager dbManager;
-
-    @Inject
     public RoutesManager routesManager;
 
     @Inject
@@ -39,10 +36,11 @@ public class AppInHouseVerticle extends AbstractVerticle {
     }
 
     private void injectDependencies() {
-        DaggerMainComponent.builder()
+        MainComponent component = DaggerMainComponent.builder()
                 .vertxModule(new VertxModule(vertx))
-                .build()
-                .inject(this);
+                .build();
+        component.inject(this);
+        component.inject(routesManager).setRoutes();
     }
 
     private void startHttpsServer() {

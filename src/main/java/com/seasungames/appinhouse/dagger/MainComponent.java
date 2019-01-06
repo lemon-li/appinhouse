@@ -1,19 +1,24 @@
 package com.seasungames.appinhouse.dagger;
 
 import com.seasungames.appinhouse.AppInHouseVerticle;
+import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
+import com.seasungames.appinhouse.routes.RoutesManager;
 import dagger.Component;
-
-import javax.inject.Singleton;
 
 /**
  * Created by lile on 1/3/2019
  */
-@Singleton
+@AppiInHouse
 @Component(modules = {
         VertxModule.class,
-        AppInHouseModule.class
+        AppInHouseModule.class,
+        DBModule.class,
+        RoutesModule.class
 })
 public interface MainComponent {
 
     void inject(AppInHouseVerticle verticle);
+
+    RoutesManager inject(RoutesManager routesManager);
+
 }

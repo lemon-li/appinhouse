@@ -1,8 +1,8 @@
 package com.seasungames.appinhouse.dagger;
 
 import com.seasungames.appinhouse.application.Configuration;
+import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
 import com.seasungames.appinhouse.routes.RoutesManager;
-import com.seasungames.appinhouse.stores.dynamodb.DynamoDBManager;
 import dagger.Module;
 import dagger.Provides;
 import io.vertx.core.Vertx;
@@ -10,8 +10,6 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.net.PemKeyCertOptions;
 import org.aeonbits.owner.ConfigFactory;
-
-import javax.inject.Singleton;
 
 /**
  * Created by lile on 1/3/2019
@@ -21,19 +19,13 @@ import javax.inject.Singleton;
 public class AppInHouseModule {
 
     @Provides
-    @Singleton
-    DynamoDBManager provideDynamoDBManager(Configuration conf) {
-        return new DynamoDBManager(conf);
+    @AppiInHouse
+    RoutesManager provideRoutesManager() {
+        return new RoutesManager();
     }
 
     @Provides
-    @Singleton
-    RoutesManager provideRoutesManager(Vertx vertx, DynamoDBManager dbManager) {
-        return new RoutesManager(vertx, dbManager).setRoutes();
-    }
-
-    @Provides
-    @Singleton
+    @AppiInHouse
     HttpServer provideHttpServer(Vertx vertx) {
         return vertx.createHttpServer(new HttpServerOptions()
                 .setSsl(true)
@@ -44,7 +36,7 @@ public class AppInHouseModule {
     }
 
     @Provides
-    @Singleton
+    @AppiInHouse
     Configuration provideConfiguration() {
         return ConfigFactory.create(Configuration.class);
     }
