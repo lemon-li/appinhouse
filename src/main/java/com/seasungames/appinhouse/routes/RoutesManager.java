@@ -39,8 +39,8 @@ public class RoutesManager {
 
     public RoutesManager setRoutes() {
         router.route(APIConstant.INDEX).handler(this::index);
-        router.route(APIConstant.API_INDEX_APP).handler(appHandler::index);
-        router.route(APIConstant.API_INDEX_VERSION).handler(versionHandler::index);
+        router.route(APIConstant.INDEX_APP).handler(appHandler::index);
+        router.route(APIConstant.INDEX_VERSION).handler(versionHandler::index);
         router.route().last().handler(this::error);
         /***
          RESTful API
@@ -54,11 +54,11 @@ public class RoutesManager {
          PUT:     Used for replacing resources or collections. For PUT requests with no body attribute, be sure to set the Content-Length header to zero.
          DELETE:  Used for deleting resources.
          ***/
-        router.get(APIConstant.API_GET_APPS).handler(appHandler::apiGetApps);
-        router.get(APIConstant.API_GET_APP).handler(appHandler::apiGetApp);
-        router.post(APIConstant.API_CREATE_APPS).handler(appHandler::apiCreateApps);
-        router.put(APIConstant.API_UPDATE_APPS).handler(appHandler::apiUpdateApps);
-        router.delete(APIConstant.API_DELETE_APPS).handler(appHandler::apiDeleteApps);
+        router.get(APIConstant.API_APPS).handler(appHandler::apiGetApps);
+        router.get(APIConstant.API_APPS + "/:id").handler(appHandler::apiGetApp);
+        router.post(APIConstant.API_APPS).handler(appHandler::apiCreateApps);
+        router.put(APIConstant.API_APPS + "/:id").handler(appHandler::apiUpdateApps);
+        router.delete(APIConstant.API_APPS + "/:id").handler(appHandler::apiDeleteApps);
 
         router.get(APIConstant.API_GET_VERSIONS_LATEST).handler(versionHandler::apiLatestVersion);
         router.get(APIConstant.API_GET_VERSIONS_HISTORY).handler(versionHandler::apiHistoryVersion);
