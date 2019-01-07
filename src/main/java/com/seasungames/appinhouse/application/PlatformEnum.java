@@ -1,12 +1,12 @@
 package com.seasungames.appinhouse.application;
 
-public enum PlatformConstant {
+public enum PlatformEnum {
 
     IOS("ios"), ANDROID("android"), WINDOW("window");
 
     private String platform;
 
-    PlatformConstant(String platform) {
+    PlatformEnum(String platform) {
         this.platform = platform;
     }
 

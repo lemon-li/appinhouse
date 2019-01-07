@@ -1,6 +1,7 @@
 package com.seasungames.appinhouse.routes;
 
 import com.seasungames.appinhouse.application.APIConstant;
+import com.seasungames.appinhouse.routes.exception.BadRequestException;
 import com.seasungames.appinhouse.routes.handlers.RouteFailureHandler;
 import com.seasungames.appinhouse.utils.PathUtils;
 import io.vertx.core.logging.Logger;
@@ -9,8 +10,6 @@ import io.vertx.ext.web.Router;
 
 import com.seasungames.appinhouse.routes.handlers.RouteAppHandler;
 import com.seasungames.appinhouse.routes.handlers.RouteVersionHandler;
-
-import io.vertx.ext.web.RoutingContext;
 
 import javax.inject.Inject;
 
@@ -44,16 +43,10 @@ public class RoutesManager {
     }
 
     public void setRoutes() {
-        router.route(APIConstant.INDEX).handler(this::index);
-        router.route().last().handler(this::error);
+        router.route(APIConstant.INDEX).handler(rc ->
+                rc.response().sendFile(PathUtils.getAssetsPath("/index.html")));
+
+        router.route().last().handler(rc -> rc.fail(new BadRequestException()));
         router.route().failureHandler(new RouteFailureHandler());
-    }
-
-    private void index(RoutingContext rc) {
-        rc.response().sendFile(PathUtils.getAssetsPath("/index.html"));
-    }
-
-    private void error(RoutingContext rc) {
-        rc.response().setStatusCode(404).end();
     }
 }

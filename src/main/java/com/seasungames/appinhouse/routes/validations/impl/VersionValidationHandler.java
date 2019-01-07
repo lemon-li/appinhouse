@@ -1,5 +1,7 @@
-package com.seasungames.appinhouse.routes.validations;
+package com.seasungames.appinhouse.routes.validations.impl;
 
+
+import com.seasungames.appinhouse.routes.validations.BaseValidationHandler;
 import io.vertx.ext.web.api.validation.HTTPRequestValidationHandler;
 import io.vertx.ext.web.api.validation.ParameterType;
 
@@ -23,8 +25,8 @@ public class VersionValidationHandler extends BaseValidationHandler {
                 .addFormParamWithPattern("download_url", REGEX_CHECK_EMPTY, true)
                 .addFormParamWithPattern("jenkins_url", REGEX_CHECK_EMPTY, true)
                 .addFormParamWithPattern("create_time", REGEX_CHECK_EMPTY, true)
-                .addFormParam("ios_bundle_id", ParameterType.GENERIC_STRING, false)
-                .addFormParam("ios_title", ParameterType.GENERIC_STRING, false);
+                .addFormParamWithPattern("ios_bundle_id", REGEX_CHECK_EMPTY, false)
+                .addFormParamWithPattern("ios_title", REGEX_CHECK_EMPTY, false);
     }
 
     public static HTTPRequestValidationHandler validateVersion() {

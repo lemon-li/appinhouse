@@ -1,5 +1,6 @@
-package com.seasungames.appinhouse.routes.validations;
+package com.seasungames.appinhouse.routes.validations.impl;
 
+import com.seasungames.appinhouse.routes.validations.BaseValidationHandler;
 import io.vertx.ext.web.api.validation.HTTPRequestValidationHandler;
 
 /**

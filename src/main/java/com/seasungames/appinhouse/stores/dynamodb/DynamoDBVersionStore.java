@@ -9,7 +9,7 @@ import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.seasungames.appinhouse.application.Configuration;
-import com.seasungames.appinhouse.application.PlatformConstant;
+import com.seasungames.appinhouse.application.PlatformEnum;
 import com.seasungames.appinhouse.models.VersionVo;
 import com.seasungames.appinhouse.stores.VersionStore;
 import com.seasungames.appinhouse.stores.dynamodb.tables.VersionTable;
@@ -138,9 +138,9 @@ public class DynamoDBVersionStore implements VersionStore {
         ItemCollection<QueryOutcome> items;
         Iterator<Item> iterator;
 
-        List<String> jsonList = new ArrayList<>(PlatformConstant.values().length);
+        List<String> jsonList = new ArrayList<>(PlatformEnum.values().length);
 
-        for (PlatformConstant platform : PlatformConstant.values()) {
+        for (PlatformEnum platform : PlatformEnum.values()) {
             querySpec.withKeyConditionExpression("#id = :v_id")
                     .withNameMap(new NameMap().with("#id", VersionTable.HASH_KEY_APPID))
                     .withValueMap(new ValueMap().withString(":v_id", getPrimaryKey(appId, platform.getPlatform())))

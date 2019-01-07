@@ -7,6 +7,9 @@ import com.seasungames.appinhouse.utils.PathUtils;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 
+import static com.seasungames.appinhouse.utils.RestApiUtils.toResponseJson;
+import static com.seasungames.appinhouse.utils.RestApiUtils.toResponseXML;
+
 /**
  * Created by lile on 12/27/2018
  */
@@ -30,13 +33,13 @@ public class RouteVersionHandler {
 
     private void apiLatestVersion(RoutingContext rc) {
         String appId = rc.request().getParam("id");
-        rc.response().setStatusCode(200).end(versionService.getLatestList(appId));
+        toResponseJson(rc, 200, versionService.getLatestList(appId));
     }
 
     private void apiHistoryVersion(RoutingContext rc) {
         String appId = rc.request().getParam("id");
         String platform = rc.request().getParam("platform");
-        rc.response().setStatusCode(200).end(versionService.getPlatformList(appId, platform));
+        toResponseJson(rc, 200, versionService.getPlatformList(appId, platform));
     }
 
     private void apiCreateVersion(RoutingContext rc) {
@@ -58,15 +61,13 @@ public class RouteVersionHandler {
         }
 
         versionService.createVersion(vo);
-        rc.response().setStatusCode(201).end();
+        toResponseJson(rc, 201);
     }
 
     private void getPlist(RoutingContext rc) {
         String appId = rc.request().getParam("id");
         String platform = rc.request().getParam("platform");
         String version = rc.request().getParam("version");
-        rc.response().setStatusCode(200)
-                .putHeader("content-type", "application/x-plist; charset=utf-8")
-                .end(versionService.getPlist(appId, platform, version));
+        toResponseXML(rc, 200, versionService.getPlist(appId, platform, version));
     }
 }

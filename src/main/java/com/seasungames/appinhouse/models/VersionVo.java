@@ -1,6 +1,6 @@
 package com.seasungames.appinhouse.models;
 
-import com.seasungames.appinhouse.application.PlatformConstant;
+import com.seasungames.appinhouse.application.PlatformEnum;
 
 public class VersionVo {
 
@@ -85,6 +85,6 @@ public class VersionVo {
     }
 
     public boolean isIOS() {
-        return this.platform.equals(PlatformConstant.IOS.getPlatform());
+        return this.platform.equals(PlatformEnum.IOS.getPlatform());
     }
 }
