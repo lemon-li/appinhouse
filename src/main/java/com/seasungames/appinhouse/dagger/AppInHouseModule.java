@@ -11,6 +11,8 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.net.PemKeyCertOptions;
 import org.aeonbits.owner.ConfigFactory;
 
+import javax.inject.Named;
+
 /**
  * Created by lile on 1/3/2019
  */
@@ -25,14 +27,22 @@ public class AppInHouseModule {
     }
 
     @Provides
+    @Named("HTTPS")
     @AppiInHouse
-    HttpServer provideHttpServer(Vertx vertx) {
+    HttpServer provideHttpsServer(Vertx vertx) {
         return vertx.createHttpServer(new HttpServerOptions()
                 .setSsl(true)
                 .setUseAlpn(true)
                 .setPemKeyCertOptions(new PemKeyCertOptions()
                         .setKeyPath("tls/private.pem")
                         .setCertPath("tls/public.pem")));
+    }
+
+    @Provides
+    @Named("HTTP")
+    @AppiInHouse
+    HttpServer provideHttpServer(Vertx vertx) {
+        return vertx.createHttpServer();
     }
 
     @Provides

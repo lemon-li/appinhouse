@@ -12,6 +12,7 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * Created by lile on 12/26/2018
@@ -21,16 +22,17 @@ public class AppInHouseVerticle extends AbstractVerticle {
     private static final Logger log = LoggerFactory.getLogger(AppInHouseVerticle.class);
 
     @Inject
-    public Configuration conf;
+    Configuration conf;
 
     @Inject
-    public RoutesManager routesManager;
+    RoutesManager routesManager;
 
     @Inject
-    public HttpServer webServer;
+    @Named("HTTP")
+    HttpServer webServer;
 
     @Override
-    public void start(Future<Void> startFuture) throws Exception {
+    public void start() throws Exception {
         injectDependencies();
         startHttpsServer();
     }
@@ -55,10 +57,9 @@ public class AppInHouseVerticle extends AbstractVerticle {
     }
 
     @Override
-    public void stop(Future<Void> stopFuture) throws Exception {
+    public void stop() throws Exception {
         webServer.close(ar -> {
             if (ar.succeeded()) {
-                stopFuture.complete();
                 log.info("WebServer stopped listening at {}", conf.httpPort());
             } else {
                 log.info("WebServer stopped failed listening at {} , Reason: {}", conf.httpPort(), ar.cause());
