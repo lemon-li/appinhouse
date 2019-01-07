@@ -71,7 +71,7 @@ public class DynamoDBAppStore implements AppStore {
     @Override
     public List<AppVo> getAppsList() {
         List<AppVo> appLists = new ArrayList<>();
-        AppVo appVO = null;
+        AppVo appVO;
 
         ScanRequest scanRequest = new ScanRequest().withTableName(tableName);
 
@@ -120,6 +120,6 @@ public class DynamoDBAppStore implements AppStore {
     public String getApps(String appId) {
         GetItemSpec spec = new GetItemSpec().withPrimaryKey(AppTable.HASH_KEY_APPID, appId);
         Item outcome = table.getItem(spec);
-        return outcome.toJSON();
+        return outcome != null ? outcome.toJSON() : "";
     }
 }

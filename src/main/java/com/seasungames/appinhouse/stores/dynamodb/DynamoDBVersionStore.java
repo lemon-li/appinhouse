@@ -97,12 +97,17 @@ public class DynamoDBVersionStore implements VersionStore {
                 VersionTable.RANGE_KEY_VERSION, version);
 
         Item outcome = table.getItem(spec);
-        Map<String, String> info = outcome.getMap(VersionTable.ATTRIBUTE_JSON_INFO);
 
-        return new VersionVo()
-                .setDownload_url(info.get(VersionTable.ATTRIBUTE_DOWNLOAD_URL))
-                .setIos_bundle_id(info.get(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID))
-                .setIos_title(info.get(VersionTable.ATTRIBUTE_IOS_TITLE));
+        if (outcome != null) {
+            Map<String, String> info = outcome.getMap(VersionTable.ATTRIBUTE_JSON_INFO);
+
+            return new VersionVo()
+                    .setDownload_url(info.get(VersionTable.ATTRIBUTE_DOWNLOAD_URL))
+                    .setIos_bundle_id(info.get(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID))
+                    .setIos_title(info.get(VersionTable.ATTRIBUTE_IOS_TITLE));
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -130,8 +135,8 @@ public class DynamoDBVersionStore implements VersionStore {
     @Override
     public String getLatestList(String appId) {
         QuerySpec querySpec = new QuerySpec();
-        ItemCollection<QueryOutcome> items = null;
-        Iterator<Item> iterator = null;
+        ItemCollection<QueryOutcome> items;
+        Iterator<Item> iterator;
 
         List<String> jsonList = new ArrayList<>(PlatformConstant.values().length);
 
