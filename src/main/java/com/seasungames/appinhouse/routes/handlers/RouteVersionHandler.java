@@ -1,8 +1,10 @@
 package com.seasungames.appinhouse.routes.handlers;
 
+import com.seasungames.appinhouse.application.APIConstant;
 import com.seasungames.appinhouse.models.VersionVo;
 import com.seasungames.appinhouse.services.VersionService;
 import com.seasungames.appinhouse.utils.PathUtils;
+import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 
 /**
@@ -12,27 +14,33 @@ public class RouteVersionHandler {
 
     private final VersionService versionService;
 
-    public RouteVersionHandler(VersionService versionService) {
+    public RouteVersionHandler(Router router, VersionService versionService) {
+        router.route(APIConstant.INDEX_VERSION).handler(this::index);
+
+        router.get(APIConstant.API_GET_VERSIONS_LATEST).handler(this::apiLatestVersion);
+        router.get(APIConstant.API_GET_VERSIONS_HISTORY).handler(this::apiHistoryVersion);
+        router.post(APIConstant.API_CREATE_VERSIONS).handler(this::apiCreateVersion);
+        router.get(APIConstant.API_GET_VERSIONS_PLIST).handler(this::getPlist);
         this.versionService = versionService;
     }
 
-    public void index(RoutingContext rc) {
+    private void index(RoutingContext rc) {
         rc.response()
                 .sendFile(PathUtils.getAssetsPath("/assets/html/version.html"));
     }
 
-    public void apiLatestVersion(RoutingContext rc) {
+    private void apiLatestVersion(RoutingContext rc) {
         String appId = rc.request().getParam("id");
         rc.response().setStatusCode(200).end(versionService.getLatestList(appId));
     }
 
-    public void apiHistoryVersion(RoutingContext rc) {
+    private void apiHistoryVersion(RoutingContext rc) {
         String appId = rc.request().getParam("id");
         String platform = rc.request().getParam("platform");
         rc.response().setStatusCode(200).end(versionService.getPlatformList(appId, platform));
     }
 
-    public void apiCreateVersion(RoutingContext rc) {
+    private void apiCreateVersion(RoutingContext rc) {
         String appId = rc.request().getParam("id");
         String platform = rc.request().getParam("platform");
         String version = rc.request().getParam("version");
@@ -54,7 +62,7 @@ public class RouteVersionHandler {
         rc.response().setStatusCode(201).end();
     }
 
-    public void getPlist(RoutingContext rc) {
+    private void getPlist(RoutingContext rc) {
         String appId = rc.request().getParam("id");
         String platform = rc.request().getParam("platform");
         String version = rc.request().getParam("version");
