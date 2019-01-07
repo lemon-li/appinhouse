@@ -1,6 +1,7 @@
 package com.seasungames.appinhouse.services.impl;
 
 import com.seasungames.appinhouse.models.AppVo;
+import com.seasungames.appinhouse.routes.exception.ResourceNotFoundException;
 import com.seasungames.appinhouse.services.AppService;
 import com.seasungames.appinhouse.stores.AppStore;
 import io.vertx.core.json.JsonArray;
@@ -13,6 +14,7 @@ import java.util.List;
 public class AppServiceImpl implements AppService {
 
     private final AppStore appTable;
+
     public AppServiceImpl(AppStore app) {
         this.appTable = app;
     }
@@ -42,6 +44,10 @@ public class AppServiceImpl implements AppService {
 
     @Override
     public String getApps(String id) {
-        return appTable.getApps(id);
+        String result = appTable.getApps(id);
+        if (result.isEmpty()) {
+            throw new ResourceNotFoundException("The app with id " + id + " can not be found");
+        }
+        return result;
     }
 }

@@ -1,6 +1,7 @@
 package com.seasungames.appinhouse.routes;
 
 import com.seasungames.appinhouse.application.APIConstant;
+import com.seasungames.appinhouse.routes.handlers.RouteFailureHandler;
 import com.seasungames.appinhouse.utils.PathUtils;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
@@ -45,6 +46,7 @@ public class RoutesManager {
     public void setRoutes() {
         router.route(APIConstant.INDEX).handler(this::index);
         router.route().last().handler(this::error);
+        router.route().failureHandler(new RouteFailureHandler());
     }
 
     private void index(RoutingContext rc) {

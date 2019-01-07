@@ -35,8 +35,7 @@ import com.dd.plist.*;
     </dict>
  </plist>
 
- * */
-
+ ***/
 public class PlistUtils {
 
     public static String genPlist(String url, String bundle_id, String title) {
@@ -71,5 +70,4 @@ public class PlistUtils {
             return "";
         }
     }
-
 }
