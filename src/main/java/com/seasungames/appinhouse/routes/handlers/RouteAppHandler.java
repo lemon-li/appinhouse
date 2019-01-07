@@ -1,7 +1,6 @@
 package com.seasungames.appinhouse.routes.handlers;
 
 import com.seasungames.appinhouse.services.AppService;
-import com.seasungames.appinhouse.services.impl.AppServiceImpl;
 import com.seasungames.appinhouse.utils.PathUtils;
 import io.vertx.ext.web.RoutingContext;
 
@@ -25,64 +24,36 @@ public class RouteAppHandler extends RouteHandler {
      * API
      */
     public void apiGetApps(RoutingContext rc) {
-        try {
-            rc.response().setStatusCode(200).end(appService.getAppsList());
-        } catch (Exception e) {
-            toBadRequest(rc, e);
-        }
+        rc.response().setStatusCode(200).end(appService.getAppsList());
     }
 
     public void apiGetApp(RoutingContext rc) {
-        try {
-            String appId = rc.request().getParam("id");
-            appService.getApps(appId);
-            toVoidResult(rc);
-        } catch (Exception e) {
-            toBadRequest(rc, e);
-        }
+        String appId = rc.request().getParam("id");
+        appService.getApps(appId);
+        rc.response().setStatusCode(200).end();
     }
 
     public void apiCreateApps(RoutingContext rc) {
-        try {
-            String appId = rc.request().getParam("id");
-            String desc = rc.request().getParam("desc");
-            String alias = rc.request().getParam("alias");
+        String appId = rc.request().getParam("id");
+        String desc = rc.request().getParam("desc");
+        String alias = rc.request().getParam("alias");
 
-            if (appId.isEmpty() || desc.isEmpty() || alias.isEmpty()) {
-                toBadRequest(rc, new IllegalStateException("apiCreateApps"));
-            } else {
-                appService.createApps(appId, desc, alias);
-                toVoidResult(rc);
-            }
-        } catch (Exception e) {
-            toBadRequest(rc, e);
-        }
+        appService.createApps(appId, desc, alias);
+        rc.response().setStatusCode(201).end();
     }
 
     public void apiUpdateApps(RoutingContext rc) {
-        try {
-            String appId = rc.request().getParam("id");
-            String desc = rc.request().getParam("desc");
-            String alias = rc.request().getParam("alias");
+        String appId = rc.request().getParam("id");
+        String desc = rc.request().getParam("desc");
+        String alias = rc.request().getParam("alias");
 
-            if (appId.isEmpty() || desc.isEmpty() || alias.isEmpty()) {
-                toBadRequest(rc, new IllegalStateException("apiUpdateApps"));
-            } else {
-                appService.updateApps(appId, desc, alias);
-                toVoidResult(rc);
-            }
-        } catch (Exception e) {
-            toBadRequest(rc, e);
-        }
+        appService.updateApps(appId, desc, alias);
+        rc.response().setStatusCode(200).end();
     }
 
     public void apiDeleteApps(RoutingContext rc) {
-        try {
-            String appId = rc.request().getParam("id");
-            appService.deleteApps(appId);
-            toDeleteResult(rc);
-        } catch (Exception e) {
-            toBadRequest(rc, e);
-        }
+        String appId = rc.request().getParam("id");
+        appService.deleteApps(appId);
+        rc.response().setStatusCode(204).end();
     }
 }
