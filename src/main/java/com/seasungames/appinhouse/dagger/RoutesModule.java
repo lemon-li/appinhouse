@@ -18,14 +18,14 @@ public class RoutesModule {
 
     @Provides
     @AppiInHouse
-    RouteAppHandler provideRouteAppHandler(AppService service) {
-        return new RouteAppHandler(service);
+    RouteAppHandler provideRouteAppHandler(Router router, AppService service) {
+        return new RouteAppHandler(router, service);
     }
 
     @Provides
     @AppiInHouse
-    RouteVersionHandler provideRouteVersionHandler(VersionService service) {
-        return new RouteVersionHandler(service);
+    RouteVersionHandler provideRouteVersionHandler(Router router, VersionService service) {
+        return new RouteVersionHandler(router, service);
     }
 
     @Provides

@@ -25,8 +25,7 @@ public class RouteVersionHandler {
     }
 
     private void index(RoutingContext rc) {
-        rc.response()
-                .sendFile(PathUtils.getAssetsPath("/assets/html/version.html"));
+        rc.response().sendFile(PathUtils.getAssetsPath("/assets/html/version.html"));
     }
 
     private void apiLatestVersion(RoutingContext rc) {

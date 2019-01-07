@@ -38,8 +38,7 @@ public class RouteAppHandler {
 
     private void apiGetApp(RoutingContext rc) {
         String appId = rc.request().getParam("id");
-        appService.getApps(appId);
-        rc.response().setStatusCode(200).end();
+        rc.response().setStatusCode(200).end(appService.getApps(appId));
     }
 
     private void apiCreateApps(RoutingContext rc) {
