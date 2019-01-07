@@ -8,7 +8,7 @@ import io.vertx.ext.web.RoutingContext;
 /**
  * Created by lile on 12/27/2018
  */
-public class RouteVersionHandler extends RouteHandler {
+public class RouteVersionHandler {
 
     private final VersionService versionService;
 
