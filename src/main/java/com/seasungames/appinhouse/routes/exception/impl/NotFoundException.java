@@ -14,5 +14,4 @@ public class NotFoundException extends HttpException {
     public NotFoundException(String resourceName) {
         super(404, "Not found: " + resourceName);
     }
-
 }

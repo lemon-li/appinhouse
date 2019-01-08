@@ -13,11 +13,10 @@ import com.seasungames.appinhouse.application.Configuration;
 import com.seasungames.appinhouse.application.PlatformEnum;
 import com.seasungames.appinhouse.models.VersionVo;
 import com.seasungames.appinhouse.stores.VersionStore;
-import com.seasungames.appinhouse.stores.dynamodb.tables.AppTable;
 import com.seasungames.appinhouse.stores.dynamodb.tables.VersionTable;
 import io.vertx.core.json.JsonArray;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 
 import java.util.*;
 
@@ -26,7 +25,7 @@ import java.util.*;
  */
 public class DynamoDBVersionStore implements VersionStore {
 
-    private static final Logger LOG = LogManager.getLogger(DynamoDBAppStore.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DynamoDBVersionStore.class);
 
     private final String tableName = "versions";
 

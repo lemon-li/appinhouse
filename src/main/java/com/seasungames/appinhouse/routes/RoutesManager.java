@@ -1,16 +1,15 @@
 package com.seasungames.appinhouse.routes;
 
 import com.seasungames.appinhouse.application.APIConstant;
-import com.seasungames.appinhouse.routes.exception.BadRequestException;
+import com.seasungames.appinhouse.routes.exception.impl.BadRequestException;
 import com.seasungames.appinhouse.routes.handlers.RouteFailureHandler;
 import com.seasungames.appinhouse.utils.PathUtils;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 
 import com.seasungames.appinhouse.routes.handlers.RouteAppHandler;
 import com.seasungames.appinhouse.routes.handlers.RouteVersionHandler;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.LoggerHandler;
 
 import javax.inject.Inject;
 
@@ -28,8 +27,6 @@ import javax.inject.Inject;
  ***/
 public class RoutesManager {
 
-    private static final Logger log = LoggerFactory.getLogger(RoutesManager.class);
-
     private Router router;
 
     @Inject
@@ -45,8 +42,9 @@ public class RoutesManager {
                 rc.response().sendFile(PathUtils.getAssetsPath("/index.html")));
 
         router.route().handler(BodyHandler.create());
-        router.route().last().handler(rc -> rc.fail(new BadRequestException()));
+        router.route().handler(LoggerHandler.create());
         router.route().failureHandler(new RouteFailureHandler());
+        router.route().last().handler(rc -> rc.fail(new BadRequestException()));
     }
 
     public Router getRouter() {

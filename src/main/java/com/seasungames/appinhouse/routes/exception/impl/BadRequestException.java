@@ -1,4 +1,6 @@
-package com.seasungames.appinhouse.routes.exception;
+package com.seasungames.appinhouse.routes.exception.impl;
+
+import com.seasungames.appinhouse.routes.exception.HttpException;
 
 /**
  * Created by lile on 1/7/2019

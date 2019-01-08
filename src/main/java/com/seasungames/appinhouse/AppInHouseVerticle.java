@@ -6,11 +6,9 @@ import com.seasungames.appinhouse.dagger.MainComponent;
 import com.seasungames.appinhouse.dagger.VertxModule;
 import com.seasungames.appinhouse.routes.RoutesManager;
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Future;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 

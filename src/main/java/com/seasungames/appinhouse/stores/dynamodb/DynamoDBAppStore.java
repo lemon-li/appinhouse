@@ -14,8 +14,8 @@ import com.seasungames.appinhouse.application.Configuration;
 import com.seasungames.appinhouse.models.AppVo;
 import com.seasungames.appinhouse.stores.AppStore;
 import com.seasungames.appinhouse.stores.dynamodb.tables.AppTable;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.Map;
  * Created by lile on 12/28/2018
  */
 public class DynamoDBAppStore implements AppStore {
-    private static final Logger LOG = LogManager.getLogger(DynamoDBAppStore.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DynamoDBAppStore.class);
 
     private final String tableName = "apps";
 
