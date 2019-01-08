@@ -1,4 +1,5 @@
 package com.seasungames.appinhouse.dagger;
+
 import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
 import com.seasungames.appinhouse.routes.handlers.RouteAppHandler;
 import com.seasungames.appinhouse.routes.handlers.RouteVersionHandler;
@@ -36,8 +37,8 @@ public class RoutesModule {
 
     @Provides
     @AppiInHouse
-    VersionService provideVersionService(VersionStore versionTable) {
-        return new VersionServiceImpl(versionTable);
+    VersionService provideVersionService(VersionStore versionTable, AppService appService) {
+        return new VersionServiceImpl(versionTable, appService);
     }
 
     @Provides

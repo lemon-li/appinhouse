@@ -9,6 +9,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.net.PemKeyCertOptions;
+import io.vertx.ext.web.Router;
 import org.aeonbits.owner.ConfigFactory;
 
 import javax.inject.Named;
@@ -22,8 +23,8 @@ public class AppInHouseModule {
 
     @Provides
     @AppiInHouse
-    RoutesManager provideRoutesManager() {
-        return new RoutesManager();
+    RoutesManager provideRoutesManager(Router router) {
+        return new RoutesManager(router);
     }
 
     @Provides

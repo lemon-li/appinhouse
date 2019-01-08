@@ -10,6 +10,7 @@ import io.vertx.ext.web.Router;
 
 import com.seasungames.appinhouse.routes.handlers.RouteAppHandler;
 import com.seasungames.appinhouse.routes.handlers.RouteVersionHandler;
+import io.vertx.ext.web.handler.BodyHandler;
 
 import javax.inject.Inject;
 
@@ -29,8 +30,7 @@ public class RoutesManager {
 
     private static final Logger log = LoggerFactory.getLogger(RoutesManager.class);
 
-    @Inject
-    Router router;
+    private Router router;
 
     @Inject
     RouteAppHandler appHandler;
@@ -38,15 +38,18 @@ public class RoutesManager {
     @Inject
     RouteVersionHandler versionHandler;
 
-    public Router getRouter() {
-        return this.router;
-    }
+    public RoutesManager(Router router) {
+        this.router = router;
 
-    public void setRoutes() {
         router.route(APIConstant.INDEX).handler(rc ->
                 rc.response().sendFile(PathUtils.getAssetsPath("/index.html")));
 
+        router.route().handler(BodyHandler.create());
         router.route().last().handler(rc -> rc.fail(new BadRequestException()));
         router.route().failureHandler(new RouteFailureHandler());
+    }
+
+    public Router getRouter() {
+        return this.router;
     }
 }
