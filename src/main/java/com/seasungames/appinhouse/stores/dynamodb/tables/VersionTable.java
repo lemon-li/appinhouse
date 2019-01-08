@@ -5,7 +5,7 @@ package com.seasungames.appinhouse.stores.dynamodb.tables;
  */
 public class VersionTable {
 
-    public static final String HASH_KEY_APPID = "Id";
+    public static final String HASH_KEY_APPID = "id";
 
     public static final String RANGE_KEY_VERSION = "version";
 

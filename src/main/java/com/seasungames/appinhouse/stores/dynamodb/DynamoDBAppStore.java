@@ -4,6 +4,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
+import com.amazonaws.services.dynamodbv2.document.spec.PutItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.UpdateItemSpec;
 import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
@@ -88,9 +89,15 @@ public class DynamoDBAppStore implements AppStore {
 
     @Override
     public int createApps(AppVo vo) {
-        table.putItem(new Item().withPrimaryKey(AppTable.HASH_KEY_APPID, vo.getAppId())
+        Item item = new Item()
+                .withPrimaryKey(AppTable.HASH_KEY_APPID, vo.getAppId())
                 .withString(AppTable.ATTRIBUTE_DESC, vo.getDesc())
-                .withString(AppTable.ATTRIBUTE_ALIAS, vo.getAlias()));
+                .withString(AppTable.ATTRIBUTE_ALIAS, vo.getAlias());
+        PutItemSpec putItemSpec = new PutItemSpec()
+                .withItem(item)
+                .withConditionExpression("attribute_not_exists(#id)")
+                .withNameMap(new NameMap().with("#id", AppTable.HASH_KEY_APPID));
+        table.putItem(putItemSpec);
         return 0;
     }
 
@@ -107,9 +114,9 @@ public class DynamoDBAppStore implements AppStore {
     public int updateApps(AppVo vo) {
         UpdateItemSpec updateItemSpec = new UpdateItemSpec()
                 .withPrimaryKey(new PrimaryKey(AppTable.HASH_KEY_APPID, vo.getAppId()))
-                .withUpdateExpression("set #desc = :d, #alias = :a")
+                .withUpdateExpression("set #desc = :v_desc, #alias = :v_alias")
                 .withNameMap(new NameMap().with("#desc", AppTable.ATTRIBUTE_DESC).with("#alias", AppTable.ATTRIBUTE_ALIAS))
-                .withValueMap(new ValueMap().withString(":d", vo.getDesc()).withString(":a", vo.getAlias()))
+                .withValueMap(new ValueMap().withString(":desc", vo.getDesc()).withString(":alias", vo.getAlias()))
                 .withReturnValues(ReturnValue.UPDATED_NEW);
 
         table.updateItem(updateItemSpec);

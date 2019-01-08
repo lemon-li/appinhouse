@@ -3,6 +3,7 @@ package com.seasungames.appinhouse.stores.dynamodb;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
+import com.amazonaws.services.dynamodbv2.document.spec.PutItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
@@ -12,6 +13,7 @@ import com.seasungames.appinhouse.application.Configuration;
 import com.seasungames.appinhouse.application.PlatformEnum;
 import com.seasungames.appinhouse.models.VersionVo;
 import com.seasungames.appinhouse.stores.VersionStore;
+import com.seasungames.appinhouse.stores.dynamodb.tables.AppTable;
 import com.seasungames.appinhouse.stores.dynamodb.tables.VersionTable;
 import io.vertx.core.json.JsonArray;
 import org.apache.logging.log4j.LogManager;
@@ -128,7 +130,13 @@ public class DynamoDBVersionStore implements VersionStore {
                 .withString(VersionTable.ATTRIBUTE_PLATFORM, vo.getPlatform())
                 .withMap(VersionTable.ATTRIBUTE_JSON_INFO, infoMap);
 
-        PutItemOutcome outcome = table.putItem(item); //check new or replace.
+        PutItemSpec putItemSpec = new PutItemSpec()
+                .withItem(item)
+                .withConditionExpression("attribute_not_exists(#id) AND attribute_not_exists(#version)")
+                .withNameMap(new NameMap().with("#id", VersionTable.HASH_KEY_APPID)
+                        .with("#version", VersionTable.RANGE_KEY_VERSION));
+
+        table.putItem(putItemSpec);
         return 0;
     }
 
