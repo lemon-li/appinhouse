@@ -2,7 +2,7 @@ package com.seasungames.appinhouse.services;
 
 public interface AppService {
 
-    String getAppsList();
+    String getAppsList(String lastKey);
 
     int updateApps(String id, String desc, String alias);
 

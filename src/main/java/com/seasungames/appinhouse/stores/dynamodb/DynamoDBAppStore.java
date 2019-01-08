@@ -12,12 +12,14 @@ import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.seasungames.appinhouse.application.Configuration;
 import com.seasungames.appinhouse.models.AppVo;
+import com.seasungames.appinhouse.models.DBResultVo;
 import com.seasungames.appinhouse.stores.AppStore;
 import com.seasungames.appinhouse.stores.dynamodb.tables.AppTable;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,11 +72,19 @@ public class DynamoDBAppStore implements AppStore {
      **/
 
     @Override
-    public List<AppVo> getAppsList() {
+    public DBResultVo getAppsList(String lastKey) {
         List<AppVo> appLists = new ArrayList<>();
         AppVo appVO;
 
-        ScanRequest scanRequest = new ScanRequest().withTableName(tableName);
+        ScanRequest scanRequest = new ScanRequest()
+                .withTableName(tableName)
+                .withLimit(1);
+
+        if(lastKey != null) {
+            Map<String, AttributeValue> startKey = new HashMap<>();
+            startKey.put(AppTable.HASH_KEY_APPID, new AttributeValue().withS(lastKey));
+            scanRequest.setExclusiveStartKey(startKey);
+        }
 
         ScanResult result = ddb.scan(scanRequest);
         for (Map<String, AttributeValue> item : result.getItems()) {
@@ -84,7 +94,13 @@ public class DynamoDBAppStore implements AppStore {
             appVO.setAlias(item.get(AppTable.ATTRIBUTE_ALIAS).getS());
             appLists.add(appVO);
         }
-        return appLists;
+
+        Map<String, AttributeValue> lastEvaluatedKeys = result.getLastEvaluatedKey();
+        String lastEvaluatedKey = "";
+        if(null != lastEvaluatedKeys){
+            lastEvaluatedKey = result.getLastEvaluatedKey().get(AppTable.HASH_KEY_APPID).toString();
+        }
+        return new DBResultVo().setList(appLists).setLastKey(lastEvaluatedKey);
     }
 
     @Override

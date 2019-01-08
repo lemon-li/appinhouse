@@ -1,15 +1,14 @@
 package com.seasungames.appinhouse.stores;
 
 import com.seasungames.appinhouse.models.AppVo;
-
-import java.util.List;
+import com.seasungames.appinhouse.models.DBResultVo;
 
 /**
  * Created by lile on 12/28/2018
  */
 public interface AppStore {
 
-    List<AppVo> getAppsList();
+    DBResultVo getAppsList(String lastKey);
 
     int updateApps(AppVo vo);
 
