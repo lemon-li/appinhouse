@@ -2,6 +2,7 @@ package com.seasungames.appinhouse.routes.handlers;
 
 import com.seasungames.appinhouse.application.APIConstant;
 import com.seasungames.appinhouse.models.VersionVo;
+import com.seasungames.appinhouse.routes.validations.impl.VersionValidationHandler;
 import com.seasungames.appinhouse.services.VersionService;
 import com.seasungames.appinhouse.utils.PathUtils;
 import io.vertx.ext.web.Router;
@@ -20,10 +21,19 @@ public class RouteVersionHandler {
     public RouteVersionHandler(Router router, VersionService versionService) {
         router.route(APIConstant.INDEX_VERSION).handler(this::index);
 
-        router.get(APIConstant.API_GET_VERSIONS_LATEST).handler(this::apiLatestVersion);
-        router.get(APIConstant.API_GET_VERSIONS_HISTORY).handler(this::apiHistoryVersion);
-        router.post(APIConstant.API_CREATE_VERSIONS).handler(this::apiCreateVersion);
-        router.get(APIConstant.API_GET_VERSIONS_PLIST).handler(this::getPlist);
+        router.get(APIConstant.API_GET_VERSIONS_LATEST)
+                .handler(VersionValidationHandler.validateId())
+                .handler(this::apiLatestVersion);
+        router.get(APIConstant.API_GET_VERSIONS_HISTORY)
+                .handler(VersionValidationHandler.validatePlatform())
+                .handler(this::apiHistoryVersion);
+        router.post(APIConstant.API_CREATE_VERSIONS)
+                .handler(VersionValidationHandler.validateForm())
+                .handler(this::apiCreateVersion);
+        router.get(APIConstant.API_GET_VERSIONS_PLIST)
+                .handler(VersionValidationHandler.validateVersion())
+                .handler(this::getPlist);
+
         this.versionService = versionService;
     }
 
