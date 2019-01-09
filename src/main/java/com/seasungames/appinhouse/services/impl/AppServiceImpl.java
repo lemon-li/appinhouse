@@ -20,7 +20,8 @@ public class AppServiceImpl implements AppService {
     @Override
     public String getAppsList(String lastKey) {
         return new ResponseVo()
-                .setData(appTable.getAppsList(lastKey)).toJson();
+                .setData(appTable.getAppsList(lastKey))
+                .toJson();
     }
 
     @Override
@@ -42,10 +43,12 @@ public class AppServiceImpl implements AppService {
 
     @Override
     public String getApps(String id) {
-        String result = appTable.getApps(id);
-        if (result.isEmpty()) {
+        AppVo appVo = appTable.getApps(id);
+        if (appVo == null) {
             throw new NotFoundException("The app with id " + id + " can not be found");
         }
-        return result;
+        return new ResponseVo()
+                .setData(appVo)
+                .toJson();
     }
 }

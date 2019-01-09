@@ -140,9 +140,17 @@ public class DynamoDBAppStore implements AppStore {
     }
 
     @Override
-    public String getApps(String appId) {
+    public AppVo getApps(String appId) {
         GetItemSpec spec = new GetItemSpec().withPrimaryKey(AppTable.HASH_KEY_APPID, appId);
         Item outcome = table.getItem(spec);
-        return outcome != null ? outcome.toJSON() : "";
+        if(outcome != null) {
+            AppVo appVo = new AppVo();
+            appVo.setAppId(outcome.getString(AppTable.HASH_KEY_APPID));
+            appVo.setAlias(outcome.getString(AppTable.ATTRIBUTE_ALIAS));
+            appVo.setDesc(outcome.getString(AppTable.ATTRIBUTE_DESC));
+            return appVo;
+        }else {
+            return null;
+        }
     }
 }
