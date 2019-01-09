@@ -14,7 +14,7 @@ import com.seasungames.appinhouse.application.PlatformEnum;
 import com.seasungames.appinhouse.models.VersionVo;
 import com.seasungames.appinhouse.stores.VersionStore;
 import com.seasungames.appinhouse.stores.dynamodb.tables.VersionTable;
-import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
@@ -140,12 +140,12 @@ public class DynamoDBVersionStore implements VersionStore {
     }
 
     @Override
-    public String getLatestList(String appId) {
+    public List<JsonObject> getLatestList(String appId) {
         QuerySpec querySpec = new QuerySpec();
         ItemCollection<QueryOutcome> items;
         Iterator<Item> iterator;
 
-        List<String> jsonList = new ArrayList<>(PlatformEnum.values().length);
+        List<JsonObject> jsonList = new ArrayList<>(PlatformEnum.values().length);
 
         for (PlatformEnum platform : PlatformEnum.values()) {
             querySpec.withKeyConditionExpression("#id = :v_id")
@@ -158,14 +158,14 @@ public class DynamoDBVersionStore implements VersionStore {
             iterator = items.iterator();
 
             while (iterator.hasNext()) {
-                jsonList.add(iterator.next().toJSON());
+                jsonList.add(new JsonObject(iterator.next().toJSON()));
             }
         }
-        return new JsonArray(jsonList).toString();
+        return jsonList;
     }
 
     @Override
-    public String getPlatformList(String appId, String platform) {
+    public List<JsonObject> getPlatformList(String appId, String platform) {
         QuerySpec querySpec = new QuerySpec();
         querySpec.withKeyConditionExpression("#id = :v_id")
                 .withNameMap(new NameMap().with("#id", VersionTable.HASH_KEY_APPID))
@@ -174,11 +174,11 @@ public class DynamoDBVersionStore implements VersionStore {
 
         ItemCollection<QueryOutcome> items = table.query(querySpec);
         Iterator<Item> iterator = items.iterator();
-        List<String> jsonList = new ArrayList<>();
+        List<JsonObject> jsonList = new ArrayList<>();
 
         while (iterator.hasNext()) {
-            jsonList.add(iterator.next().toJSON());
+            jsonList.add(new JsonObject(iterator.next().toJSON()));
         }
-        return new JsonArray(jsonList).toString();
+        return jsonList;
     }
 }
