@@ -12,9 +12,11 @@ import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.seasungames.appinhouse.application.Configuration;
 import com.seasungames.appinhouse.models.AppVo;
-import com.seasungames.appinhouse.models.DBResultVo;
+import com.seasungames.appinhouse.models.response.AppListResponseVo;
+import com.seasungames.appinhouse.models.response.AppResponseVo;
 import com.seasungames.appinhouse.stores.AppStore;
 import com.seasungames.appinhouse.stores.dynamodb.tables.AppTable;
+import io.vertx.core.json.Json;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
@@ -72,13 +74,13 @@ public class DynamoDBAppStore implements AppStore {
      **/
 
     @Override
-    public DBResultVo getAppsList(String lastKey) {
-        List<AppVo> appLists = new ArrayList<>();
-        AppVo appVO;
+    public AppListResponseVo getAppsList(String lastKey) {
+        List<AppResponseVo> appLists = new ArrayList<>();
+        AppResponseVo appVO;
 
         ScanRequest scanRequest = new ScanRequest()
                 .withTableName(tableName)
-                .withLimit(1);
+                .withLimit(2);
 
         if(lastKey != null) {
             Map<String, AttributeValue> startKey = new HashMap<>();
@@ -88,8 +90,8 @@ public class DynamoDBAppStore implements AppStore {
 
         ScanResult result = ddb.scan(scanRequest);
         for (Map<String, AttributeValue> item : result.getItems()) {
-            appVO = new AppVo();
-            appVO.setAppId(item.get(AppTable.HASH_KEY_APPID).getS());
+            appVO = new AppResponseVo();
+            appVO.setId(item.get(AppTable.HASH_KEY_APPID).getS());
             appVO.setDesc(item.get(AppTable.ATTRIBUTE_DESC).getS());
             appVO.setAlias(item.get(AppTable.ATTRIBUTE_ALIAS).getS());
             appLists.add(appVO);
@@ -100,7 +102,7 @@ public class DynamoDBAppStore implements AppStore {
         if(null != lastEvaluatedKeys){
             lastEvaluatedKey = result.getLastEvaluatedKey().get(AppTable.HASH_KEY_APPID).toString();
         }
-        return new DBResultVo().setList(appLists).setLastKey(lastEvaluatedKey);
+        return new AppListResponseVo().setList(appLists).setLastKey(lastEvaluatedKey);
     }
 
     @Override
@@ -140,15 +142,11 @@ public class DynamoDBAppStore implements AppStore {
     }
 
     @Override
-    public AppVo getApps(String appId) {
+    public AppResponseVo getApps(String appId) {
         GetItemSpec spec = new GetItemSpec().withPrimaryKey(AppTable.HASH_KEY_APPID, appId);
         Item outcome = table.getItem(spec);
         if(outcome != null) {
-            AppVo appVo = new AppVo();
-            appVo.setAppId(outcome.getString(AppTable.HASH_KEY_APPID));
-            appVo.setAlias(outcome.getString(AppTable.ATTRIBUTE_ALIAS));
-            appVo.setDesc(outcome.getString(AppTable.ATTRIBUTE_DESC));
-            return appVo;
+            return Json.decodeValue(outcome.toJSON(), AppResponseVo.class);
         }else {
             return null;
         }

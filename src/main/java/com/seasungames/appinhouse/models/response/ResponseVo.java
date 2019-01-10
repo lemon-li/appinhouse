@@ -1,4 +1,4 @@
-package com.seasungames.appinhouse.models;
+package com.seasungames.appinhouse.models.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.vertx.core.json.Json;
@@ -40,6 +40,6 @@ public class ResponseVo<T> {
     }
 
     public String toJson() {
-        return Json.encode(this).toString();
+        return Json.encode(this);
     }
 }

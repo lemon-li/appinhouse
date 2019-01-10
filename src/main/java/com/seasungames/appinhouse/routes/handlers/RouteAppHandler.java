@@ -2,6 +2,9 @@ package com.seasungames.appinhouse.routes.handlers;
 
 import com.seasungames.appinhouse.application.APIConstant;
 import com.seasungames.appinhouse.models.AppVo;
+import com.seasungames.appinhouse.models.response.AppListResponseVo;
+import com.seasungames.appinhouse.models.response.AppResponseVo;
+import com.seasungames.appinhouse.models.response.ResponseVo;
 import com.seasungames.appinhouse.routes.validations.impl.AppValidationHandler;
 import com.seasungames.appinhouse.services.AppService;
 import com.seasungames.appinhouse.utils.PathUtils;
@@ -48,13 +51,17 @@ public class RouteAppHandler {
      * API
      */
     private void apiGetApps(RoutingContext rc) {
-        String lastKey = rc.request().getParam("lastKey");
-        toResponseJson(rc, HttpStatus.SC_OK, appService.getAppsList(lastKey));
+        String lastKey = rc.request().getParam("last_key");
+
+        ResponseVo<AppListResponseVo> responseVo = new ResponseVo<>();
+        toResponseJson(rc, HttpStatus.SC_OK, responseVo.setData(appService.getAppsList(lastKey)).toJson());
     }
 
     private void apiGetApp(RoutingContext rc) {
         String appId = rc.request().getParam("id");
-        toResponseJson(rc, HttpStatus.SC_OK, appService.getApps(appId));
+        ResponseVo<AppResponseVo> responseVo = new ResponseVo<>();
+
+        toResponseJson(rc, HttpStatus.SC_OK, responseVo.setData(appService.getApps(appId)).toJson());
     }
 
     private void apiCreateApps(RoutingContext rc) {

@@ -1,7 +1,8 @@
 package com.seasungames.appinhouse.services.impl;
 
 import com.seasungames.appinhouse.models.AppVo;
-import com.seasungames.appinhouse.models.ResponseVo;
+import com.seasungames.appinhouse.models.response.AppListResponseVo;
+import com.seasungames.appinhouse.models.response.AppResponseVo;
 import com.seasungames.appinhouse.routes.exception.impl.NotFoundException;
 import com.seasungames.appinhouse.services.AppService;
 import com.seasungames.appinhouse.stores.AppStore;
@@ -18,10 +19,8 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public String getAppsList(String lastKey) {
-        return new ResponseVo()
-                .setData(appTable.getAppsList(lastKey))
-                .toJson();
+    public AppListResponseVo getAppsList(String lastKey) {
+        return appTable.getAppsList(lastKey);
     }
 
     @Override
@@ -40,13 +39,11 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public String getApps(String id) {
-        AppVo appVo = appTable.getApps(id);
+    public AppResponseVo getApps(String id) {
+        AppResponseVo appVo = appTable.getApps(id);
         if (appVo == null) {
             throw new NotFoundException("The app with id " + id + " can not be found");
         }
-        return new ResponseVo()
-                .setData(appVo)
-                .toJson();
+        return appVo;
     }
 }

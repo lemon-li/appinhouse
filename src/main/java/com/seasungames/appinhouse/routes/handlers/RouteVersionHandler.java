@@ -2,11 +2,15 @@ package com.seasungames.appinhouse.routes.handlers;
 
 import com.seasungames.appinhouse.application.APIConstant;
 import com.seasungames.appinhouse.models.VersionVo;
+import com.seasungames.appinhouse.models.response.ResponseVo;
+import com.seasungames.appinhouse.models.response.VersionResponseVo;
 import com.seasungames.appinhouse.routes.validations.impl.VersionValidationHandler;
 import com.seasungames.appinhouse.services.VersionService;
 import com.seasungames.appinhouse.utils.PathUtils;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+
+import java.util.List;
 
 import static com.seasungames.appinhouse.utils.RestApiUtils.toResponseJson;
 import static com.seasungames.appinhouse.utils.RestApiUtils.toResponseXML;
@@ -43,13 +47,17 @@ public class RouteVersionHandler {
 
     private void apiLatestVersion(RoutingContext rc) {
         String appId = rc.request().getParam("id");
-        toResponseJson(rc, 200, versionService.getLatestList(appId));
+
+        ResponseVo<List<VersionResponseVo>> responseVo = new ResponseVo<>();
+        toResponseJson(rc, 200, responseVo.setData(versionService.getLatestList(appId)).toJson());
     }
 
     private void apiHistoryVersion(RoutingContext rc) {
         String appId = rc.request().getParam("id");
         String platform = rc.request().getParam("platform");
-        toResponseJson(rc, 200, versionService.getPlatformList(appId, platform));
+
+        ResponseVo<List<VersionResponseVo>> responseVo = new ResponseVo<>();
+        toResponseJson(rc, 200, responseVo.setData(versionService.getPlatformList(appId, platform)).toJson());
     }
 
     private void apiCreateVersion(RoutingContext rc) {

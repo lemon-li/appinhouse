@@ -1,14 +1,15 @@
 package com.seasungames.appinhouse.stores;
 
 import com.seasungames.appinhouse.models.AppVo;
-import com.seasungames.appinhouse.models.DBResultVo;
+import com.seasungames.appinhouse.models.response.AppListResponseVo;
+import com.seasungames.appinhouse.models.response.AppResponseVo;
 
 /**
  * Created by lile on 12/28/2018
  */
 public interface AppStore {
 
-    DBResultVo getAppsList(String lastKey);
+    AppListResponseVo getAppsList(String lastKey);
 
     int updateApps(AppVo vo);
 
@@ -16,6 +17,6 @@ public interface AppStore {
 
     int deleteApps(String appId);
 
-    AppVo getApps(String appId);
+    AppResponseVo getApps(String appId);
 
 }
