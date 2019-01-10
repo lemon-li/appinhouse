@@ -41,4 +41,16 @@ public interface Configuration extends Config{
     @Key("dynamodb.createTableOnStartup")
     @DefaultValue("true")
     boolean dynamodbcreateTableOnStartup();
+
+    @Key("dynamodb.tableName.apps")
+    @DefaultValue("")
+    String appsTableName();
+
+    @Key("dynamodb.tableName.versions")
+    @DefaultValue("")
+    String versionsTableName();
+
+    @Key("webclient.page.size")
+    @DefaultValue("10")
+    int perPageSize();
 }

@@ -28,7 +28,7 @@ public class DynamoDBVersionStore implements VersionStore {
 
     private static final Logger LOG = LoggerFactory.getLogger(DynamoDBVersionStore.class);
 
-    private final String tableName = "versions";
+    private String tableName;
 
     public Configuration conf;
 
@@ -39,6 +39,7 @@ public class DynamoDBVersionStore implements VersionStore {
         this.ddb = ddb;
         this.conf = conf;
 
+        tableName = conf.versionsTableName();
         table = new DynamoDB(ddb).getTable(tableName);
 
         if (conf.dynamodbcreateTableOnStartup()) {

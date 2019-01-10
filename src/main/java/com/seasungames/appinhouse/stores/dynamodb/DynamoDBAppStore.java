@@ -35,7 +35,7 @@ public class DynamoDBAppStore implements AppStore {
     private static final String CONDITION_APP_NOT_EXIST = String.format("attribute_not_exists(%s)", AppTable.HASH_KEY_APPID);
     private static final String CONDITION_APP_EXIST = String.format("attribute_exists(%s)", AppTable.HASH_KEY_APPID);
 
-    private final String tableName = "apps";
+    private String tableName;
 
     private Configuration conf;
 
@@ -46,6 +46,7 @@ public class DynamoDBAppStore implements AppStore {
         this.ddb = ddb;
         this.conf = conf;
 
+        tableName = conf.appsTableName();
         table = new DynamoDB(ddb).getTable(tableName);
 
         if (conf.dynamodbcreateTableOnStartup()) {
@@ -84,7 +85,7 @@ public class DynamoDBAppStore implements AppStore {
 
         ScanRequest scanRequest = new ScanRequest()
                 .withTableName(tableName)
-                .withLimit(2);
+                .withLimit(conf.perPageSize());
 
         if (lastKey != null) {
             Map<String, AttributeValue> startKey = new HashMap<>();
