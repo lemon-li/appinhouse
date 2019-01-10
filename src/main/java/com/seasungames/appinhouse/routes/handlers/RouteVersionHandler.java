@@ -9,6 +9,7 @@ import com.seasungames.appinhouse.services.VersionService;
 import com.seasungames.appinhouse.utils.PathUtils;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import org.apache.http.HttpStatus;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class RouteVersionHandler {
         String appId = rc.request().getParam("id");
 
         ResponseVo<List<VersionResponseVo>> responseVo = new ResponseVo<>();
-        toResponseJson(rc, 200, responseVo.setData(versionService.getLatestList(appId)).toJson());
+        toResponseJson(rc, HttpStatus.SC_OK, responseVo.setData(versionService.getLatestList(appId)).toJson());
     }
 
     private void apiHistoryVersion(RoutingContext rc) {
@@ -57,7 +58,7 @@ public class RouteVersionHandler {
         String platform = rc.request().getParam("platform");
 
         ResponseVo<List<VersionResponseVo>> responseVo = new ResponseVo<>();
-        toResponseJson(rc, 200, responseVo.setData(versionService.getPlatformList(appId, platform)).toJson());
+        toResponseJson(rc, HttpStatus.SC_OK, responseVo.setData(versionService.getPlatformList(appId, platform)).toJson());
     }
 
     private void apiCreateVersion(RoutingContext rc) {
@@ -79,13 +80,13 @@ public class RouteVersionHandler {
         }
 
         versionService.createVersion(vo);
-        toResponseJson(rc, 201);
+        toResponseJson(rc, HttpStatus.SC_CREATED);
     }
 
     private void getPlist(RoutingContext rc) {
         String appId = rc.request().getParam("id");
         String platform = rc.request().getParam("platform");
         String version = rc.request().getParam("version");
-        toResponseXML(rc, 200, versionService.getPlist(appId, platform, version));
+        toResponseXML(rc, HttpStatus.SC_OK, versionService.getPlist(appId, platform, version));
     }
 }
