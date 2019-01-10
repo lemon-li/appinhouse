@@ -26,9 +26,9 @@ public class VersionValidationHandler extends BaseValidationHandler {
                 .addPathParamWithCustomTypeValidator("platform", platformFieldValidator(),true)
                 .addFormParamWithPattern("version", REGEX_CHECK_EMPTY, true)
                 .addFormParamWithPattern("desc", REGEX_CHECK_EMPTY, true)
-                .addFormParamWithPattern("download_url", REGEX_CHECK_EMPTY, true)
-                .addFormParamWithPattern("jenkins_url", REGEX_CHECK_EMPTY, true)
-                .addFormParamWithPattern("create_time", REGEX_CHECK_EMPTY, true)
+                .addFormParamWithPattern("software_url", REGEX_CHECK_EMPTY, true)
+                .addFormParamWithPattern("url", REGEX_CHECK_EMPTY, true)
+                .addFormParamWithPattern("time", REGEX_CHECK_EMPTY, true)
                 .addFormParamWithPattern("ios_bundle_id", REGEX_CHECK_EMPTY, false)
                 .addFormParamWithPattern("ios_title", REGEX_CHECK_EMPTY, false);
     }

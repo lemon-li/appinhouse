@@ -13,6 +13,6 @@ public interface VersionStore {
 
     int createVersion(VersionVo vo);
 
-    VersionVo getOneApp(String appId, String platform, String version);
+    VersionVo getVersion(String appId, String platform, String version);
 
 }

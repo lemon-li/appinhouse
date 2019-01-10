@@ -2,6 +2,7 @@ package com.seasungames.appinhouse.services.impl;
 
 import com.seasungames.appinhouse.models.VersionVo;
 import com.seasungames.appinhouse.models.response.VersionResponseVo;
+import com.seasungames.appinhouse.routes.exception.impl.NotFoundException;
 import com.seasungames.appinhouse.services.AppService;
 import com.seasungames.appinhouse.services.VersionService;
 import com.seasungames.appinhouse.stores.VersionStore;
@@ -29,7 +30,7 @@ public class VersionServiceImpl implements VersionService {
 
     @Override
     public List<VersionResponseVo> getLatestList(String appId) {
-         return versionTable.getLatestList(appId);
+        return versionTable.getLatestList(appId);
     }
 
     @Override
@@ -40,11 +41,12 @@ public class VersionServiceImpl implements VersionService {
 
     @Override
     public String getPlist(String appId, String platform, String version) {
-        VersionVo vo = versionTable.getOneApp(appId, platform, version);
+        VersionVo vo = versionTable.getVersion(appId, platform, version);
         if (vo != null) {
             return PlistUtils.genPlist(vo.getDownloadUrl(), vo.getIosBundleId(), vo.getIosTitle());
         } else {
-            throw new IllegalStateException("getOneApp");
+            throw new NotFoundException(String.format("The Version not found , id : %s, platform : %s, version : %s",
+                    appId, platform, version));
         }
     }
 }
