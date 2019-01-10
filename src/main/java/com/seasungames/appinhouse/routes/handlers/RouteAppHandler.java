@@ -1,9 +1,11 @@
 package com.seasungames.appinhouse.routes.handlers;
 
 import com.seasungames.appinhouse.application.APIConstant;
+import com.seasungames.appinhouse.models.AppVo;
 import com.seasungames.appinhouse.routes.validations.impl.AppValidationHandler;
 import com.seasungames.appinhouse.services.AppService;
 import com.seasungames.appinhouse.utils.PathUtils;
+import io.vertx.core.json.Json;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import org.apache.http.HttpStatus;
@@ -56,20 +58,14 @@ public class RouteAppHandler {
     }
 
     private void apiCreateApps(RoutingContext rc) {
-        String appId = rc.request().getParam("id");
-        String desc = rc.request().getParam("desc");
-        String alias = rc.request().getParam("alias");
-
-        appService.createApps(appId, desc, alias);
+        AppVo appVo = Json.decodeValue(rc.getBodyAsJson().toString(), AppVo.class);
+        appService.createApps(appVo);
         toResponseJson(rc, HttpStatus.SC_CREATED);
     }
 
     private void apiUpdateApps(RoutingContext rc) {
-        String appId = rc.request().getParam("id");
-        String desc = rc.request().getParam("desc");
-        String alias = rc.request().getParam("alias");
-
-        appService.updateApps(appId, desc, alias);
+        AppVo appVo = Json.decodeValue(rc.getBodyAsJson().toString(), AppVo.class);
+        appService.updateApps(appVo);
         toResponseJson(rc, HttpStatus.SC_OK);
     }
 

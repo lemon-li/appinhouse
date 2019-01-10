@@ -16,6 +16,6 @@ public interface AppStore {
 
     int deleteApps(String appId);
 
-    String getApps(String appId);
+    AppVo getApps(String appId);
 
 }

@@ -1,12 +1,14 @@
 package com.seasungames.appinhouse.services;
 
+import com.seasungames.appinhouse.models.AppVo;
+
 public interface AppService {
 
     String getAppsList(String lastKey);
 
-    int updateApps(String id, String desc, String alias);
+    int updateApps(AppVo appVo);
 
-    int createApps(String id, String desc, String alias);
+    int createApps(AppVo appVo);
 
     int deleteApps(String id);
 

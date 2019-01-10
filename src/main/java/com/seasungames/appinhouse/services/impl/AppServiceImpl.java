@@ -25,15 +25,13 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public int updateApps(String id, String desc, String alias) {
-        AppVo appVO = new AppVo(id, desc, alias);
-        return appTable.updateApps(appVO);
+    public int updateApps(AppVo appVo) {
+        return appTable.updateApps(appVo);
     }
 
     @Override
-    public int createApps(String id, String desc, String alias) {
-        AppVo appVO = new AppVo(id, desc, alias);
-        return appTable.createApps(appVO);
+    public int createApps(AppVo appVo) {
+        return appTable.createApps(appVo);
     }
 
     @Override

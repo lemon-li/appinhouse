@@ -1,5 +1,7 @@
 package com.seasungames.appinhouse.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Created by lile on 12/28/2018
  */
@@ -21,11 +23,12 @@ public class AppVo {
         this.desc = desc;
     }
 
+    @JsonProperty("id")
     public String getAppId() {
         return appId;
     }
 
-    public void setAppId(String hydraId) { this.appId = hydraId; }
+    public void setAppId(String AppId) { this.appId = AppId; }
 
     public String getDesc() {
         return desc;
