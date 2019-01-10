@@ -29,7 +29,11 @@ import java.util.Map;
  * Created by lile on 12/28/2018
  */
 public class DynamoDBAppStore implements AppStore {
+
     private static final Logger LOG = LoggerFactory.getLogger(DynamoDBAppStore.class);
+
+    private static final String CONDITION_APP_NOT_EXIST = String.format("attribute_not_exists(%s)", AppTable.HASH_KEY_APPID);
+    private static final String CONDITION_APP_EXIST = String.format("attribute_exists(%s)", AppTable.HASH_KEY_APPID);
 
     private final String tableName = "apps";
 
@@ -82,7 +86,7 @@ public class DynamoDBAppStore implements AppStore {
                 .withTableName(tableName)
                 .withLimit(2);
 
-        if(lastKey != null) {
+        if (lastKey != null) {
             Map<String, AttributeValue> startKey = new HashMap<>();
             startKey.put(AppTable.HASH_KEY_APPID, new AttributeValue().withS(lastKey));
             scanRequest.setExclusiveStartKey(startKey);
@@ -99,7 +103,7 @@ public class DynamoDBAppStore implements AppStore {
 
         Map<String, AttributeValue> lastEvaluatedKeys = result.getLastEvaluatedKey();
         String lastEvaluatedKey = "";
-        if(null != lastEvaluatedKeys){
+        if (null != lastEvaluatedKeys) {
             lastEvaluatedKey = result.getLastEvaluatedKey().get(AppTable.HASH_KEY_APPID).toString();
         }
         return new AppListResponseVo().setList(appLists).setLastKey(lastEvaluatedKey);
@@ -112,9 +116,8 @@ public class DynamoDBAppStore implements AppStore {
                 .withString(AppTable.ATTRIBUTE_DESC, vo.getDesc())
                 .withString(AppTable.ATTRIBUTE_ALIAS, vo.getAlias());
         PutItemSpec putItemSpec = new PutItemSpec()
-                .withItem(item)
-                .withConditionExpression("attribute_not_exists(#id)")
-                .withNameMap(new NameMap().with("#id", AppTable.HASH_KEY_APPID));
+                .withConditionExpression(CONDITION_APP_NOT_EXIST)
+                .withItem(item);
         table.putItem(putItemSpec);
         return 0;
     }
@@ -122,6 +125,7 @@ public class DynamoDBAppStore implements AppStore {
     @Override
     public int deleteApps(String appId) {
         DeleteItemSpec deleteItemSpec = new DeleteItemSpec()
+                .withConditionExpression(CONDITION_APP_EXIST)
                 .withPrimaryKey(new PrimaryKey(AppTable.HASH_KEY_APPID, appId));
 
         table.deleteItem(deleteItemSpec);
@@ -132,6 +136,7 @@ public class DynamoDBAppStore implements AppStore {
     public int updateApps(AppVo vo) {
         UpdateItemSpec updateItemSpec = new UpdateItemSpec()
                 .withPrimaryKey(new PrimaryKey(AppTable.HASH_KEY_APPID, vo.getAppId()))
+                .withConditionExpression(CONDITION_APP_EXIST)
                 .withUpdateExpression("set #desc = :v_desc, #alias = :v_alias")
                 .withNameMap(new NameMap().with("#desc", AppTable.ATTRIBUTE_DESC).with("#alias", AppTable.ATTRIBUTE_ALIAS))
                 .withValueMap(new ValueMap().withString(":desc", vo.getDesc()).withString(":alias", vo.getAlias()))
@@ -145,9 +150,9 @@ public class DynamoDBAppStore implements AppStore {
     public AppResponseVo getApps(String appId) {
         GetItemSpec spec = new GetItemSpec().withPrimaryKey(AppTable.HASH_KEY_APPID, appId);
         Item outcome = table.getItem(spec);
-        if(outcome != null) {
+        if (outcome != null) {
             return Json.decodeValue(outcome.toJSON(), AppResponseVo.class);
-        }else {
+        } else {
             return null;
         }
     }

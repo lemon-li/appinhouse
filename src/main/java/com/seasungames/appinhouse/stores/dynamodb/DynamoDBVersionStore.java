@@ -94,7 +94,7 @@ public class DynamoDBVersionStore implements VersionStore {
      **/
 
     @Override
-    public VersionVo getOneApp(String id, String platform, String version) {
+    public VersionVo getVersion(String id, String platform, String version) {
         GetItemSpec spec = new GetItemSpec().withPrimaryKey(VersionTable.HASH_KEY_APPID, getPrimaryKey(id, platform),
                 VersionTable.RANGE_KEY_VERSION, version);
 
@@ -131,10 +131,7 @@ public class DynamoDBVersionStore implements VersionStore {
                 .withMap(VersionTable.ATTRIBUTE_JSON_INFO, infoMap);
 
         PutItemSpec putItemSpec = new PutItemSpec()
-                .withItem(item)
-                .withConditionExpression("attribute_not_exists(#id) AND attribute_not_exists(#version)")
-                .withNameMap(new NameMap().with("#id", VersionTable.HASH_KEY_APPID)
-                        .with("#version", VersionTable.RANGE_KEY_VERSION));
+                .withItem(item);
 
         table.putItem(putItemSpec);
         return 0;
