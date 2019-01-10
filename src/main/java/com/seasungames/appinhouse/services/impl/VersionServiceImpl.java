@@ -34,9 +34,9 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    public int createVersion(VersionVo vo) {
+    public void createVersion(VersionVo vo) {
         appService.getApps(vo.getAppId());
-        return versionTable.createVersion(vo);
+        versionTable.createVersion(vo);
     }
 
     @Override

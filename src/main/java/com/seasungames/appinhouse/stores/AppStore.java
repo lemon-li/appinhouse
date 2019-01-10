@@ -11,11 +11,11 @@ public interface AppStore {
 
     AppListResponseVo getAppsList(String lastKey);
 
-    int updateApps(AppVo vo);
+    AppResponseVo updateApps(AppVo vo);
 
-    int createApps(AppVo vo);
+    void createApps(AppVo vo);
 
-    int deleteApps(String appId);
+    void deleteApps(String appId);
 
     AppResponseVo getApps(String appId);
 

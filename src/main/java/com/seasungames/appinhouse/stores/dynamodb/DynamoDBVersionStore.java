@@ -114,7 +114,7 @@ public class DynamoDBVersionStore implements VersionStore {
     }
 
     @Override
-    public int createVersion(VersionVo vo) {
+    public void createVersion(VersionVo vo) {
         final Map<String, Object> infoMap = new HashMap<>();
         infoMap.put(VersionTable.ATTRIBUTE_DOWNLOAD_URL, vo.getDownloadUrl());
         infoMap.put(VersionTable.ATTRIBUTE_JENKINS_URL, vo.getJenkinsUrl());
@@ -135,7 +135,6 @@ public class DynamoDBVersionStore implements VersionStore {
                 .withItem(item);
 
         table.putItem(putItemSpec);
-        return 0;
     }
 
     @Override

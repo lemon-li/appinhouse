@@ -53,31 +53,37 @@ public class RouteAppHandler {
     private void apiGetApps(RoutingContext rc) {
         String lastKey = rc.request().getParam("last_key");
 
+        AppListResponseVo appListResponseVo = appService.getAppsList(lastKey);
         ResponseVo<AppListResponseVo> responseVo = new ResponseVo<>();
-        toResponseJson(rc, HttpStatus.SC_OK, responseVo.setData(appService.getAppsList(lastKey)).toJson());
+        toResponseJson(rc, HttpStatus.SC_OK, responseVo.setData(appListResponseVo).toJson());
     }
 
     private void apiGetApp(RoutingContext rc) {
         String appId = rc.request().getParam("id");
-        ResponseVo<AppResponseVo> responseVo = new ResponseVo<>();
 
-        toResponseJson(rc, HttpStatus.SC_OK, responseVo.setData(appService.getApps(appId)).toJson());
+        AppResponseVo appResponseVo = appService.getApps(appId);
+        ResponseVo<AppResponseVo> responseVo = new ResponseVo<>();
+        toResponseJson(rc, HttpStatus.SC_OK, responseVo.setData(appResponseVo).toJson());
     }
 
     private void apiCreateApps(RoutingContext rc) {
         AppVo appVo = Json.decodeValue(rc.getBodyAsJson().toString(), AppVo.class);
+
         appService.createApps(appVo);
         toResponseJson(rc, HttpStatus.SC_CREATED);
     }
 
     private void apiUpdateApps(RoutingContext rc) {
         AppVo appVo = Json.decodeValue(rc.getBodyAsJson().toString(), AppVo.class);
-        appService.updateApps(appVo);
-        toResponseJson(rc, HttpStatus.SC_OK);
+
+        AppResponseVo appResponseVo = appService.updateApps(appVo);
+        ResponseVo<AppResponseVo> responseVo = new ResponseVo<>();
+        toResponseJson(rc, HttpStatus.SC_OK, responseVo.setData(appResponseVo).toJson());
     }
 
     private void apiDeleteApps(RoutingContext rc) {
         String appId = rc.request().getParam("id");
+
         appService.deleteApps(appId);
         toResponseJson(rc, HttpStatus.SC_NO_CONTENT);
     }

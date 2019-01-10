@@ -11,7 +11,7 @@ public interface VersionStore {
 
     List<VersionResponseVo> getLatestList(String appId);
 
-    int createVersion(VersionVo vo);
+    void createVersion(VersionVo vo);
 
     VersionVo getVersion(String appId, String platform, String version);
 
