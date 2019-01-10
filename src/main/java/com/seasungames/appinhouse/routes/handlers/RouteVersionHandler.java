@@ -65,17 +65,17 @@ public class RouteVersionHandler {
         String platform = rc.request().getParam("platform");
         String version = rc.request().getParam("version");
         String desc = rc.request().getParam("desc");
-        String download_url = rc.request().getParam("software_url");
-        String jenkins_url = rc.request().getParam("url");
-        String create_time = rc.request().getParam("time");
+        String downloadUrl = rc.request().getParam("software_url");
+        String jenkinsUrl = rc.request().getParam("url");
+        String createTime = rc.request().getParam("time");
 
         VersionVo vo = new VersionVo(appId, platform, version,
-                desc, download_url, jenkins_url, create_time);
+                desc, downloadUrl, jenkinsUrl, createTime);
 
         if (vo.isIOS()) {
-            String ios_bundle_id = rc.request().getParam("ios_bundle_id");
-            String ios_title = rc.request().getParam("ios_title");
-            vo.setIos_bundle_id(ios_bundle_id).setIos_title(ios_title);
+            String iosBundleId = rc.request().getParam("ios_bundle_id");
+            String iosTitle = rc.request().getParam("ios_title");
+            vo.setIosBundleId(iosBundleId).setIosTitle(iosTitle);
         }
 
         versionService.createVersion(vo);

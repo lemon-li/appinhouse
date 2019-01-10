@@ -10,17 +10,17 @@ public class VersionVo {
 
     private String version;
 
-    private String download_url;
+    private String downloadUrl;
 
-    private String jenkins_url;
+    private String jenkinsUrl;
 
     private String desc;
 
-    private String ios_bundle_id;
+    private String iosBundleId;
 
-    private String ios_title;
+    private String iosTitle;
 
-    private String create_time;
+    private String createTime;
 
     public VersionVo(){
 
@@ -29,29 +29,13 @@ public class VersionVo {
     public VersionVo(String appId, String platform, String version,
                      String desc, String download_url,
                      String jenkins_url, String create_time) {
-
         this.appId = appId;
         this.platform = platform;
         this.version = version;
         this.desc = desc;
-        this.download_url = download_url;
-        this.jenkins_url = jenkins_url;
-        this.create_time = create_time;
-    }
-
-    public VersionVo setDownload_url(String download_url) {
-        this.download_url = download_url;
-        return this;
-    }
-
-    public VersionVo setIos_bundle_id(String ios_bundle_id) {
-        this.ios_bundle_id = ios_bundle_id;
-        return this;
-    }
-
-    public VersionVo setIos_title(String ios_title) {
-        this.ios_title = ios_title;
-        return this;
+        this.downloadUrl = download_url;
+        this.jenkinsUrl = jenkins_url;
+        this.createTime = create_time;
     }
 
     public String getAppId() {
@@ -66,22 +50,37 @@ public class VersionVo {
         return version;
     }
 
-    public String getDownload_url() {
-        return download_url;
+    public String getDownloadUrl() {
+        return downloadUrl;
     }
 
-    public String getJenkins_url() {
-        return jenkins_url;
+    public VersionVo setDownloadUrl(String download_url) {
+        this.downloadUrl = download_url;
+        return this;
+    }
+
+    public String getJenkinsUrl() {
+        return jenkinsUrl;
     }
 
     public String getDesc() { return desc; }
 
-    public String getIos_bundle_id() { return ios_bundle_id; }
+    public String getIosBundleId() { return iosBundleId; }
 
-    public String getIos_title() { return ios_title; }
+    public VersionVo setIosBundleId(String ios_bundle_id) {
+        this.iosBundleId = ios_bundle_id;
+        return this;
+    }
 
-    public String getCreate_time() {
-        return create_time;
+    public String getIosTitle() { return iosTitle; }
+
+    public VersionVo setIosTitle(String ios_title) {
+        this.iosTitle = ios_title;
+        return this;
+    }
+
+    public String getCreateTime() {
+        return createTime;
     }
 
     public boolean isIOS() {

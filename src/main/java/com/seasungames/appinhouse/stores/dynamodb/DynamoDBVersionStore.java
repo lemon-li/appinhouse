@@ -104,9 +104,9 @@ public class DynamoDBVersionStore implements VersionStore {
             Map<String, String> info = outcome.getMap(VersionTable.ATTRIBUTE_JSON_INFO);
 
             return new VersionVo()
-                    .setDownload_url(info.get(VersionTable.ATTRIBUTE_DOWNLOAD_URL))
-                    .setIos_bundle_id(info.get(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID))
-                    .setIos_title(info.get(VersionTable.ATTRIBUTE_IOS_TITLE));
+                    .setDownloadUrl(info.get(VersionTable.ATTRIBUTE_DOWNLOAD_URL))
+                    .setIosBundleId(info.get(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID))
+                    .setIosTitle(info.get(VersionTable.ATTRIBUTE_IOS_TITLE));
         } else {
             return null;
         }
@@ -115,14 +115,14 @@ public class DynamoDBVersionStore implements VersionStore {
     @Override
     public int createVersion(VersionVo vo) {
         final Map<String, Object> infoMap = new HashMap<>();
-        infoMap.put(VersionTable.ATTRIBUTE_DOWNLOAD_URL, vo.getDownload_url());
-        infoMap.put(VersionTable.ATTRIBUTE_JENKINS_URL, vo.getJenkins_url());
-        infoMap.put(VersionTable.ATTRIBUTE_TIME, vo.getCreate_time());
+        infoMap.put(VersionTable.ATTRIBUTE_DOWNLOAD_URL, vo.getDownloadUrl());
+        infoMap.put(VersionTable.ATTRIBUTE_JENKINS_URL, vo.getJenkinsUrl());
+        infoMap.put(VersionTable.ATTRIBUTE_TIME, vo.getCreateTime());
         infoMap.put(VersionTable.ATTRIBUTE_DESC, vo.getDesc());
 
         if (vo.isIOS()) {
-            infoMap.put(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID, vo.getIos_bundle_id());
-            infoMap.put(VersionTable.ATTRIBUTE_IOS_TITLE, vo.getIos_title());
+            infoMap.put(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID, vo.getIosBundleId());
+            infoMap.put(VersionTable.ATTRIBUTE_IOS_TITLE, vo.getIosTitle());
         }
 
         Item item = new Item().withPrimaryKey(VersionTable.HASH_KEY_APPID,

@@ -42,7 +42,7 @@ public class VersionServiceImpl implements VersionService {
     public String getPlist(String appId, String platform, String version) {
         VersionVo vo = versionTable.getOneApp(appId, platform, version);
         if (vo != null) {
-            return PlistUtils.genPlist(vo.getDownload_url(), vo.getIos_bundle_id(), vo.getIos_title());
+            return PlistUtils.genPlist(vo.getDownloadUrl(), vo.getIosBundleId(), vo.getIosTitle());
         } else {
             throw new IllegalStateException("getOneApp");
         }
