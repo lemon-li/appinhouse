@@ -40,7 +40,6 @@ public class AppInHouseVerticle extends AbstractVerticle {
                 .vertxModule(new VertxModule(vertx))
                 .build();
         component.inject(this);
-        component.inject(routesManager);
     }
 
     private void startHttpsServer() {

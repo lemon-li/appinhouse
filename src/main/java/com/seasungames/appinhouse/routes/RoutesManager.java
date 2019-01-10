@@ -1,6 +1,7 @@
 package com.seasungames.appinhouse.routes;
 
 import com.seasungames.appinhouse.application.APIConstant;
+import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
 import com.seasungames.appinhouse.routes.exception.impl.BadRequestException;
 import com.seasungames.appinhouse.routes.handlers.RouteFailureHandler;
 import com.seasungames.appinhouse.utils.PathUtils;
@@ -25,9 +26,10 @@ import javax.inject.Inject;
  PUT:     Used for replacing resources or collections. For PUT requests with no body attribute, be sure to set the Content-Length header to zero.
  DELETE:  Used for deleting resources.
  ***/
+@AppiInHouse
 public class RoutesManager {
 
-    private Router router;
+    private final Router router;
 
     @Inject
     RouteAppHandler appHandler;
@@ -35,6 +37,7 @@ public class RoutesManager {
     @Inject
     RouteVersionHandler versionHandler;
 
+    @Inject
     public RoutesManager(Router router) {
         this.router = router;
 

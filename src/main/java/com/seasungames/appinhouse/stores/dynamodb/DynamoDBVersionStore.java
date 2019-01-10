@@ -11,6 +11,7 @@ import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.seasungames.appinhouse.application.Configuration;
 import com.seasungames.appinhouse.application.PlatformEnum;
+import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
 import com.seasungames.appinhouse.models.VersionVo;
 import com.seasungames.appinhouse.models.response.VersionResponseVo;
 import com.seasungames.appinhouse.stores.VersionStore;
@@ -19,11 +20,13 @@ import io.vertx.core.json.Json;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
+import javax.inject.Inject;
 import java.util.*;
 
 /**
  * Created by lile on 12/28/2018
  */
+@AppiInHouse
 public class DynamoDBVersionStore implements VersionStore {
 
     private static final Logger LOG = LoggerFactory.getLogger(DynamoDBVersionStore.class);
@@ -35,6 +38,7 @@ public class DynamoDBVersionStore implements VersionStore {
     private Table table;
     private AmazonDynamoDB ddb;
 
+    @Inject
     public DynamoDBVersionStore(AmazonDynamoDB ddb, Configuration conf) {
         this.ddb = ddb;
         this.conf = conf;

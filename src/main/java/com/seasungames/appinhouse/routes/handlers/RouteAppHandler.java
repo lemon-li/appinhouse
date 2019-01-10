@@ -1,6 +1,7 @@
 package com.seasungames.appinhouse.routes.handlers;
 
 import com.seasungames.appinhouse.application.APIConstant;
+import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
 import com.seasungames.appinhouse.models.AppVo;
 import com.seasungames.appinhouse.models.response.AppListResponseVo;
 import com.seasungames.appinhouse.models.response.AppResponseVo;
@@ -13,16 +14,21 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import org.apache.http.HttpStatus;
 
+import javax.inject.Inject;
+
 import static com.seasungames.appinhouse.utils.RestApiUtils.toResponseJson;
 
 /**
  * Created by lile on 12/27/2018
  */
+@AppiInHouse
 public class RouteAppHandler {
 
-    private final AppService appService;
+    @Inject
+    AppService appService;
 
-    public RouteAppHandler(Router router, AppService appService) {
+    @Inject
+    public RouteAppHandler(Router router) {
         router.route(APIConstant.INDEX_APP).handler(this::index);
 
         router.get(APIConstant.API_APPS)
@@ -39,8 +45,6 @@ public class RouteAppHandler {
         router.delete(APIConstant.API_APPS + "/:id")
                 .handler(AppValidationHandler.validateId())
                 .handler(this::apiDeleteApps);
-
-        this.appService = appService;
     }
 
     private void index(RoutingContext rc) {

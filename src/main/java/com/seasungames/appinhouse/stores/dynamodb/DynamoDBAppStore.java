@@ -11,6 +11,7 @@ import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.seasungames.appinhouse.application.Configuration;
+import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
 import com.seasungames.appinhouse.models.AppVo;
 import com.seasungames.appinhouse.models.response.AppListResponseVo;
 import com.seasungames.appinhouse.models.response.AppResponseVo;
@@ -20,6 +21,7 @@ import io.vertx.core.json.Json;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +30,7 @@ import java.util.Map;
 /**
  * Created by lile on 12/28/2018
  */
+@AppiInHouse
 public class DynamoDBAppStore implements AppStore {
 
     private static final Logger LOG = LoggerFactory.getLogger(DynamoDBAppStore.class);
@@ -42,6 +45,7 @@ public class DynamoDBAppStore implements AppStore {
     private Table table;
     private AmazonDynamoDB ddb;
 
+    @Inject
     public DynamoDBAppStore(AmazonDynamoDB ddb, Configuration conf) {
         this.ddb = ddb;
         this.conf = conf;

@@ -19,6 +19,4 @@ public interface MainComponent {
 
     void inject(AppInHouseVerticle verticle);
 
-    RoutesManager inject(RoutesManager routesManager);
-
 }

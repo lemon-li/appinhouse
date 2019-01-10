@@ -22,12 +22,6 @@ import javax.inject.Named;
 public class AppInHouseModule {
 
     @Provides
-    @AppiInHouse
-    RoutesManager provideRoutesManager(Router router) {
-        return new RoutesManager(router);
-    }
-
-    @Provides
     @Named("HTTPS")
     @AppiInHouse
     HttpServer provideHttpsServer(Vertx vertx) {

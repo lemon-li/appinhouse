@@ -1,6 +1,7 @@
 package com.seasungames.appinhouse.routes.handlers;
 
 import com.seasungames.appinhouse.application.APIConstant;
+import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
 import com.seasungames.appinhouse.models.VersionVo;
 import com.seasungames.appinhouse.models.response.ResponseVo;
 import com.seasungames.appinhouse.models.response.VersionResponseVo;
@@ -11,6 +12,7 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import org.apache.http.HttpStatus;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static com.seasungames.appinhouse.utils.RestApiUtils.toResponseJson;
@@ -19,11 +21,14 @@ import static com.seasungames.appinhouse.utils.RestApiUtils.toResponseXML;
 /**
  * Created by lile on 12/27/2018
  */
+@AppiInHouse
 public class RouteVersionHandler {
 
-    private final VersionService versionService;
+    @Inject
+    VersionService versionService;
 
-    public RouteVersionHandler(Router router, VersionService versionService) {
+    @Inject
+    public RouteVersionHandler(Router router) {
         router.route(APIConstant.INDEX_VERSION).handler(this::index);
 
         router.get(APIConstant.API_GET_VERSIONS_LATEST)
@@ -38,8 +43,6 @@ public class RouteVersionHandler {
         router.get(APIConstant.API_GET_VERSIONS_PLIST)
                 .handler(VersionValidationHandler.validateVersion())
                 .handler(this::getPlist);
-
-        this.versionService = versionService;
     }
 
     private void index(RoutingContext rc) {

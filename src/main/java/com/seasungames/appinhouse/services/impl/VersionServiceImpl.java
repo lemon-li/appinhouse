@@ -1,5 +1,6 @@
 package com.seasungames.appinhouse.services.impl;
 
+import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
 import com.seasungames.appinhouse.models.VersionVo;
 import com.seasungames.appinhouse.models.response.VersionResponseVo;
 import com.seasungames.appinhouse.routes.exception.impl.NotFoundException;
@@ -8,19 +9,24 @@ import com.seasungames.appinhouse.services.VersionService;
 import com.seasungames.appinhouse.stores.VersionStore;
 import com.seasungames.appinhouse.utils.PlistUtils;
 
+import javax.inject.Inject;
 import java.util.List;
 
 /**
  * Created by lile on 1/4/2019
  */
+@AppiInHouse
 public class VersionServiceImpl implements VersionService {
 
-    private final VersionStore versionTable;
-    private final AppService appService;
+    @Inject
+    VersionStore versionTable;
 
-    public VersionServiceImpl(VersionStore versionTable, AppService appService) {
-        this.versionTable = versionTable;
-        this.appService = appService;
+    @Inject
+    AppService appService;
+
+    @Inject
+    public VersionServiceImpl() {
+
     }
 
     @Override
