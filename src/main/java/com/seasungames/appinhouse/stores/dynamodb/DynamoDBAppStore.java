@@ -91,7 +91,7 @@ public class DynamoDBAppStore implements AppStore {
                 .withTableName(tableName)
                 .withLimit(conf.perPageSize());
 
-        if (lastKey != null) {
+        if (lastKey != null && !lastKey.isEmpty()) {
             Map<String, AttributeValue> startKey = new HashMap<>();
             startKey.put(AppTable.HASH_KEY_APPID, new AttributeValue().withS(lastKey));
             scanRequest.setExclusiveStartKey(startKey);
