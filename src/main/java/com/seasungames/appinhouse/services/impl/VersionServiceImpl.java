@@ -52,7 +52,7 @@ public class VersionServiceImpl implements VersionService {
             return PlistUtils.genPlist(vo.getDownloadUrl(), vo.getIosBundleId(), vo.getIosTitle());
         } else {
             throw new NotFoundException(String.format("The Version not found , id : %s, platform : %s, version : %s",
-                    appId, platform, version));
+                appId, platform, version));
         }
     }
 }

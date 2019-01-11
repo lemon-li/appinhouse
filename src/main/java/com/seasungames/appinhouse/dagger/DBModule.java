@@ -23,14 +23,14 @@ public class DBModule {
         AmazonDynamoDBClient client;
         String region = conf.dynamodbRegion();
         AmazonDynamoDBClientBuilder builder = AmazonDynamoDBClientBuilder.standard().
-                withClientConfiguration(new ClientConfiguration()
-                        .withGzip(true)
-                        .withTcpKeepAlive(true));
+            withClientConfiguration(new ClientConfiguration()
+                .withGzip(true)
+                .withTcpKeepAlive(true));
 
         if ("local".equals(region)) {
             String endpoint = "http://" + conf.dynamodbLocalHost() + ":" + conf.dynamodbLocalPort();
             client = (AmazonDynamoDBClient) builder.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(endpoint, "local"))
-                    .build();
+                .build();
         } else {
             client = (AmazonDynamoDBClient) builder.withRegion(region).build();
         }

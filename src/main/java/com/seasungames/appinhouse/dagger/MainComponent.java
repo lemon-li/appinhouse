@@ -9,10 +9,10 @@ import dagger.Component;
  */
 @AppInHouse
 @Component(modules = {
-        VertxModule.class,
-        AppInHouseModule.class,
-        DBModule.class,
-        RoutesModule.class
+    VertxModule.class,
+    AppInHouseModule.class,
+    DBModule.class,
+    RoutesModule.class
 })
 public interface MainComponent {
 

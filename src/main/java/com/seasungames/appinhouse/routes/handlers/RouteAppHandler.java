@@ -32,19 +32,19 @@ public class RouteAppHandler {
         router.route(APIConstant.INDEX_APP).handler(this::index);
 
         router.get(APIConstant.API_APPS)
-                .handler(this::apiGetApps);
+            .handler(this::apiGetApps);
         router.get(APIConstant.API_APPS + "/:id")
-                .handler(AppValidationHandler.validateId())
-                .handler(this::apiGetApp);
+            .handler(AppValidationHandler.validateId())
+            .handler(this::apiGetApp);
         router.post(APIConstant.API_APPS)
-                .handler(AppValidationHandler.validateAppForm())
-                .handler(this::apiCreateApps);
+            .handler(AppValidationHandler.validateAppForm())
+            .handler(this::apiCreateApps);
         router.put(APIConstant.API_APPS + "/:id")
-                .handler(AppValidationHandler.validateId())
-                .handler(this::apiUpdateApps);
+            .handler(AppValidationHandler.validateId())
+            .handler(this::apiUpdateApps);
         router.delete(APIConstant.API_APPS + "/:id")
-                .handler(AppValidationHandler.validateId())
-                .handler(this::apiDeleteApps);
+            .handler(AppValidationHandler.validateId())
+            .handler(this::apiDeleteApps);
     }
 
     private void index(RoutingContext rc) {

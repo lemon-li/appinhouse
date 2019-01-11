@@ -13,7 +13,7 @@ public class VersionResponseVo {
 
     private String version;
 
-    private Map<String,Object> info;
+    private Map<String, Object> info;
 
     public String getId() {
         return Id;

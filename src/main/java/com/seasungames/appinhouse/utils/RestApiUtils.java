@@ -10,7 +10,7 @@ public class RestApiUtils {
     public static void toResponseJson(RoutingContext rc, int statusCode, String body) {
         rc.response().putHeader("Content-Type", "application/json; charset=utf-8");
         rc.response().setStatusCode(statusCode)
-                .end(body);
+            .end(body);
     }
 
     public static void toResponseJson(RoutingContext rc, int statusCode) {
@@ -19,7 +19,7 @@ public class RestApiUtils {
 
     public static void toResponseXML(RoutingContext rc, int statusCode, String body) {
         rc.response().setStatusCode(200)
-                .putHeader("content-type", "application/x-plist; charset=utf-8")
-                .end(body);
+            .putHeader("content-type", "application/x-plist; charset=utf-8")
+            .end(body);
     }
 }

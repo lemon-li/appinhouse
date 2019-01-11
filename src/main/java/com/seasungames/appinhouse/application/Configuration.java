@@ -1,14 +1,15 @@
 package com.seasungames.appinhouse.application;
+
 import org.aeonbits.owner.Config;
 
 /**
  * Created by lile on 12/27/2018
  */
 @Config.LoadPolicy(Config.LoadType.MERGE)
-@Config.Sources({ "file:~/.appinhouse.properties",
-        "file:appinhouse.properties",
-        "classpath:appinhouse.properties" })
-public interface Configuration extends Config{
+@Config.Sources({"file:~/.appinhouse.properties",
+    "file:appinhouse.properties",
+    "classpath:appinhouse.properties"})
+public interface Configuration extends Config {
 
     @Key("http.host")
     @DefaultValue("0.0.0.0")

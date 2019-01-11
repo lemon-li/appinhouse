@@ -1,16 +1,15 @@
 package com.seasungames.appinhouse.routes;
 
-import com.seasungames.appinhouse.application.APIConstant;
-import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
+import com.seasungames.appinhouse.dagger.scope.AppInHouse;
 import com.seasungames.appinhouse.routes.exception.impl.BadRequestException;
 import com.seasungames.appinhouse.routes.handlers.RouteFailureHandler;
-import com.seasungames.appinhouse.utils.PathUtils;
 import io.vertx.ext.web.Router;
 
 import com.seasungames.appinhouse.routes.handlers.RouteAppHandler;
 import com.seasungames.appinhouse.routes.handlers.RouteVersionHandler;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.LoggerHandler;
+import io.vertx.ext.web.handler.StaticHandler;
 
 import javax.inject.Inject;
 
@@ -26,7 +25,7 @@ import javax.inject.Inject;
  PUT:     Used for replacing resources or collections. For PUT requests with no body attribute, be sure to set the Content-Length header to zero.
  DELETE:  Used for deleting resources.
  ***/
-@AppiInHouse
+@AppInHouse
 public class RoutesManager {
 
     private final Router router;
@@ -41,11 +40,10 @@ public class RoutesManager {
     public RoutesManager(Router router) {
         this.router = router;
 
-        router.route(APIConstant.INDEX).handler(rc ->
-                rc.response().sendFile(PathUtils.getAssetsPath("/index.html")));
-
         router.route().handler(BodyHandler.create());
         router.route().handler(LoggerHandler.create());
+        router.route().handler(StaticHandler.create()
+            .setWebRoot("webroot").setIndexPage("index.html").setDefaultContentEncoding("UTF-8"));
         router.route().failureHandler(new RouteFailureHandler());
         router.route().last().handler(rc -> rc.fail(new BadRequestException()));
     }

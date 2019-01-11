@@ -22,7 +22,7 @@ public class VersionVo {
 
     private String createTime;
 
-    public VersionVo(){
+    public VersionVo() {
 
     }
 
@@ -63,16 +63,22 @@ public class VersionVo {
         return jenkinsUrl;
     }
 
-    public String getDesc() { return desc; }
+    public String getDesc() {
+        return desc;
+    }
 
-    public String getIosBundleId() { return iosBundleId; }
+    public String getIosBundleId() {
+        return iosBundleId;
+    }
 
     public VersionVo setIosBundleId(String ios_bundle_id) {
         this.iosBundleId = ios_bundle_id;
         return this;
     }
 
-    public String getIosTitle() { return iosTitle; }
+    public String getIosTitle() {
+        return iosTitle;
+    }
 
     public VersionVo setIosTitle(String ios_title) {
         this.iosTitle = ios_title;

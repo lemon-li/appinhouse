@@ -38,20 +38,20 @@ public class AppInHouseVerticle extends AbstractVerticle {
 
     private void injectDependencies() {
         MainComponent component = DaggerMainComponent.builder()
-                .vertxModule(new VertxModule(vertx))
-                .build();
+            .vertxModule(new VertxModule(vertx))
+            .build();
         component.inject(this);
     }
 
     private void startHttpsServer() {
         webServer.requestHandler(routesManager.getRouter())
-                .listen(conf.httpPort(), ar -> {
-                    if (ar.succeeded()) {
-                        log.info("WebServer started listening at {}", conf.httpPort());
-                    } else {
-                        log.info("WebServer started failed listening at {} , Reason: {}", conf.httpPort(), ar.cause());
-                    }
-                });
+            .listen(conf.httpPort(), ar -> {
+                if (ar.succeeded()) {
+                    log.info("WebServer started listening at {}", conf.httpPort());
+                } else {
+                    log.info("WebServer started failed listening at {} , Reason: {}", conf.httpPort(), ar.cause());
+                }
+            });
     }
 
     @Override

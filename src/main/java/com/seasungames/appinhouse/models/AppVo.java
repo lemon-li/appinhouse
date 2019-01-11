@@ -28,7 +28,9 @@ public class AppVo {
         return appId;
     }
 
-    public void setAppId(String AppId) { this.appId = AppId; }
+    public void setAppId(String AppId) {
+        this.appId = AppId;
+    }
 
     public String getDesc() {
         return desc;

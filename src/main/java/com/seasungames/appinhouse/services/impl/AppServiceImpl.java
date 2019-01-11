@@ -35,7 +35,9 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public void createApps(AppVo appVo) { appTable.createApps(appVo); }
+    public void createApps(AppVo appVo) {
+        appTable.createApps(appVo);
+    }
 
     @Override
     public void deleteApps(String id) {

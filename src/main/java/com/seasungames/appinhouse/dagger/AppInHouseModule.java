@@ -24,11 +24,11 @@ public class AppInHouseModule {
     @AppInHouse
     HttpServer provideHttpsServer(Vertx vertx) {
         return vertx.createHttpServer(new HttpServerOptions()
-                .setSsl(true)
-                .setUseAlpn(true)
-                .setPemKeyCertOptions(new PemKeyCertOptions()
-                        .setKeyPath("tls/private.pem")
-                        .setCertPath("tls/public.pem")));
+            .setSsl(true)
+            .setUseAlpn(true)
+            .setPemKeyCertOptions(new PemKeyCertOptions()
+                .setKeyPath("tls/private.pem")
+                .setCertPath("tls/public.pem")));
     }
 
     @Provides

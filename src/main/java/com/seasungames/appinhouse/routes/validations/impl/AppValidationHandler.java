@@ -10,13 +10,13 @@ public class AppValidationHandler extends BaseValidationHandler {
 
     public static HTTPRequestValidationHandler validateId() {
         return HTTPRequestValidationHandler.create()
-                .addPathParamWithPattern("id", REGEX_CHECK_EMPTY);
+            .addPathParamWithPattern("id", REGEX_CHECK_EMPTY);
     }
 
     public static HTTPRequestValidationHandler validateAppForm() {
         return HTTPRequestValidationHandler.create()
-                .addFormParamWithPattern("id", REGEX_CHECK_EMPTY, true)
-                .addFormParamWithPattern("desc", REGEX_CHECK_EMPTY, true)
-                .addFormParamWithPattern("alias", REGEX_CHECK_EMPTY, true);
+            .addFormParamWithPattern("id", REGEX_CHECK_EMPTY, true)
+            .addFormParamWithPattern("desc", REGEX_CHECK_EMPTY, true)
+            .addFormParamWithPattern("alias", REGEX_CHECK_EMPTY, true);
     }
 }

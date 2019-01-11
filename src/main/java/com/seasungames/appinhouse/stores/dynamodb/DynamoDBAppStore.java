@@ -62,12 +62,12 @@ public class DynamoDBAppStore implements AppStore {
         LOG.info("Creating dynamodb table: " + tableName);
 
         CreateTableRequest req = new CreateTableRequest()
-                .withTableName(tableName)
-                .withKeySchema(new KeySchemaElement(AppTable.HASH_KEY_APPID, KeyType.HASH))
-                .withAttributeDefinitions(new AttributeDefinition(AppTable.HASH_KEY_APPID, ScalarAttributeType.S))
-                .withProvisionedThroughput(new ProvisionedThroughput()
-                        .withReadCapacityUnits(conf.dynamodbTableReadThroughput())
-                        .withWriteCapacityUnits(conf.dynamodbTableWriteThroughput()));
+            .withTableName(tableName)
+            .withKeySchema(new KeySchemaElement(AppTable.HASH_KEY_APPID, KeyType.HASH))
+            .withAttributeDefinitions(new AttributeDefinition(AppTable.HASH_KEY_APPID, ScalarAttributeType.S))
+            .withProvisionedThroughput(new ProvisionedThroughput()
+                .withReadCapacityUnits(conf.dynamodbTableReadThroughput())
+                .withWriteCapacityUnits(conf.dynamodbTableWriteThroughput()));
 
         try {
             if (TableUtils.createTableIfNotExists(this.ddb, req)) {
@@ -88,8 +88,8 @@ public class DynamoDBAppStore implements AppStore {
         AppResponseVo appVO;
 
         ScanRequest scanRequest = new ScanRequest()
-                .withTableName(tableName)
-                .withLimit(conf.perPageSize());
+            .withTableName(tableName)
+            .withLimit(conf.perPageSize());
 
         if (lastKey != null && !lastKey.isEmpty()) {
             Map<String, AttributeValue> startKey = new HashMap<>();
@@ -117,20 +117,20 @@ public class DynamoDBAppStore implements AppStore {
     @Override
     public void createApps(AppVo vo) {
         Item item = new Item()
-                .withPrimaryKey(AppTable.HASH_KEY_APPID, vo.getAppId())
-                .withString(AppTable.ATTRIBUTE_DESC, vo.getDesc())
-                .withString(AppTable.ATTRIBUTE_ALIAS, vo.getAlias());
+            .withPrimaryKey(AppTable.HASH_KEY_APPID, vo.getAppId())
+            .withString(AppTable.ATTRIBUTE_DESC, vo.getDesc())
+            .withString(AppTable.ATTRIBUTE_ALIAS, vo.getAlias());
         PutItemSpec putItemSpec = new PutItemSpec()
-                .withConditionExpression(CONDITION_APP_NOT_EXIST)
-                .withItem(item);
+            .withConditionExpression(CONDITION_APP_NOT_EXIST)
+            .withItem(item);
         table.putItem(putItemSpec);
     }
 
     @Override
     public void deleteApps(String appId) {
         DeleteItemSpec deleteItemSpec = new DeleteItemSpec()
-                .withConditionExpression(CONDITION_APP_EXIST)
-                .withPrimaryKey(new PrimaryKey(AppTable.HASH_KEY_APPID, appId));
+            .withConditionExpression(CONDITION_APP_EXIST)
+            .withPrimaryKey(new PrimaryKey(AppTable.HASH_KEY_APPID, appId));
 
         table.deleteItem(deleteItemSpec);
     }
@@ -138,12 +138,12 @@ public class DynamoDBAppStore implements AppStore {
     @Override
     public AppResponseVo updateApps(AppVo vo) {
         UpdateItemSpec updateItemSpec = new UpdateItemSpec()
-                .withPrimaryKey(new PrimaryKey(AppTable.HASH_KEY_APPID, vo.getAppId()))
-                .withConditionExpression(CONDITION_APP_EXIST)
-                .withUpdateExpression("set #desc = :v_desc, #alias = :v_alias")
-                .withNameMap(new NameMap().with("#desc", AppTable.ATTRIBUTE_DESC).with("#alias", AppTable.ATTRIBUTE_ALIAS))
-                .withValueMap(new ValueMap().withString(":v_desc", vo.getDesc()).withString(":v_alias", vo.getAlias()))
-                .withReturnValues(ReturnValue.ALL_NEW);
+            .withPrimaryKey(new PrimaryKey(AppTable.HASH_KEY_APPID, vo.getAppId()))
+            .withConditionExpression(CONDITION_APP_EXIST)
+            .withUpdateExpression("set #desc = :v_desc, #alias = :v_alias")
+            .withNameMap(new NameMap().with("#desc", AppTable.ATTRIBUTE_DESC).with("#alias", AppTable.ATTRIBUTE_ALIAS))
+            .withValueMap(new ValueMap().withString(":v_desc", vo.getDesc()).withString(":v_alias", vo.getAlias()))
+            .withReturnValues(ReturnValue.ALL_NEW);
 
         UpdateItemOutcome outcome = table.updateItem(updateItemSpec);
         return Json.decodeValue(outcome.getItem().toJSON(), AppResponseVo.class);

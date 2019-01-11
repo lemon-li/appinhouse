@@ -32,17 +32,17 @@ public class RouteVersionHandler {
         router.route(APIConstant.INDEX_VERSION).handler(this::index);
 
         router.get(APIConstant.API_GET_VERSIONS_LATEST)
-                .handler(VersionValidationHandler.validateId())
-                .handler(this::apiLatestVersion);
+            .handler(VersionValidationHandler.validateId())
+            .handler(this::apiLatestVersion);
         router.get(APIConstant.API_GET_VERSIONS_HISTORY)
-                .handler(VersionValidationHandler.validatePlatform())
-                .handler(this::apiHistoryVersion);
+            .handler(VersionValidationHandler.validatePlatform())
+            .handler(this::apiHistoryVersion);
         router.post(APIConstant.API_CREATE_VERSIONS)
-                .handler(VersionValidationHandler.validateForm())
-                .handler(this::apiCreateVersion);
+            .handler(VersionValidationHandler.validateForm())
+            .handler(this::apiCreateVersion);
         router.get(APIConstant.API_GET_VERSIONS_PLIST)
-                .handler(VersionValidationHandler.validateVersion())
-                .handler(this::getPlist);
+            .handler(VersionValidationHandler.validateVersion())
+            .handler(this::getPlist);
     }
 
     private void index(RoutingContext rc) {
@@ -74,7 +74,7 @@ public class RouteVersionHandler {
         String createTime = rc.request().getParam("time");
 
         VersionVo vo = new VersionVo(appId, platform, version,
-                desc, downloadUrl, jenkinsUrl, createTime);
+            desc, downloadUrl, jenkinsUrl, createTime);
 
         if (vo.isIOS()) {
             String iosBundleId = rc.request().getParam("ios_bundle_id");

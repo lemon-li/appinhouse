@@ -58,28 +58,28 @@ public class DynamoDBVersionStore implements VersionStore {
         ArrayList<AttributeDefinition> attributeDefinitions = new ArrayList<>();
 
         attributeDefinitions.add(new AttributeDefinition()
-                .withAttributeName(VersionTable.HASH_KEY_APPID)
-                .withAttributeType("S"));
+            .withAttributeName(VersionTable.HASH_KEY_APPID)
+            .withAttributeType("S"));
         attributeDefinitions.add(new AttributeDefinition()
-                .withAttributeName(VersionTable.RANGE_KEY_VERSION)
-                .withAttributeType("S"));
+            .withAttributeName(VersionTable.RANGE_KEY_VERSION)
+            .withAttributeType("S"));
 
         // Table key schema
         ArrayList<KeySchemaElement> tableKeySchema = new ArrayList<>();
         tableKeySchema.add(new KeySchemaElement()
-                .withAttributeName(VersionTable.HASH_KEY_APPID)
-                .withKeyType(KeyType.HASH));
+            .withAttributeName(VersionTable.HASH_KEY_APPID)
+            .withKeyType(KeyType.HASH));
         tableKeySchema.add(new KeySchemaElement()
-                .withAttributeName(VersionTable.RANGE_KEY_VERSION)
-                .withKeyType(KeyType.RANGE));
+            .withAttributeName(VersionTable.RANGE_KEY_VERSION)
+            .withKeyType(KeyType.RANGE));
 
         CreateTableRequest req = new CreateTableRequest()
-                .withTableName(tableName)
-                .withProvisionedThroughput(new ProvisionedThroughput()
-                        .withReadCapacityUnits(conf.dynamodbTableReadThroughput())
-                        .withWriteCapacityUnits(conf.dynamodbTableWriteThroughput()))
-                .withAttributeDefinitions(attributeDefinitions)
-                .withKeySchema(tableKeySchema);
+            .withTableName(tableName)
+            .withProvisionedThroughput(new ProvisionedThroughput()
+                .withReadCapacityUnits(conf.dynamodbTableReadThroughput())
+                .withWriteCapacityUnits(conf.dynamodbTableWriteThroughput()))
+            .withAttributeDefinitions(attributeDefinitions)
+            .withKeySchema(tableKeySchema);
 
         try {
             if (TableUtils.createTableIfNotExists(this.ddb, req)) {
@@ -101,7 +101,7 @@ public class DynamoDBVersionStore implements VersionStore {
     @Override
     public VersionVo getVersion(String id, String platform, String version) {
         GetItemSpec spec = new GetItemSpec().withPrimaryKey(VersionTable.HASH_KEY_APPID, getPrimaryKey(id, platform),
-                VersionTable.RANGE_KEY_VERSION, version);
+            VersionTable.RANGE_KEY_VERSION, version);
 
         Item outcome = table.getItem(spec);
 
@@ -109,9 +109,9 @@ public class DynamoDBVersionStore implements VersionStore {
             Map<String, String> info = outcome.getMap(VersionTable.ATTRIBUTE_JSON_INFO);
 
             return new VersionVo()
-                    .setDownloadUrl(info.get(VersionTable.ATTRIBUTE_DOWNLOAD_URL))
-                    .setIosBundleId(info.get(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID))
-                    .setIosTitle(info.get(VersionTable.ATTRIBUTE_IOS_TITLE));
+                .setDownloadUrl(info.get(VersionTable.ATTRIBUTE_DOWNLOAD_URL))
+                .setIosBundleId(info.get(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID))
+                .setIosTitle(info.get(VersionTable.ATTRIBUTE_IOS_TITLE));
         } else {
             return null;
         }
@@ -131,12 +131,12 @@ public class DynamoDBVersionStore implements VersionStore {
         }
 
         Item item = new Item().withPrimaryKey(VersionTable.HASH_KEY_APPID,
-                getPrimaryKey(vo.getAppId(), vo.getPlatform()), VersionTable.RANGE_KEY_VERSION, vo.getVersion())
-                .withString(VersionTable.ATTRIBUTE_PLATFORM, vo.getPlatform())
-                .withMap(VersionTable.ATTRIBUTE_JSON_INFO, infoMap);
+            getPrimaryKey(vo.getAppId(), vo.getPlatform()), VersionTable.RANGE_KEY_VERSION, vo.getVersion())
+            .withString(VersionTable.ATTRIBUTE_PLATFORM, vo.getPlatform())
+            .withMap(VersionTable.ATTRIBUTE_JSON_INFO, infoMap);
 
         PutItemSpec putItemSpec = new PutItemSpec()
-                .withItem(item);
+            .withItem(item);
 
         table.putItem(putItemSpec);
     }
@@ -151,10 +151,10 @@ public class DynamoDBVersionStore implements VersionStore {
 
         for (PlatformEnum platform : PlatformEnum.values()) {
             querySpec.withKeyConditionExpression("#id = :v_id")
-                    .withNameMap(new NameMap().with("#id", VersionTable.HASH_KEY_APPID))
-                    .withValueMap(new ValueMap().withString(":v_id", getPrimaryKey(appId, platform.getPlatform())))
-                    .withScanIndexForward(false)
-                    .setMaxResultSize(1);
+                .withNameMap(new NameMap().with("#id", VersionTable.HASH_KEY_APPID))
+                .withValueMap(new ValueMap().withString(":v_id", getPrimaryKey(appId, platform.getPlatform())))
+                .withScanIndexForward(false)
+                .setMaxResultSize(1);
 
             items = table.query(querySpec);
             iterator = items.iterator();
@@ -171,9 +171,9 @@ public class DynamoDBVersionStore implements VersionStore {
     public List<VersionResponseVo> getPlatformList(String appId, String platform) {
         QuerySpec querySpec = new QuerySpec();
         querySpec.withKeyConditionExpression("#id = :v_id")
-                .withNameMap(new NameMap().with("#id", VersionTable.HASH_KEY_APPID))
-                .withValueMap(new ValueMap().withString(":v_id", getPrimaryKey(appId, platform)))
-                .withScanIndexForward(false);
+            .withNameMap(new NameMap().with("#id", VersionTable.HASH_KEY_APPID))
+            .withValueMap(new ValueMap().withString(":v_id", getPrimaryKey(appId, platform)))
+            .withScanIndexForward(false);
 
         ItemCollection<QueryOutcome> items = table.query(querySpec);
         Iterator<Item> iterator = items.iterator();
