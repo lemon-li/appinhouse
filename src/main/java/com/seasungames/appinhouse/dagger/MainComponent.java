@@ -1,14 +1,13 @@
 package com.seasungames.appinhouse.dagger;
 
 import com.seasungames.appinhouse.AppInHouseVerticle;
-import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
-import com.seasungames.appinhouse.routes.RoutesManager;
+import com.seasungames.appinhouse.dagger.scope.AppInHouse;
 import dagger.Component;
 
 /**
  * Created by lile on 1/3/2019
  */
-@AppiInHouse
+@AppInHouse
 @Component(modules = {
         VertxModule.class,
         AppInHouseModule.class,

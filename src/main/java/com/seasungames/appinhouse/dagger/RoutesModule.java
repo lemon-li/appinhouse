@@ -1,6 +1,6 @@
 package com.seasungames.appinhouse.dagger;
 
-import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
+import com.seasungames.appinhouse.dagger.scope.AppInHouse;
 import com.seasungames.appinhouse.services.AppService;
 import com.seasungames.appinhouse.services.VersionService;
 import com.seasungames.appinhouse.services.impl.AppServiceImpl;
@@ -14,19 +14,19 @@ import io.vertx.ext.web.Router;
 public class RoutesModule {
 
     @Provides
-    @AppiInHouse
+    @AppInHouse
     AppService provideAppService(AppServiceImpl appService) {
         return appService;
     }
 
     @Provides
-    @AppiInHouse
+    @AppInHouse
     VersionService provideVersionService(VersionServiceImpl versionService) {
         return versionService;
     }
 
     @Provides
-    @AppiInHouse
+    @AppInHouse
     Router provideRouter(Vertx vertx) {
         return Router.router(vertx);
     }

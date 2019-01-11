@@ -1,6 +1,6 @@
 package com.seasungames.appinhouse.dagger;
 
-import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
+import com.seasungames.appinhouse.dagger.scope.AppInHouse;
 import dagger.Module;
 import dagger.Provides;
 import io.vertx.core.Vertx;
@@ -18,7 +18,7 @@ public class VertxModule {
     }
 
     @Provides
-    @AppiInHouse
+    @AppInHouse
     Vertx provideVertx() {
         return this.vertx;
     }

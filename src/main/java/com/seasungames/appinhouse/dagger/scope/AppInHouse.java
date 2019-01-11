@@ -6,5 +6,5 @@ import java.lang.annotation.RetentionPolicy;
 
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AppiInHouse {
+public @interface AppInHouse {
 }

@@ -9,6 +9,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 

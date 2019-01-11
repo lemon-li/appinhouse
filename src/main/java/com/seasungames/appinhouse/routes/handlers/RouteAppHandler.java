@@ -1,7 +1,7 @@
 package com.seasungames.appinhouse.routes.handlers;
 
 import com.seasungames.appinhouse.application.APIConstant;
-import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
+import com.seasungames.appinhouse.dagger.scope.AppInHouse;
 import com.seasungames.appinhouse.models.AppVo;
 import com.seasungames.appinhouse.models.response.AppListResponseVo;
 import com.seasungames.appinhouse.models.response.AppResponseVo;
@@ -21,7 +21,7 @@ import static com.seasungames.appinhouse.utils.RestApiUtils.toResponseJson;
 /**
  * Created by lile on 12/27/2018
  */
-@AppiInHouse
+@AppInHouse
 public class RouteAppHandler {
 
     @Inject

@@ -1,6 +1,6 @@
 package com.seasungames.appinhouse.services.impl;
 
-import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
+import com.seasungames.appinhouse.dagger.scope.AppInHouse;
 import com.seasungames.appinhouse.models.AppVo;
 import com.seasungames.appinhouse.models.response.AppListResponseVo;
 import com.seasungames.appinhouse.models.response.AppResponseVo;
@@ -13,7 +13,7 @@ import javax.inject.Inject;
 /**
  * Created by lile on 1/4/2019
  */
-@AppiInHouse
+@AppInHouse
 public class AppServiceImpl implements AppService {
 
     @Inject

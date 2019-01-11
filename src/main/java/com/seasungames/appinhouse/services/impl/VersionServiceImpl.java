@@ -1,6 +1,6 @@
 package com.seasungames.appinhouse.services.impl;
 
-import com.seasungames.appinhouse.dagger.scope.AppiInHouse;
+import com.seasungames.appinhouse.dagger.scope.AppInHouse;
 import com.seasungames.appinhouse.models.VersionVo;
 import com.seasungames.appinhouse.models.response.VersionResponseVo;
 import com.seasungames.appinhouse.routes.exception.impl.NotFoundException;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by lile on 1/4/2019
  */
-@AppiInHouse
+@AppInHouse
 public class VersionServiceImpl implements VersionService {
 
     @Inject
