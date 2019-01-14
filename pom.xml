@@ -70,6 +70,17 @@
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
+      <artifactId>vertx-service-proxy</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-codegen</artifactId>
+      <version>${vertx.version}</version>
+      <classifier>processor</classifier>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
       <artifactId>vertx-junit5</artifactId>
       <version>${vertx.version}</version>
       <scope>test</scope>
@@ -128,14 +139,39 @@
             <source>${java.version}</source>
             <target>${java.version}</target>
             <compilerArgument>-Xlint:unchecked</compilerArgument>
-            <annotationProcessorPaths>
-              <path>
-                <groupId>com.google.dagger</groupId>
-                <artifactId>dagger-compiler</artifactId>
-                <version>${dagger.version}</version>
-              </path>
-            </annotationProcessorPaths>
           </configuration>
+          <executions>
+            <execution>
+              <id>default-compile</id>
+              <goals>
+                <goal>compile</goal>
+              </goals>
+              <configuration>
+                <annotationProcessorPaths>
+                  <path>
+                    <groupId>com.google.dagger</groupId>
+                    <artifactId>dagger-compiler</artifactId>
+                    <version>${dagger.version}</version>
+                  </path>
+                </annotationProcessorPaths>
+              </configuration>
+            </execution>
+            <execution>
+              <id>vertx-codegen-compile</id>
+              <goals>
+                <goal>compile</goal>
+              </goals>
+              <configuration>
+                <useIncrementalCompilation>false</useIncrementalCompilation>
+                <compileSourceRoots>
+                  ${basedir}/src/main/java/com/seasungames/appinhouse/stores/services
+                </compileSourceRoots>
+                <annotationProcessors>
+                  <annotationProcessor>io.vertx.codegen.CodeGenProcessor</annotationProcessor>
+                </annotationProcessors>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
