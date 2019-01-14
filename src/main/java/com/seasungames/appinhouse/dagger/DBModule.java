@@ -11,8 +11,12 @@ import com.seasungames.appinhouse.stores.AppStore;
 import com.seasungames.appinhouse.stores.VersionStore;
 import com.seasungames.appinhouse.stores.dynamodb.DynamoDBAppStore;
 import com.seasungames.appinhouse.stores.dynamodb.DynamoDBVersionStore;
+import com.seasungames.appinhouse.stores.services.DynamoDBService;
+import com.seasungames.appinhouse.stores.services.DynamoDBServiceImpl;
 import dagger.Module;
 import dagger.Provides;
+
+import javax.inject.Named;
 
 @Module
 public class DBModule {
@@ -47,5 +51,12 @@ public class DBModule {
     @AppInHouse
     VersionStore provideVersionStore(DynamoDBVersionStore dynamoDBVersionStore) {
         return dynamoDBVersionStore;
+    }
+
+    @Provides
+    @Named("DB_SERVICE")
+    @AppInHouse
+    DynamoDBService provideDynamoDBService(DynamoDBServiceImpl dynamoDBService) {
+        return dynamoDBService;
     }
 }

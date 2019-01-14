@@ -19,9 +19,9 @@ public class AppInHouseVerticle extends AbstractVerticle {
 
         this.deployDynamoDBVerticle()
             .compose(i -> this.deployHttpVerticle())
-            .compose(chainFuture::complete,chainFuture);
+            .compose(chainFuture::complete, chainFuture);
 
-        chainFuture.setHandler(ar->{
+        chainFuture.setHandler(ar -> {
             if (ar.succeeded()) {
                 LOG.info("All verticles deployed");
                 startFuture.complete();
