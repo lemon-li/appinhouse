@@ -11,8 +11,14 @@ import com.seasungames.appinhouse.stores.AppStore;
 import com.seasungames.appinhouse.stores.VersionStore;
 import com.seasungames.appinhouse.stores.dynamodb.DynamoDBAppStore;
 import com.seasungames.appinhouse.stores.dynamodb.DynamoDBVersionStore;
+import com.seasungames.appinhouse.stores.services.app.AppDBService;
+import com.seasungames.appinhouse.stores.services.app.AppDBServiceImpl;
+import com.seasungames.appinhouse.stores.services.version.VersionDBService;
+import com.seasungames.appinhouse.stores.services.version.VersionDBServiceImpl;
 import dagger.Module;
 import dagger.Provides;
+
+import javax.inject.Named;
 
 @Module
 public class DBModule {
@@ -35,6 +41,20 @@ public class DBModule {
             client = (AmazonDynamoDBClient) builder.withRegion(region).build();
         }
         return client;
+    }
+
+    @Provides
+    @Named("APP_DB_SERVICE")
+    @AppInHouse
+    AppDBService provideAppDBService(AppDBServiceImpl appDBService) {
+        return appDBService;
+    }
+
+    @Provides
+    @Named("VERSION_DB_SERVICE")
+    @AppInHouse
+    VersionDBService provideVersionDBService(VersionDBServiceImpl versionDBService) {
+        return versionDBService;
     }
 
     @Provides

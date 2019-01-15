@@ -12,6 +12,10 @@ import io.vertx.core.Future;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.serviceproxy.ServiceBinder;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 /**
  * Created by lile on 1/14/2019
  */
@@ -19,17 +23,25 @@ public class DynamoDBServiceVerticle extends AbstractVerticle {
 
     private static final Logger LOG = LoggerFactory.getLogger(DynamoDBServiceVerticle.class);
 
+    @Named("APP_DB_SERVICE")
+    @Inject
+    AppDBService appDBService;
+
+    @Named("VERSION_DB_SERVICE")
+    @Inject
+    VersionDBService versionDBService;
+
     @Override
     public void start(Future<Void> startFuture) throws Exception {
         injectDependencies();
 
         new ServiceBinder(vertx)
             .setAddress(AppDBService.SERVICE_ADDRESS)
-            .register(AppDBService.class, new AppDBServiceImpl());
+            .register(AppDBService.class, appDBService);
 
         new ServiceBinder(vertx)
             .setAddress(VersionDBService.SERVICE_ADDRESS)
-            .register(VersionDBService.class, new VersionDBServiceImpl());
+            .register(VersionDBService.class, versionDBService);
 
         startFuture.complete();
     }

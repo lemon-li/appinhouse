@@ -37,6 +37,7 @@ public class RoutesModule {
     }
 
     @Provides
+    @Named("APP_DB_PROXY")
     @AppInHouse
     AppDBService provideAppDBService(Vertx vertx) {
         return new ServiceProxyBuilder(vertx)
@@ -45,6 +46,7 @@ public class RoutesModule {
     }
 
     @Provides
+    @Named("VERSION_DB_PROXY")
     @AppInHouse
     VersionDBService provideVersionDBService(Vertx vertx) {
         return new ServiceProxyBuilder(vertx)
