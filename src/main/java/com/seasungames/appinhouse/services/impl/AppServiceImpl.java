@@ -1,14 +1,18 @@
 package com.seasungames.appinhouse.services.impl;
 
 import com.seasungames.appinhouse.dagger.scope.AppInHouse;
+import com.seasungames.appinhouse.stores.services.app.AppDBService;
 import com.seasungames.appinhouse.stores.services.app.models.AppVo;
 import com.seasungames.appinhouse.stores.services.app.models.AppListResponseVo;
 import com.seasungames.appinhouse.stores.services.app.models.AppResponseVo;
 import com.seasungames.appinhouse.routes.exception.impl.NotFoundException;
 import com.seasungames.appinhouse.services.AppService;
-import com.seasungames.appinhouse.stores.AppStore;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
+import io.vertx.core.Handler;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * Created by lile on 1/4/2019
@@ -16,8 +20,9 @@ import javax.inject.Inject;
 @AppInHouse
 public class AppServiceImpl implements AppService {
 
+    @Named("APP_DB_PROXY")
     @Inject
-    AppStore appTable;
+    AppDBService appDBServiceProxy;
 
     @Inject
     public AppServiceImpl() {
@@ -25,31 +30,37 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public AppListResponseVo getAppsList(String lastKey) {
-        return appTable.getAppsList(lastKey);
+    public void getAppsList(String lastKey, Handler<AsyncResult<AppListResponseVo>> resultHandler) {
+        appDBServiceProxy.getAppsList(lastKey, resultHandler);
     }
 
     @Override
-    public AppResponseVo updateApps(AppVo appVo) {
-        return appTable.updateApps(appVo);
+    public void updateApps(AppVo appVo, Handler<AsyncResult<AppResponseVo>> resultHandler) {
+        appDBServiceProxy.updateApps(appVo, resultHandler);
     }
 
     @Override
-    public void createApps(AppVo appVo) {
-        appTable.createApps(appVo);
+    public void createApps(AppVo appVo, Handler<AsyncResult<Void>> resultHandler) {
+        appDBServiceProxy.createApps(appVo, resultHandler);
     }
 
     @Override
-    public void deleteApps(String id) {
-        appTable.deleteApps(id);
+    public void deleteApps(String id, Handler<AsyncResult<Void>> resultHandler) {
+        appDBServiceProxy.deleteApps(id, resultHandler);
     }
 
     @Override
-    public AppResponseVo getApps(String id) {
-        AppResponseVo appVo = appTable.getApps(id);
-        if (appVo == null) {
-            throw new NotFoundException("The app with id " + id + " can not be found");
-        }
-        return appVo;
+    public void getApps(String id, Handler<AsyncResult<AppResponseVo>> resultHandler) {
+        appDBServiceProxy.getApps(id, ar -> {
+            if (ar.succeeded()) {
+                if (ar.result() == null) {
+                    resultHandler.handle(Future.failedFuture(new NotFoundException("The app with id " + id + " can not be found")));
+                } else {
+                    resultHandler.handle(Future.succeededFuture(ar.result()));
+                }
+            } else {
+                resultHandler.handle(Future.failedFuture(ar.cause()));
+            }
+        });
     }
 }

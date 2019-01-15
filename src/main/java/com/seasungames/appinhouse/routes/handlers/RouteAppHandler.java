@@ -9,10 +9,10 @@ import com.seasungames.appinhouse.models.ResponseVo;
 import com.seasungames.appinhouse.routes.validations.impl.AppValidationHandler;
 import com.seasungames.appinhouse.services.AppService;
 import com.seasungames.appinhouse.utils.PathUtils;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
-import org.apache.http.HttpStatus;
 
 import javax.inject.Inject;
 
@@ -22,7 +22,7 @@ import static com.seasungames.appinhouse.utils.RestApiUtils.toResponseJson;
  * Created by lile on 12/27/2018
  */
 @AppInHouse
-public class RouteAppHandler {
+public class RouteAppHandler extends BaseHandler {
 
     @Inject
     AppService appService;
@@ -57,38 +57,30 @@ public class RouteAppHandler {
     private void apiGetApps(RoutingContext rc) {
         String lastKey = rc.request().getParam("last_key");
 
-        AppListResponseVo appListResponseVo = appService.getAppsList(lastKey);
-        ResponseVo<AppListResponseVo> responseVo = new ResponseVo<>();
-        toResponseJson(rc, HttpStatus.SC_OK, responseVo.setData(appListResponseVo).toJson());
+        appService.getAppsList(lastKey, resultVoidHandler(rc));
     }
 
     private void apiGetApp(RoutingContext rc) {
         String appId = rc.request().getParam("id");
 
-        AppResponseVo appResponseVo = appService.getApps(appId);
-        ResponseVo<AppResponseVo> responseVo = new ResponseVo<>();
-        toResponseJson(rc, HttpStatus.SC_OK, responseVo.setData(appResponseVo).toJson());
+        appService.getApps(appId, resultVoidHandler(rc));
     }
 
     private void apiCreateApps(RoutingContext rc) {
         AppVo appVo = Json.decodeValue(rc.getBodyAsJson().toString(), AppVo.class);
 
-        appService.createApps(appVo);
-        toResponseJson(rc, HttpStatus.SC_CREATED);
+        appService.createApps(appVo, resultVoidHandler(rc, HttpResponseStatus.CREATED.code()));
     }
 
     private void apiUpdateApps(RoutingContext rc) {
         AppVo appVo = Json.decodeValue(rc.getBodyAsJson().toString(), AppVo.class);
 
-        AppResponseVo appResponseVo = appService.updateApps(appVo);
-        ResponseVo<AppResponseVo> responseVo = new ResponseVo<>();
-        toResponseJson(rc, HttpStatus.SC_OK, responseVo.setData(appResponseVo).toJson());
+        appService.updateApps(appVo, resultVoidHandler(rc));
     }
 
     private void apiDeleteApps(RoutingContext rc) {
         String appId = rc.request().getParam("id");
 
-        appService.deleteApps(appId);
-        toResponseJson(rc, HttpStatus.SC_NO_CONTENT);
+        appService.deleteApps(appId, resultVoidHandler(rc, HttpResponseStatus.NO_CONTENT.code()));
     }
 }

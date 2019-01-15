@@ -3,26 +3,20 @@ package com.seasungames.appinhouse.routes.handlers;
 import com.seasungames.appinhouse.application.APIConstant;
 import com.seasungames.appinhouse.dagger.scope.AppInHouse;
 import com.seasungames.appinhouse.stores.services.version.models.VersionVo;
-import com.seasungames.appinhouse.models.ResponseVo;
-import com.seasungames.appinhouse.stores.services.version.models.VersionResponseVo;
 import com.seasungames.appinhouse.routes.validations.impl.VersionValidationHandler;
 import com.seasungames.appinhouse.services.VersionService;
 import com.seasungames.appinhouse.utils.PathUtils;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
-import org.apache.http.HttpStatus;
 
 import javax.inject.Inject;
-import java.util.List;
-
-import static com.seasungames.appinhouse.utils.RestApiUtils.toResponseJson;
-import static com.seasungames.appinhouse.utils.RestApiUtils.toResponseXML;
 
 /**
  * Created by lile on 12/27/2018
  */
 @AppInHouse
-public class RouteVersionHandler {
+public class RouteVersionHandler extends BaseHandler {
 
     @Inject
     VersionService versionService;
@@ -52,16 +46,14 @@ public class RouteVersionHandler {
     private void apiLatestVersion(RoutingContext rc) {
         String appId = rc.request().getParam("id");
 
-        ResponseVo<List<VersionResponseVo>> responseVo = new ResponseVo<>();
-        toResponseJson(rc, HttpStatus.SC_OK, responseVo.setData(versionService.getLatestList(appId)).toJson());
+        versionService.getLatestList(appId, resultVoidHandler(rc));
     }
 
     private void apiHistoryVersion(RoutingContext rc) {
         String appId = rc.request().getParam("id");
         String platform = rc.request().getParam("platform");
 
-        ResponseVo<List<VersionResponseVo>> responseVo = new ResponseVo<>();
-        toResponseJson(rc, HttpStatus.SC_OK, responseVo.setData(versionService.getPlatformList(appId, platform)).toJson());
+        versionService.getPlatformList(appId, platform, resultVoidHandler(rc));
     }
 
     private void apiCreateVersion(RoutingContext rc) {
@@ -82,14 +74,14 @@ public class RouteVersionHandler {
             vo.setIosBundleId(iosBundleId).setIosTitle(iosTitle);
         }
 
-        versionService.createVersion(vo);
-        toResponseJson(rc, HttpStatus.SC_CREATED);
+        versionService.createVersion(vo, resultVoidHandler(rc, HttpResponseStatus.CREATED.code()));
     }
 
     private void getPlist(RoutingContext rc) {
         String appId = rc.request().getParam("id");
         String platform = rc.request().getParam("platform");
         String version = rc.request().getParam("version");
-        toResponseXML(rc, HttpStatus.SC_OK, versionService.getPlist(appId, platform, version));
+
+        versionService.getPlist(appId, platform, version, resultXMLHandler(rc));
     }
 }

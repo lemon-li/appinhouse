@@ -2,17 +2,19 @@ package com.seasungames.appinhouse.services;
 
 import com.seasungames.appinhouse.stores.services.version.models.VersionVo;
 import com.seasungames.appinhouse.stores.services.version.models.VersionResponseVo;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Handler;
 
 import java.util.List;
 
 public interface VersionService {
 
-    List<VersionResponseVo> getPlatformList(String appId, String platform);
+    void getPlatformList(String appId, String platform, Handler<AsyncResult<List<VersionResponseVo>>> resultHandler);
 
-    List<VersionResponseVo> getLatestList(String appId);
+    void getLatestList(String appId, Handler<AsyncResult<List<VersionResponseVo>>> resultHandler);
 
-    void createVersion(VersionVo vo);
+    void createVersion(VersionVo vo, Handler<AsyncResult<Void>> resultHandler);
 
-    String getPlist(String appId, String platform, String version);
+    void getPlist(String appId, String platform, String version, Handler<AsyncResult<String>> resultHandler);
 
 }
