@@ -1,8 +1,8 @@
 package com.seasungames.appinhouse.services;
 
-import com.seasungames.appinhouse.models.AppVo;
-import com.seasungames.appinhouse.models.response.AppListResponseVo;
-import com.seasungames.appinhouse.models.response.AppResponseVo;
+import com.seasungames.appinhouse.stores.services.app.models.AppVo;
+import com.seasungames.appinhouse.stores.services.app.models.AppListResponseVo;
+import com.seasungames.appinhouse.stores.services.app.models.AppResponseVo;
 
 public interface AppService {
 

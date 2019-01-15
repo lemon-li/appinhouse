@@ -1,8 +1,12 @@
-package com.seasungames.appinhouse.models.response;
+package com.seasungames.appinhouse.stores.services.app.models;
+
+import io.vertx.codegen.annotations.DataObject;
+import io.vertx.core.json.JsonObject;
 
 /**
  * Created by lile on 1/10/2019
  */
+@DataObject(generateConverter = true)
 public class AppResponseVo {
 
     private String id;
@@ -10,6 +14,16 @@ public class AppResponseVo {
     private String alias;
 
     private String desc;
+
+    public AppResponseVo(JsonObject jsonObject) {
+        AppResponseVoConverter.fromJson(jsonObject, this);
+    }
+
+    public JsonObject toJson() {
+        JsonObject json = new JsonObject();
+        AppResponseVoConverter.toJson(this, json);
+        return json;
+    }
 
     public AppResponseVo() {
 

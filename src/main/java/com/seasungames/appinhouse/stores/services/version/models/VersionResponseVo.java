@@ -1,11 +1,25 @@
-package com.seasungames.appinhouse.models.response;
+package com.seasungames.appinhouse.stores.services.version.models;
+
+import io.vertx.codegen.annotations.DataObject;
+import io.vertx.core.json.JsonObject;
 
 import java.util.Map;
 
 /**
  * Created by lile on 1/10/2019
  */
+@DataObject(generateConverter = true)
 public class VersionResponseVo {
+
+    public VersionResponseVo(JsonObject jsonObject) {
+        VersionResponseVoConverter.fromJson(jsonObject, this);
+    }
+
+    public JsonObject toJson() {
+        JsonObject json = new JsonObject();
+        VersionResponseVoConverter.toJson(this, json);
+        return json;
+    }
 
     private String Id;
 

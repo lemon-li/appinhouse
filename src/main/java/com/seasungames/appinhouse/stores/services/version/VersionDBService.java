@@ -1,8 +1,9 @@
 package com.seasungames.appinhouse.stores.services.version;
 
-import com.seasungames.appinhouse.models.VersionVo;
-import com.seasungames.appinhouse.models.response.VersionResponseVo;
+import com.seasungames.appinhouse.stores.services.version.models.VersionVo;
+import com.seasungames.appinhouse.stores.services.version.models.VersionResponseVo;
 import io.vertx.codegen.annotations.ProxyClose;
+import io.vertx.codegen.annotations.ProxyGen;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 
@@ -11,6 +12,7 @@ import java.util.List;
 /**
  * Created by lile on 1/15/2019
  */
+@ProxyGen
 public interface VersionDBService {
 
     String SERVICE_ADDRESS = "com.seasungames.appinhouse.version-dynamodb-service";

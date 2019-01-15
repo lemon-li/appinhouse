@@ -2,10 +2,10 @@ package com.seasungames.appinhouse.routes.handlers;
 
 import com.seasungames.appinhouse.application.APIConstant;
 import com.seasungames.appinhouse.dagger.scope.AppInHouse;
-import com.seasungames.appinhouse.models.AppVo;
-import com.seasungames.appinhouse.models.response.AppListResponseVo;
-import com.seasungames.appinhouse.models.response.AppResponseVo;
-import com.seasungames.appinhouse.models.response.ResponseVo;
+import com.seasungames.appinhouse.stores.services.app.models.AppVo;
+import com.seasungames.appinhouse.stores.services.app.models.AppListResponseVo;
+import com.seasungames.appinhouse.stores.services.app.models.AppResponseVo;
+import com.seasungames.appinhouse.models.ResponseVo;
 import com.seasungames.appinhouse.routes.validations.impl.AppValidationHandler;
 import com.seasungames.appinhouse.services.AppService;
 import com.seasungames.appinhouse.utils.PathUtils;

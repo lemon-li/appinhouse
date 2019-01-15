@@ -1,7 +1,7 @@
 package com.seasungames.appinhouse.routes.handlers;
 
 import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException;
-import com.seasungames.appinhouse.models.response.ResponseVo;
+import com.seasungames.appinhouse.models.ResponseVo;
 import com.seasungames.appinhouse.routes.exception.HttpException;
 import io.vertx.core.Handler;
 import io.vertx.core.logging.Logger;

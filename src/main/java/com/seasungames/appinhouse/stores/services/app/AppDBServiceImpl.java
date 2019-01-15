@@ -1,8 +1,8 @@
 package com.seasungames.appinhouse.stores.services.app;
 
-import com.seasungames.appinhouse.models.AppVo;
-import com.seasungames.appinhouse.models.response.AppListResponseVo;
-import com.seasungames.appinhouse.models.response.AppResponseVo;
+import com.seasungames.appinhouse.stores.services.app.models.AppListResponseVo;
+import com.seasungames.appinhouse.stores.services.app.models.AppResponseVo;
+import com.seasungames.appinhouse.stores.services.app.models.AppVo;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 
@@ -10,7 +10,6 @@ import io.vertx.core.Handler;
  * Created by lile on 1/15/2019
  */
 public class AppDBServiceImpl implements AppDBService {
-
     @Override
     public void getAppsList(String lastKey, Handler<AsyncResult<AppListResponseVo>> resultHandler) {
 

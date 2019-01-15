@@ -1,7 +1,7 @@
 package com.seasungames.appinhouse.stores.services.version;
 
-import com.seasungames.appinhouse.models.VersionVo;
-import com.seasungames.appinhouse.models.response.VersionResponseVo;
+import com.seasungames.appinhouse.stores.services.version.models.VersionVo;
+import com.seasungames.appinhouse.stores.services.version.models.VersionResponseVo;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 

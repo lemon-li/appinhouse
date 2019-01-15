@@ -1,9 +1,9 @@
 package com.seasungames.appinhouse.services.impl;
 
 import com.seasungames.appinhouse.dagger.scope.AppInHouse;
-import com.seasungames.appinhouse.models.AppVo;
-import com.seasungames.appinhouse.models.response.AppListResponseVo;
-import com.seasungames.appinhouse.models.response.AppResponseVo;
+import com.seasungames.appinhouse.stores.services.app.models.AppVo;
+import com.seasungames.appinhouse.stores.services.app.models.AppListResponseVo;
+import com.seasungames.appinhouse.stores.services.app.models.AppResponseVo;
 import com.seasungames.appinhouse.routes.exception.impl.NotFoundException;
 import com.seasungames.appinhouse.services.AppService;
 import com.seasungames.appinhouse.stores.AppStore;

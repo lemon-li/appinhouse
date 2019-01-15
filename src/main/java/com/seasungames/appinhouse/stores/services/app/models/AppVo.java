@@ -1,10 +1,13 @@
-package com.seasungames.appinhouse.models;
+package com.seasungames.appinhouse.stores.services.app.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.vertx.codegen.annotations.DataObject;
+import io.vertx.core.json.JsonObject;
 
 /**
  * Created by lile on 12/28/2018
  */
+@DataObject(generateConverter = true)
 public class AppVo {
 
     private String appId;
@@ -12,6 +15,16 @@ public class AppVo {
     private String alias;
 
     private String desc;
+
+    public AppVo(JsonObject jsonObject) {
+        AppVoConverter.fromJson(jsonObject, this);
+    }
+
+    public JsonObject toJson() {
+        JsonObject json = new JsonObject();
+        AppVoConverter.toJson(this, json);
+        return json;
+    }
 
     public AppVo() {
 

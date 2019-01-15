@@ -1,7 +1,7 @@
 package com.seasungames.appinhouse.services;
 
-import com.seasungames.appinhouse.models.VersionVo;
-import com.seasungames.appinhouse.models.response.VersionResponseVo;
+import com.seasungames.appinhouse.stores.services.version.models.VersionVo;
+import com.seasungames.appinhouse.stores.services.version.models.VersionResponseVo;
 
 import java.util.List;
 

@@ -1,7 +1,10 @@
-package com.seasungames.appinhouse.models;
+package com.seasungames.appinhouse.stores.services.version.models;
 
 import com.seasungames.appinhouse.application.PlatformEnum;
+import io.vertx.codegen.annotations.DataObject;
+import io.vertx.core.json.JsonObject;
 
+@DataObject(generateConverter = true)
 public class VersionVo {
 
     private String appId;
@@ -21,6 +24,16 @@ public class VersionVo {
     private String iosTitle;
 
     private String createTime;
+
+    public VersionVo(JsonObject jsonObject) {
+        VersionVoConverter.fromJson(jsonObject, this);
+    }
+
+    public JsonObject toJson() {
+        JsonObject json = new JsonObject();
+        VersionVoConverter.toJson(this, json);
+        return json;
+    }
 
     public VersionVo() {
 

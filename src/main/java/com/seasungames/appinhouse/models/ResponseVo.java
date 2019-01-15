@@ -1,4 +1,4 @@
-package com.seasungames.appinhouse.models.response;
+package com.seasungames.appinhouse.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.vertx.core.json.Json;
