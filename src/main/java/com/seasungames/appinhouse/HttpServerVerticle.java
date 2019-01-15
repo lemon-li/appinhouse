@@ -5,13 +5,11 @@ import com.seasungames.appinhouse.dagger.DaggerMainComponent;
 import com.seasungames.appinhouse.dagger.MainComponent;
 import com.seasungames.appinhouse.dagger.VertxModule;
 import com.seasungames.appinhouse.routes.RoutesManager;
-import com.seasungames.appinhouse.stores.services.DynamoDBService;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-import io.vertx.serviceproxy.ServiceProxyBuilder;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -33,12 +31,9 @@ public class HttpServerVerticle extends AbstractVerticle {
     @Named("HTTP")
     HttpServer webServer;
 
-    private DynamoDBService dbService;
-
     @Override
     public void start(Future<Void> startFuture) throws Exception {
         injectDependencies();
-        initDynamoDBServiceProxy();
 
         webServer.requestHandler(routesManager.getRouter())
             .listen(conf.httpPort(), ar -> {
@@ -57,12 +52,6 @@ public class HttpServerVerticle extends AbstractVerticle {
             .vertxModule(new VertxModule(vertx))
             .build();
         component.inject(this);
-    }
-
-    private void initDynamoDBServiceProxy() {
-        dbService = new ServiceProxyBuilder(vertx)
-            .setAddress(DynamoDBService.SERVICE_ADDRESS)
-            .build(DynamoDBService.class);
     }
 
     @Override

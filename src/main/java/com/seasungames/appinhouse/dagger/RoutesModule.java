@@ -5,7 +5,8 @@ import com.seasungames.appinhouse.services.AppService;
 import com.seasungames.appinhouse.services.VersionService;
 import com.seasungames.appinhouse.services.impl.AppServiceImpl;
 import com.seasungames.appinhouse.services.impl.VersionServiceImpl;
-import com.seasungames.appinhouse.stores.services.DynamoDBService;
+import com.seasungames.appinhouse.stores.services.app.AppDBService;
+import com.seasungames.appinhouse.stores.services.version.VersionDBService;
 import dagger.Module;
 import dagger.Provides;
 import io.vertx.core.Vertx;
@@ -36,11 +37,18 @@ public class RoutesModule {
     }
 
     @Provides
-    @Named("DB_PROXY")
     @AppInHouse
-    DynamoDBService provideDynamoDBService(Vertx vertx) {
+    AppDBService provideAppDBService(Vertx vertx) {
         return new ServiceProxyBuilder(vertx)
-            .setAddress(DynamoDBService.SERVICE_ADDRESS)
-            .build(DynamoDBService.class);
+            .setAddress(AppDBService.SERVICE_ADDRESS)
+            .build(AppDBService.class);
+    }
+
+    @Provides
+    @AppInHouse
+    VersionDBService provideVersionDBService(Vertx vertx) {
+        return new ServiceProxyBuilder(vertx)
+            .setAddress(VersionDBService.SERVICE_ADDRESS)
+            .build(VersionDBService.class);
     }
 }
