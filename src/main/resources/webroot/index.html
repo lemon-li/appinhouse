@@ -1,10 +1,163 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>"Hello World Index"</title>
-</head>
-<body>
-    <h1>Index</h1>
-</body>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>加勒比海盗企业内部发布渠道</title>
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1,
+            user-scalable=no">
+        <link rel="shortcut icon" href="img/favicon_16.ico" />
+        <link rel="bookmark" href="img/favicon_16.ico" />
+        <!-- site css -->
+        <link rel="stylesheet" href="css/site.min.css">
+        <link rel="stylesheet" type="text/css"
+            href="jquery.confirm/jquery.confirm.css" />
+        <script type="text/javascript" src="js/site.min.js"></script>
+        <script type="text/javascript" src="js/inhouse.js"></script>
+        <script src="jquery.confirm/jquery.confirm.js"></script>
+        <script type="text/javascript" src="js/alert.js"></script>
+    </head>
+
+    <body>
+        <!--nav-->
+        <nav role="navigation" class="navbar navbar-custom" id="history_info">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button data-target="#menu2" data-toggle="collapse"
+                        class="navbar-toggle" type="button">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="#" class="navbar-brand">
+                        <img src="img/dh.png"></a>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+        <!--header-->
+        <div class="container-fluid">
+            <!--documents-->
+            <div class="row row-offcanvas row-offcanvas-left">
+                <div class="col-xs-12 col-sm-9 content">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-w-m
+                                    btn-primary">创建应用</button></div>
+                            <h4>项目列表</h4>
+                        </div>
+                        <div class="content-row-typography-my">
+                                <h4>
+                                    <span>声明:本发布渠道的目的仅限内部测试用途,不作为对外产品发布.</span>
+                                </h4>
+                        </div>
+                        <div class="content-row-typography-my">
+                                <h4>
+                                    <span>本服务提供客户端下载功能。提供给北京西山居,深圳西山居等多个地方.</span>
+                                </h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="content-row">
+                                <div id="alert_msg"></div>
+                                <div class="row" id="list_row">
+                                    <div class="hidden">
+                                        <input type="text" id="platform"
+                                            value="ios">
+                                        <input type="text" id="env"
+                                            value="release"></div>
+                                    <div class="bs-example">
+                                        <table class="table
+                                            table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        <h5>名称</h5>
+                                                    </th>
+                                                    <th>
+                                                        <h5>描述</h5>
+                                                    </th>
+                                                    <th>
+                                                        <h5>ID</h5>
+                                                    </th>
+                                                    <th>
+                                                        <h5>#</h5>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="list_body"></tbody>
+                                        </table>
+                                    </div>
+                                    <div class="row content-row-pagination"
+                                        id="list_page" style="display: none;">
+                                        <div class="hidden">
+                                            <input type="text" id="page"
+                                                value="0"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- panel body -->
+                    </div>
+                </div>
+                <!-- content -->
+            </div>
+        </div>
+    </body>
+
 </html>
+<script type="text/javascript">
+    //默认初始化
+    $(function () {
+        reqAppList();
+    });
+
+    function reqAppList(page) {
+        var suffix = "";
+        if (page) {
+            suffix = "?last_key=" + $('#page').val()
+        }
+        var url = "/api/apps" + suffix;
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dateType: "json",
+            success: function (data) {
+                $('#list_body').empty();
+
+                $.each(data.data.list,
+                    function (index, item) {
+                        var trclass = ""
+                        if (index % 2 == 0) {
+                            trclass = "success"
+                        } else {
+                            trclass = "active"
+                        }
+
+                        var appname = item.id
+                        if (item.alias) {
+                            appname = item.alias
+                        }
+
+                        $('#list_body').append(' <tr class="' + trclass + '">' +
+                            '<td><h3><a href="index_re.html?app=' + item.id + '" >' + appname +
+                            '</a></h3></td>' + '<td><h3>' + item.desc + '</h3></td>' + '<td><h3>' +
+                            item.id + '</h3></td>' +
+                            '<td><button type="button" class="btn btn-w-m btn-info">修改</button>' +
+                            '<button type="button" class="btn btn-w-m btn-danger">删除</button></td>' +
+                            '</tr>')
+                    });
+            }
+        });
+    }
+
+    function modifyApp() {
+
+    }
+
+    function deleteApp() {
+
+    }
+
+</script>
