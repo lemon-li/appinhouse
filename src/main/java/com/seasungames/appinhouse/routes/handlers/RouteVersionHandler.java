@@ -71,7 +71,8 @@ public class RouteVersionHandler extends BaseHandler {
         if (vo.isIOS()) {
             String iosBundleId = rc.request().getParam("ios_bundle_id");
             String iosTitle = rc.request().getParam("ios_title");
-            vo.setIosBundleId(iosBundleId).setIosTitle(iosTitle);
+            vo.setIOSBundleId(iosBundleId);
+            vo.setIOSTitle(iosTitle);
         }
 
         versionService.createVersion(vo, resultVoidHandler(rc, HttpResponseStatus.CREATED.code()));

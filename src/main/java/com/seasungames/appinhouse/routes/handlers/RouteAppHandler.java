@@ -3,9 +3,6 @@ package com.seasungames.appinhouse.routes.handlers;
 import com.seasungames.appinhouse.application.APIConstant;
 import com.seasungames.appinhouse.dagger.scope.AppInHouse;
 import com.seasungames.appinhouse.stores.services.app.models.AppVo;
-import com.seasungames.appinhouse.stores.services.app.models.AppListResponseVo;
-import com.seasungames.appinhouse.stores.services.app.models.AppResponseVo;
-import com.seasungames.appinhouse.models.ResponseVo;
 import com.seasungames.appinhouse.routes.validations.impl.AppValidationHandler;
 import com.seasungames.appinhouse.services.AppService;
 import com.seasungames.appinhouse.utils.PathUtils;
@@ -15,8 +12,6 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 
 import javax.inject.Inject;
-
-import static com.seasungames.appinhouse.utils.RestApiUtils.toResponseJson;
 
 /**
  * Created by lile on 12/27/2018

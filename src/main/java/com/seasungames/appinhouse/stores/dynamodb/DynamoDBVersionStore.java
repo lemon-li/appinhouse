@@ -108,10 +108,11 @@ public class DynamoDBVersionStore implements VersionStore {
         if (outcome != null) {
             Map<String, String> info = outcome.getMap(VersionTable.ATTRIBUTE_JSON_INFO);
 
-            return new VersionVo()
-                .setDownloadUrl(info.get(VersionTable.ATTRIBUTE_DOWNLOAD_URL))
-                .setIosBundleId(info.get(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID))
-                .setIosTitle(info.get(VersionTable.ATTRIBUTE_IOS_TITLE));
+            VersionVo vo = new VersionVo();
+            vo.setDownloadUrl(info.get(VersionTable.ATTRIBUTE_DOWNLOAD_URL));
+            vo.setIOSBundleId(info.get(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID));
+            vo.setIOSTitle(info.get(VersionTable.ATTRIBUTE_IOS_TITLE));
+            return vo;
         } else {
             return null;
         }
@@ -126,8 +127,8 @@ public class DynamoDBVersionStore implements VersionStore {
         infoMap.put(VersionTable.ATTRIBUTE_DESC, vo.getDesc());
 
         if (vo.isIOS()) {
-            infoMap.put(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID, vo.getIosBundleId());
-            infoMap.put(VersionTable.ATTRIBUTE_IOS_TITLE, vo.getIosTitle());
+            infoMap.put(VersionTable.ATTRIBUTE_IOS_BUNDLE_ID, vo.getIOSBundleId());
+            infoMap.put(VersionTable.ATTRIBUTE_IOS_TITLE, vo.getIOSTitle());
         }
 
         Item item = new Item().withPrimaryKey(VersionTable.HASH_KEY_APPID,

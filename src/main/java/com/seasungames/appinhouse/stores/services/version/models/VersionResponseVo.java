@@ -21,6 +21,10 @@ public class VersionResponseVo {
         return json;
     }
 
+    public VersionResponseVo() {
+
+    }
+
     private String Id;
 
     private String platform;
