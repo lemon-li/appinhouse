@@ -1,7 +1,9 @@
 package com.seasungames.appinhouse.application;
 
 public class APIConstant {
-    public static final String INDEX = "/";
+
+    public static final String WEBROOT = "webroot";
+
     public static final String INDEX_APP = "/app/:app";
     public static final String INDEX_VERSION = "/app/:id/:pf/:version";
 

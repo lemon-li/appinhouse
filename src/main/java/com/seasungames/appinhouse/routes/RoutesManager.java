@@ -1,5 +1,6 @@
 package com.seasungames.appinhouse.routes;
 
+import com.seasungames.appinhouse.application.APIConstant;
 import com.seasungames.appinhouse.dagger.scope.AppInHouse;
 import com.seasungames.appinhouse.routes.exception.impl.BadRequestException;
 import com.seasungames.appinhouse.routes.handlers.RouteFailureHandler;
@@ -43,7 +44,9 @@ public class RoutesManager {
         router.route().handler(BodyHandler.create());
         router.route().handler(LoggerHandler.create());
         router.route().handler(StaticHandler.create()
-            .setWebRoot("webroot").setIndexPage("index.html").setDefaultContentEncoding("UTF-8"));
+            .setWebRoot(APIConstant.WEBROOT)
+            .setIndexPage("index.html")
+            .setDefaultContentEncoding("UTF-8"));
         router.route().failureHandler(new RouteFailureHandler());
         router.route().last().handler(rc -> rc.fail(new BadRequestException()));
     }
