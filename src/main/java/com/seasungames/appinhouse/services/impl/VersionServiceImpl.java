@@ -59,15 +59,23 @@ public class VersionServiceImpl implements VersionService {
 
     @Override
     public void getPlist(String appId, String platform, String version, Handler<AsyncResult<String>> resultHandler) {
-        versionDBServiceProxy.getVersion(appId, platform, version, ar -> {
-            VersionVo vo = ar.result();
-            if (vo != null) {
-                String result = PlistUtils.genPlist(vo.getDownloadUrl(), vo.getIosBundleId(), vo.getIosTitle());
-                resultHandler.handle(Future.succeededFuture(result));
+        Future<VersionVo> future = Future.future();
+
+        future.setHandler(ar -> {
+            if (ar.succeeded()) {
+                VersionVo vo = ar.result();
+                if (vo != null) {
+                    String result = PlistUtils.genPlist(vo.getDownloadUrl(), vo.getIOSBundleId(), vo.getIOSTitle());
+                    resultHandler.handle(Future.succeededFuture(result));
+                } else {
+                    String error = String.format("The Version not found , id: %s, platform: %s, version: %s", appId, platform, version);
+                    resultHandler.handle(Future.failedFuture(new NotFoundException(error)));
+                }
             } else {
-                resultHandler.handle(Future.failedFuture(new NotFoundException(String.format("The Version not found , id : %s, platform : %s, version : %s",
-                    appId, platform, version))));
+                resultHandler.handle(Future.failedFuture(ar.cause()));
             }
         });
+
+        versionDBServiceProxy.getVersion(appId, platform, version, future);
     }
 }

@@ -51,16 +51,17 @@ public class AppServiceImpl implements AppService {
 
     @Override
     public void getApps(String id, Handler<AsyncResult<AppResponseVo>> resultHandler) {
-        appDBServiceProxy.getApps(id, ar -> {
-            if (ar.succeeded()) {
-                if (ar.result() == null) {
-                    resultHandler.handle(Future.failedFuture(new NotFoundException("The app with id " + id + " can not be found")));
-                } else {
-                    resultHandler.handle(Future.succeededFuture(ar.result()));
-                }
+        Future<AppResponseVo> future = Future.future();
+
+        future.setHandler(ar -> {
+            if (ar.succeeded() && ar.result() == null) {
+                String error = String.format("The app with id: %s can not be found", id);
+                resultHandler.handle(Future.failedFuture(new NotFoundException(error)));
             } else {
-                resultHandler.handle(Future.failedFuture(ar.cause()));
+                resultHandler.handle(ar);
             }
         });
+        
+        appDBServiceProxy.getApps(id, future);
     }
 }

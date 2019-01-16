@@ -1,10 +1,13 @@
 package com.seasungames.appinhouse.routes.exception;
 
-public abstract class HttpException extends RuntimeException {
+import io.vertx.core.VertxException;
+
+public abstract class HttpException extends VertxException {
     public final int status;
     private final String msg;
 
     protected HttpException(int status, String msg) {
+        super(msg);
         this.status = status;
         this.msg = msg;
     }

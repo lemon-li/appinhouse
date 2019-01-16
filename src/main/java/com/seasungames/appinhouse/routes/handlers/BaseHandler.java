@@ -4,7 +4,6 @@ import com.seasungames.appinhouse.models.ResponseVo;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 
 /**
@@ -20,8 +19,7 @@ public abstract class BaseHandler {
                     .putHeader("content-type", "application/json")
                     .end(new ResponseVo<T>().setData(ar.result()).toJson());
             } else {
-                internalError(context, ar.cause());
-                ar.cause().printStackTrace();
+                context.fail(ar.cause());
             }
         };
     }
@@ -34,8 +32,7 @@ public abstract class BaseHandler {
                     .putHeader("content-type", "application/json")
                     .end();
             } else {
-                internalError(context, ar.cause());
-                ar.cause().printStackTrace();
+                context.fail(ar.cause());
             }
         };
     }
@@ -48,16 +45,8 @@ public abstract class BaseHandler {
                     .putHeader("content-type", "application/x-plist; charset=utf-8")
                     .end(ar.result());
             } else {
-                internalError(context, ar.cause());
-                ar.cause().printStackTrace();
+                context.fail(ar.cause());
             }
         };
     }
-
-    protected void internalError(RoutingContext context, Throwable ex) {
-        context.response().setStatusCode(500)
-            .putHeader("content-type", "application/json")
-            .end(new JsonObject().put("error", ex.getMessage()).encodePrettily());
-    }
-
 }

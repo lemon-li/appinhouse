@@ -43,7 +43,7 @@ public class RouteAppHandler extends BaseHandler {
     }
 
     private void index(RoutingContext rc) {
-        rc.response().sendFile(PathUtils.getAssetsPath("/assets/html/app.html"));
+        rc.response().sendFile(PathUtils.getAssetsPath("/html/app.html"));
     }
 
     /**

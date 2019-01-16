@@ -40,7 +40,7 @@ public class RouteVersionHandler extends BaseHandler {
     }
 
     private void index(RoutingContext rc) {
-        rc.response().sendFile(PathUtils.getAssetsPath("/assets/html/version.html"));
+        rc.response().sendFile(PathUtils.getAssetsPath("/html/version.html"));
     }
 
     private void apiLatestVersion(RoutingContext rc) {
