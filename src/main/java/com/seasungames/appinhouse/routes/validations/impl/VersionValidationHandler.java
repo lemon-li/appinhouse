@@ -39,5 +39,4 @@ public class VersionValidationHandler extends BaseValidationHandler {
             .addPathParamWithPattern("platform", REGEX_CHECK_EMPTY)
             .addPathParamWithPattern("version", REGEX_CHECK_EMPTY);
     }
-
 }

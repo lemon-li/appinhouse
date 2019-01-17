@@ -11,6 +11,14 @@ import java.util.HashMap;
 @DataObject(generateConverter = true)
 public class VersionResponseVo {
 
+    private String Id;
+
+    private String platform;
+
+    private String version;
+
+    private HashMap<String, Object> info;
+
     public VersionResponseVo(JsonObject jsonObject) {
         VersionResponseVoConverter.fromJson(jsonObject, this);
     }
@@ -24,14 +32,6 @@ public class VersionResponseVo {
     public VersionResponseVo() {
 
     }
-
-    private String Id;
-
-    private String platform;
-
-    private String version;
-
-    private HashMap<String, Object> info;
 
     public String getId() {
         return Id;

@@ -1,7 +1,7 @@
 package com.seasungames.appinhouse.routes;
 
 import com.seasungames.appinhouse.application.APIConstant;
-import com.seasungames.appinhouse.dagger.scope.AppInHouse;
+import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.routes.exception.impl.BadRequestException;
 import com.seasungames.appinhouse.routes.handlers.RouteFailureHandler;
 import io.vertx.ext.web.Router;

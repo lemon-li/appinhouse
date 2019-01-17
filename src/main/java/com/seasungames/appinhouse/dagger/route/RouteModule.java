@@ -1,14 +1,12 @@
-package com.seasungames.appinhouse.dagger;
+package com.seasungames.appinhouse.dagger.route;
 
-import com.seasungames.appinhouse.application.Configuration;
-import com.seasungames.appinhouse.dagger.scope.AppInHouse;
+import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import dagger.Module;
 import dagger.Provides;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.net.PemKeyCertOptions;
-import org.aeonbits.owner.ConfigFactory;
 
 import javax.inject.Named;
 
@@ -17,7 +15,7 @@ import javax.inject.Named;
  */
 
 @Module
-public class AppInHouseModule {
+public class RouteModule {
 
     @Provides
     @Named("HTTPS")
@@ -36,11 +34,5 @@ public class AppInHouseModule {
     @AppInHouse
     HttpServer provideHttpServer(Vertx vertx) {
         return vertx.createHttpServer();
-    }
-
-    @Provides
-    @AppInHouse
-    Configuration provideConfiguration() {
-        return ConfigFactory.create(Configuration.class);
     }
 }

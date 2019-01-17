@@ -11,7 +11,7 @@ import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.seasungames.appinhouse.application.Configuration;
-import com.seasungames.appinhouse.dagger.scope.AppInHouse;
+import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.stores.services.app.models.AppVo;
 import com.seasungames.appinhouse.stores.services.app.models.AppListResponseVo;
 import com.seasungames.appinhouse.stores.services.app.models.AppResponseVo;
@@ -24,7 +24,6 @@ import io.vertx.core.logging.LoggerFactory;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

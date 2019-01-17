@@ -16,5 +16,4 @@ public interface VersionService {
     void createVersion(VersionVo vo, Handler<AsyncResult<Void>> resultHandler);
 
     void getPlist(String appId, String platform, String version, Handler<AsyncResult<String>> resultHandler);
-
 }

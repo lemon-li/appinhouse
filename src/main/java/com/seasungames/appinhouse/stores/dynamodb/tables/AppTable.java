@@ -10,5 +10,4 @@ public class AppTable {
     public static final String ATTRIBUTE_ALIAS = "alias";
 
     public static final String ATTRIBUTE_DESC = "desc";
-
 }

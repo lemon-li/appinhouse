@@ -60,5 +60,4 @@ public class AppVo {
     public void setAlias(String alias) {
         this.alias = alias;
     }
-
 }

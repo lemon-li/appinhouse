@@ -1,6 +1,6 @@
-package com.seasungames.appinhouse.dagger;
+package com.seasungames.appinhouse.dagger.common.module;
 
-import com.seasungames.appinhouse.dagger.scope.AppInHouse;
+import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import dagger.Module;
 import dagger.Provides;
 import io.vertx.core.Vertx;

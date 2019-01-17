@@ -13,5 +13,4 @@ public enum PlatformEnum {
     public String getPlatform() {
         return this.platform;
     }
-
 }

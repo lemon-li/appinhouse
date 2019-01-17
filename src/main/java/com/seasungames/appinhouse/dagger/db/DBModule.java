@@ -1,4 +1,4 @@
-package com.seasungames.appinhouse.dagger;
+package com.seasungames.appinhouse.dagger.db;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.client.builder.AwsClientBuilder;
@@ -6,7 +6,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.seasungames.appinhouse.application.Configuration;
-import com.seasungames.appinhouse.dagger.scope.AppInHouse;
+import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.stores.AppStore;
 import com.seasungames.appinhouse.stores.VersionStore;
 import com.seasungames.appinhouse.stores.dynamodb.DynamoDBAppStore;
@@ -44,14 +44,12 @@ public class DBModule {
     }
 
     @Provides
-    @Named("APP_DB_SERVICE")
     @AppInHouse
     AppDBService provideAppDBService(AppDBServiceImpl appDBService) {
         return appDBService;
     }
 
     @Provides
-    @Named("VERSION_DB_SERVICE")
     @AppInHouse
     VersionDBService provideVersionDBService(VersionDBServiceImpl versionDBService) {
         return versionDBService;

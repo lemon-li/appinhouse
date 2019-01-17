@@ -1,6 +1,6 @@
 package com.seasungames.appinhouse.services.impl;
 
-import com.seasungames.appinhouse.dagger.scope.AppInHouse;
+import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.stores.services.app.AppDBService;
 import com.seasungames.appinhouse.stores.services.app.models.AppResponseVo;
 import com.seasungames.appinhouse.stores.services.version.VersionDBService;
@@ -23,11 +23,9 @@ import java.util.List;
 @AppInHouse
 public class VersionServiceImpl implements VersionService {
 
-    @Named("APP_DB_PROXY")
     @Inject
     AppDBService appDBServiceProxy;
 
-    @Named("VERSION_DB_PROXY")
     @Inject
     VersionDBService versionDBServiceProxy;
 

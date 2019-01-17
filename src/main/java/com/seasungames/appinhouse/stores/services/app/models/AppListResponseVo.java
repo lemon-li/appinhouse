@@ -47,5 +47,4 @@ public class AppListResponseVo {
         this.lastKey = lastKey;
         return this;
     }
-
 }

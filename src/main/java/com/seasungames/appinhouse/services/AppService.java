@@ -17,5 +17,4 @@ public interface AppService {
     void deleteApps(String id, Handler<AsyncResult<Void>> resultHandler);
 
     void getApps(String id, Handler<AsyncResult<AppResponseVo>> resultHandler);
-
 }

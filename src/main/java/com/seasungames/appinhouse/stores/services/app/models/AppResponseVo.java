@@ -15,16 +15,6 @@ public class AppResponseVo {
 
     private String desc;
 
-    public AppResponseVo(JsonObject jsonObject) {
-        AppResponseVoConverter.fromJson(jsonObject, this);
-    }
-
-    public JsonObject toJson() {
-        JsonObject json = new JsonObject();
-        AppResponseVoConverter.toJson(this, json);
-        return json;
-    }
-
     public AppResponseVo() {
 
     }
@@ -33,6 +23,16 @@ public class AppResponseVo {
         this.id = id;
         this.alias = alias;
         this.desc = desc;
+    }
+
+    public AppResponseVo(JsonObject jsonObject) {
+        AppResponseVoConverter.fromJson(jsonObject, this);
+    }
+
+    public JsonObject toJson() {
+        JsonObject json = new JsonObject();
+        AppResponseVoConverter.toJson(this, json);
+        return json;
     }
 
     public String getId() {

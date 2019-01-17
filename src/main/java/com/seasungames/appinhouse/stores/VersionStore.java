@@ -14,5 +14,4 @@ public interface VersionStore {
     void createVersion(VersionVo vo);
 
     VersionVo getVersion(String appId, String platform, String version);
-
 }

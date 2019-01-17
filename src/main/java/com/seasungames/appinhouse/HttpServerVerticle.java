@@ -1,9 +1,9 @@
 package com.seasungames.appinhouse;
 
 import com.seasungames.appinhouse.application.Configuration;
-import com.seasungames.appinhouse.dagger.DaggerMainComponent;
-import com.seasungames.appinhouse.dagger.MainComponent;
-import com.seasungames.appinhouse.dagger.VertxModule;
+import com.seasungames.appinhouse.dagger.common.module.VertxModule;
+import com.seasungames.appinhouse.dagger.route.DaggerRouteComponent;
+import com.seasungames.appinhouse.dagger.route.RouteComponent;
 import com.seasungames.appinhouse.routes.RoutesManager;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
@@ -48,7 +48,7 @@ public class HttpServerVerticle extends AbstractVerticle {
     }
 
     private void injectDependencies() {
-        MainComponent component = DaggerMainComponent.builder()
+        RouteComponent component = DaggerRouteComponent.builder()
             .vertxModule(new VertxModule(vertx))
             .build();
         component.inject(this);

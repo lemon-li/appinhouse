@@ -1,6 +1,6 @@
 package com.seasungames.appinhouse.services.impl;
 
-import com.seasungames.appinhouse.dagger.scope.AppInHouse;
+import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.stores.services.app.AppDBService;
 import com.seasungames.appinhouse.stores.services.app.models.AppVo;
 import com.seasungames.appinhouse.stores.services.app.models.AppListResponseVo;
@@ -12,7 +12,6 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 /**
  * Created by lile on 1/4/2019
@@ -20,7 +19,6 @@ import javax.inject.Named;
 @AppInHouse
 public class AppServiceImpl implements AppService {
 
-    @Named("APP_DB_PROXY")
     @Inject
     AppDBService appDBServiceProxy;
 

@@ -25,16 +25,6 @@ public class VersionVo {
 
     private String createTime;
 
-    public VersionVo(JsonObject jsonObject) {
-        VersionVoConverter.fromJson(jsonObject, this);
-    }
-
-    public JsonObject toJson() {
-        JsonObject json = new JsonObject();
-        VersionVoConverter.toJson(this, json);
-        return json;
-    }
-
     public VersionVo() {
 
     }
@@ -49,6 +39,16 @@ public class VersionVo {
         this.downloadUrl = downloadUrl;
         this.jenkinsUrl = jenkinsUrl;
         this.createTime = createTime;
+    }
+
+    public VersionVo(JsonObject jsonObject) {
+        VersionVoConverter.fromJson(jsonObject, this);
+    }
+
+    public JsonObject toJson() {
+        JsonObject json = new JsonObject();
+        VersionVoConverter.toJson(this, json);
+        return json;
     }
 
     public String getAppId() {
@@ -103,17 +103,13 @@ public class VersionVo {
         return iosBundleId;
     }
 
-    public void setIOSBundleId(String iosBundleId) {
-        this.iosBundleId = iosBundleId;
-    }
+    public void setIOSBundleId(String iosBundleId) { this.iosBundleId = iosBundleId; }
 
     public String getIOSTitle() {
         return iosTitle;
     }
 
-    public void setIOSTitle(String iosTitle) {
-        this.iosTitle = iosTitle;
-    }
+    public void setIOSTitle(String iosTitle) { this.iosTitle = iosTitle; }
 
     public String getCreateTime() {
         return createTime;

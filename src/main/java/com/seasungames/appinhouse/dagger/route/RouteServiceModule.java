@@ -1,6 +1,6 @@
-package com.seasungames.appinhouse.dagger;
+package com.seasungames.appinhouse.dagger.route;
 
-import com.seasungames.appinhouse.dagger.scope.AppInHouse;
+import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.services.AppService;
 import com.seasungames.appinhouse.services.VersionService;
 import com.seasungames.appinhouse.services.impl.AppServiceImpl;
@@ -16,7 +16,7 @@ import io.vertx.serviceproxy.ServiceProxyBuilder;
 import javax.inject.Named;
 
 @Module
-public class RoutesModule {
+public class RouteServiceModule {
 
     @Provides
     @AppInHouse
@@ -37,7 +37,6 @@ public class RoutesModule {
     }
 
     @Provides
-    @Named("APP_DB_PROXY")
     @AppInHouse
     AppDBService provideAppDBService(Vertx vertx) {
         return new ServiceProxyBuilder(vertx)
@@ -46,7 +45,6 @@ public class RoutesModule {
     }
 
     @Provides
-    @Named("VERSION_DB_PROXY")
     @AppInHouse
     VersionDBService provideVersionDBService(Vertx vertx) {
         return new ServiceProxyBuilder(vertx)

@@ -1,4 +1,4 @@
-package com.seasungames.appinhouse.dagger.scope;
+package com.seasungames.appinhouse.dagger.common.scope;
 
 import javax.inject.Scope;
 import java.lang.annotation.Retention;
