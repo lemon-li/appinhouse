@@ -84,7 +84,7 @@ public class DynamoDBAppStore implements AppStore {
 
     @Override
     public AppListResponseVo getAppsList(String lastKey) {
-        List<AppResponseVo> appLists = new ArrayList<>();
+        ArrayList<AppResponseVo> appLists = new ArrayList<>();
         AppResponseVo appVO;
 
         ScanRequest scanRequest = new ScanRequest()
