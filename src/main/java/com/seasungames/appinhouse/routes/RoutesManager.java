@@ -1,9 +1,16 @@
 package com.seasungames.appinhouse.routes;
 
+import com.seasungames.appinhouse.HttpServerVerticle;
 import com.seasungames.appinhouse.application.APIConstant;
+import com.seasungames.appinhouse.application.Async;
+import com.seasungames.appinhouse.application.Configuration;
 import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.routes.exception.impl.BadRequestException;
 import com.seasungames.appinhouse.routes.handlers.RouteFailureHandler;
+import io.vertx.core.Future;
+import io.vertx.core.http.HttpServer;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 
 import com.seasungames.appinhouse.routes.handlers.RouteAppHandler;
@@ -13,6 +20,7 @@ import io.vertx.ext.web.handler.LoggerHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /***
  RESTful API
@@ -27,7 +35,9 @@ import javax.inject.Inject;
  DELETE:  Used for deleting resources.
  ***/
 @AppInHouse
-public class RoutesManager {
+public class RoutesManager implements Async {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RoutesManager.class);
 
     private final Router router;
 
@@ -36,6 +46,13 @@ public class RoutesManager {
 
     @Inject
     RouteVersionHandler versionHandler;
+
+    @Inject
+    @Named("HTTP")
+    HttpServer webServer;
+
+    @Inject
+    Configuration conf;
 
     @Inject
     public RoutesManager(Router router) {
@@ -51,7 +68,30 @@ public class RoutesManager {
         router.route().last().handler(rc -> rc.fail(new BadRequestException()));
     }
 
-    public Router getRouter() {
-        return this.router;
+    @Override
+    public void start(Future<Void> startFuture) {
+        webServer.requestHandler(router)
+            .listen(conf.httpPort(), ar -> {
+                if (ar.succeeded()) {
+                    LOG.info("WebServer started listening at {}", conf.httpPort());
+                    startFuture.complete();
+                } else {
+                    LOG.info("WebServer started failed listening at {} , Reason: {}", conf.httpPort(), ar.cause());
+                    startFuture.fail(ar.cause());
+                }
+            });
+    }
+
+    @Override
+    public void stop(Future<Void> stopFuture) {
+        webServer.close(ar -> {
+            if (ar.succeeded()) {
+                LOG.info("WebServer stopped listening at {}", conf.httpPort());
+                stopFuture.complete();
+            } else {
+                LOG.info("WebServer stopped failed listening at {} , Reason: {}", conf.httpPort(), ar.cause());
+                stopFuture.fail(ar.cause());
+            }
+        });
     }
 }
