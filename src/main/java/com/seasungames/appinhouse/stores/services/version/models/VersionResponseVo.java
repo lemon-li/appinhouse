@@ -3,7 +3,7 @@ package com.seasungames.appinhouse.stores.services.version.models;
 import io.vertx.codegen.annotations.DataObject;
 import io.vertx.core.json.JsonObject;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by lile on 1/10/2019
@@ -17,7 +17,7 @@ public class VersionResponseVo {
 
     private String version;
 
-    private HashMap<String, Object> info;
+    private Map<String, Object> info;
 
     public VersionResponseVo(JsonObject jsonObject) {
         VersionResponseVoConverter.fromJson(jsonObject, this);
@@ -57,11 +57,11 @@ public class VersionResponseVo {
         this.version = version;
     }
 
-    public HashMap<String, Object> getInfo() {
+    public Map<String, Object> getInfo() {
         return info;
     }
 
-    public void setInfo(HashMap<String, Object> info) {
+    public void setInfo(Map<String, Object> info) {
         this.info = info;
     }
 }

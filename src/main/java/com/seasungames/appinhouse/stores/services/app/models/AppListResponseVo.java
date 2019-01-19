@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.codegen.annotations.DataObject;
 import io.vertx.core.json.JsonObject;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lile on 1/10/2019
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 @DataObject(generateConverter = true)
 public class AppListResponseVo {
 
-    private ArrayList<AppResponseVo> list;
+    private List<AppResponseVo> list;
     private String lastKey;
 
     public AppListResponseVo(JsonObject jsonObject) {
@@ -29,11 +29,11 @@ public class AppListResponseVo {
 
     }
 
-    public ArrayList<AppResponseVo> getList() {
+    public List<AppResponseVo> getList() {
         return list;
     }
 
-    public AppListResponseVo setList(ArrayList<AppResponseVo> list) {
+    public AppListResponseVo setList(List<AppResponseVo> list) {
         this.list = list;
         return this;
     }
