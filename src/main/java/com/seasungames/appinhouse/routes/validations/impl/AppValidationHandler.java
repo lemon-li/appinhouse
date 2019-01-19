@@ -1,6 +1,7 @@
 package com.seasungames.appinhouse.routes.validations.impl;
 
 import com.seasungames.appinhouse.routes.validations.BaseValidationHandler;
+import com.seasungames.appinhouse.stores.services.app.models.AppVo;
 import io.vertx.ext.web.api.validation.HTTPRequestValidationHandler;
 
 /**
@@ -15,8 +16,6 @@ public class AppValidationHandler extends BaseValidationHandler {
 
     public static HTTPRequestValidationHandler validateAppForm() {
         return HTTPRequestValidationHandler.create()
-            .addFormParamWithPattern("id", REGEX_CHECK_EMPTY, true)
-            .addFormParamWithPattern("desc", REGEX_CHECK_EMPTY, true)
-            .addFormParamWithPattern("alias", REGEX_CHECK_EMPTY, true);
+            .addJsonBodySchema(getJsonSchema(AppVo.class));
     }
 }

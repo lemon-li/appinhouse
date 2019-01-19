@@ -10,10 +10,13 @@ import io.vertx.core.json.JsonObject;
 @DataObject(generateConverter = true)
 public class AppVo {
 
+    @JsonProperty(value = "id",required = true)
     private String appId;
 
+    @JsonProperty(required = true)
     private String alias;
 
+    @JsonProperty(required = true)
     private String desc;
 
     public AppVo(JsonObject jsonObject) {
@@ -36,7 +39,6 @@ public class AppVo {
         this.desc = desc;
     }
 
-    @JsonProperty("id")
     public String getAppId() {
         return appId;
     }
