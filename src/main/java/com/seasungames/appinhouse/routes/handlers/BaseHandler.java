@@ -49,4 +49,11 @@ public abstract class BaseHandler {
             }
         };
     }
+
+    protected void toResponseJson(RoutingContext rc, int statusCode, String message) {
+        rc.response()
+            .putHeader("Content-Type", "application/json; charset=utf-8")
+            .setStatusCode(statusCode)
+            .end(new ResponseVo().setMessage(message).toJson());
+    }
 }

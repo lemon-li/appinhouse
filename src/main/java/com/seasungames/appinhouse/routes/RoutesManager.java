@@ -1,20 +1,19 @@
 package com.seasungames.appinhouse.routes;
 
-import com.seasungames.appinhouse.HttpServerVerticle;
 import com.seasungames.appinhouse.application.APIConstant;
 import com.seasungames.appinhouse.application.Async;
 import com.seasungames.appinhouse.application.Configuration;
 import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.routes.exception.impl.BadRequestException;
-import com.seasungames.appinhouse.routes.handlers.RouteFailureHandler;
+import com.seasungames.appinhouse.routes.handlers.impl.RouteFailureHandler;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 
-import com.seasungames.appinhouse.routes.handlers.RouteAppHandler;
-import com.seasungames.appinhouse.routes.handlers.RouteVersionHandler;
+import com.seasungames.appinhouse.routes.handlers.impl.RouteAppHandler;
+import com.seasungames.appinhouse.routes.handlers.impl.RouteVersionHandler;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.LoggerHandler;
 import io.vertx.ext.web.handler.StaticHandler;
