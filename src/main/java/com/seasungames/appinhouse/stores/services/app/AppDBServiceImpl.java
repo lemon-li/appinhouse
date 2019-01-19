@@ -1,7 +1,7 @@
 package com.seasungames.appinhouse.stores.services.app;
 
 import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
-import com.seasungames.appinhouse.routes.exception.DBException;
+import com.seasungames.appinhouse.stores.exception.DBException;
 import com.seasungames.appinhouse.stores.AppStore;
 import com.seasungames.appinhouse.stores.services.app.models.AppListResponseVo;
 import com.seasungames.appinhouse.stores.services.app.models.AppResponseVo;

@@ -1,4 +1,4 @@
-package com.seasungames.appinhouse.routes.exception;
+package com.seasungames.appinhouse.stores.exception;
 
 import com.amazonaws.AmazonServiceException;
 import io.vertx.core.AsyncResult;
