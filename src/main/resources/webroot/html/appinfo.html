@@ -4,8 +4,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true"></span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
                 <h4 class="modal-title" id="app_modal_title"><i class="fa fa-apple"></i> 创建应用</h4>
             </div>
 
@@ -15,21 +14,21 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">应用ID</label>
                         <div class="col-sm-9">
-                            <input type="text" name="id" class="form-control" placeholder="请输入应用ID(唯一)">
+                            <input type="text" name="app_id" class="form-control" placeholder="请输入应用ID(唯一)">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label">应用名称</label>
                         <div class="col-sm-9">
-                            <input type="text" name="alias" class="form-control" placeholder="请输入应用名称">
+                            <input type="text" name="app_alias" class="form-control" placeholder="请输入应用名称">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label">应用描述</label>
                         <div class="col-sm-9">
-                            <input type="text" name="desc" class="form-control" placeholder="请输入应用描述">
+                            <input type="text" name="app_desc" class="form-control" placeholder="请输入应用描述">
                         </div>
                     </div>
 
@@ -40,3 +39,20 @@
         </div><!-- modal-content -->
     </div><!-- modal-dialog -->
 </div><!-- modal -->
+<script>
+    $("#app_create_form").validate({
+        rules: {
+            app_id: "required",
+            app_alias: "required",
+            app_desc: "required"
+        },
+        messages: {
+            app_id: "请输入应用ID",
+            app_alias: "请输入应用名称",
+            app_desc: "请输入应用描述"
+        },
+        submitHandler: function (form) {
+            alert(1);
+        }
+    });
+</script>
