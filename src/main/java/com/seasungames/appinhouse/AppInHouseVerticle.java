@@ -15,21 +15,17 @@ public class AppInHouseVerticle extends AbstractVerticle {
 
     @Override
     public void start(Future<Void> startFuture) throws Exception {
-        Future<Void> chainFuture = Future.future();
-
         this.deployDynamoDBVerticle()
             .compose(i -> this.deployHttpVerticle())
-            .compose(chainFuture::complete, chainFuture);
-
-        chainFuture.setHandler(ar -> {
-            if (ar.succeeded()) {
-                LOG.info("All verticles deployed");
-                startFuture.complete();
-            } else {
-                LOG.error("Fail to deploy some verticle");
-                startFuture.fail(ar.cause());
-            }
-        });
+            .setHandler(ar -> {
+                if (ar.succeeded()) {
+                    LOG.info("All verticles deployed");
+                    startFuture.complete();
+                } else {
+                    LOG.error("Fail to deploy some verticle");
+                    startFuture.fail(ar.cause());
+                }
+            });
     }
 
     private Future<Void> deployDynamoDBVerticle() {
