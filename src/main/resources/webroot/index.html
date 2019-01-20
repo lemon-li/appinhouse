@@ -34,7 +34,7 @@
 <body class="mini-navbar no-skin-config full-height-layout cbp-spmenu-push">
 <nav role="navigation">
     <div class="row" id="top_bar_bg">
-        <div class="col-xs-11" style="padding-left:40px;padding-top:4px;height: 50px"></div>
+        <div class="col-xs-12" style="padding-left:40px;padding-top:4px;height: 50px"></div>
     </div>
 </nav>
 <!--header-->
@@ -45,7 +45,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="pull-right">
-                        <button style="padding: 15px;" type="button" class="btn btn-w-m btn-primary" onclick="createApp()">创建应用
+                        <button style="padding: 15px;" type="button" class="btn btn-w-m btn-primary" onclick="onCreateApp()">创建应用
                         </button>
                     </div>
                     <h4 class="text-navy"><i class="fa fa-info-circle"></i> 项目列表</h4>
@@ -64,10 +64,10 @@
                     <table role="presentation" class="table table-striped">
                         <thead>
                         <tr>
-                            <th width="25%">名称</th>
-                            <th width="25%">描述</th>
-                            <th width="25%">ID</th>
-                            <th width="25%">#</th>
+                            <th width="25%"><h5>名称</h5></th>
+                            <th width="25%"><h5>描述</h5></th>
+                            <th width="25%"><h5>ID</h5></th>
+                            <th width="25%"><h5>#</h5></th>
                         </tr>
                         </thead>
                         <tbody id="list_body"></tbody>
@@ -89,7 +89,9 @@
 
 </html>
 <script type="text/javascript">
-    //默认初始化
+
+    var app_url = "http://127.0.0.1:8081/api/apps/";
+
     $(function () {
         reqAppList();
     });
@@ -99,7 +101,7 @@
         if (page) {
             suffix = "?last_key=" + $('#page').val()
         }
-        var url = "http://127.0.0.1:8081/api/apps" + suffix;
+        var url = app_url + suffix;
         $.ajax({
             type: 'GET',
             url: url,
@@ -107,33 +109,29 @@
             success: function (data) {
                 $('#list_body').empty();
 
-                $.each(data.data.list,
-                    function (index, item) {
+                $.each(data.data.list, function (index, item) {
                         var appname = item.id;
                         if (item.alias) {
                             appname = item.alias
                         }
-
                         var modifyButton = $('<button/>')
                             .addClass('btn btn-info')
                             .text('修改')
                             .on('click', function () {
-                                modifyApp(item.id)
+                                onModifyApp(item.id)
                             });
-
                         var deleteButton = $('<button/>')
                             .addClass('btn btn-danger')
                             .text('删除')
                             .on('click', function () {
-                                deleteApp(item.id)
+                                onDeleteApp(item.id)
                             });
-
                         var row =
                             $(
                                 '<tr>' +
-                                '<td width="25%"><a href="index_re.html?app=' + item.id + '" >' + appname + '</a></td>' +
-                                '<td width="25%">' + item.desc + '</td>' +
-                                '<td width="25%">' + item.id + '</td>' +
+                                '<td width="25%"><h6><a href="index_re.html?app=' + item.id + '" >' + appname + '</a></h6></td>' +
+                                '<td width="25%"><h6>' + item.desc + '</h6></td>' +
+                                '<td width="25%"><h6>' + item.id + '</h6></td>' +
                                 '</tr>'
                             );
                         row.append($('<td width="25%" />').append(modifyButton).append(deleteButton));
@@ -143,9 +141,10 @@
         });
     }
 
-    function createApp() {
+    function onCreateApp() {
         $.get("html/appinfo.html",function (data) {
             $("#modal_content").html(data);
+            $("#app_owner").val("");
             $("#app_modal_title").text("创建应用");
             $('#app_modal').modal({
                 show: true
@@ -153,18 +152,71 @@
         })
     }
 
-    function modifyApp(appID) {
-        $.get("html/appinfo.html",function (data) {
-            $("#modal_content").html(data);
-            //set attr
-            $("#app_modal_title").text("修改应用");
-            $('#app_modal').modal({
-                show: true
-            });
-        })
+    function requestCreateApp() {
+        var url = app_url;
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: JSON.stringify(formData2Json("app_create_form")),
+            dataType: "text",
+            statusCode: {
+                201: function (data, textStatus, jqXHR) {
+                    show_success("成功创建应用", function () {
+                        $('#app_modal').modal("hide");
+                        reqAppList();
+                    })
+                }
+            },
+            error: function (data) {
+                show_error(data.responseJSON.message);
+            }
+        });
     }
 
-    function deleteApp(appID) {
+    function onModifyApp(appID) {
+        var url = app_url + appID;
+        $.ajax({
+            type: "GET",
+            url: url,
+            dateType: "json",
+            success: function (result) {
+                //request app info html
+                $.get("html/appinfo.html", function (data) {
+                    $("#modal_content").html(data);
+                    $("#app_owner").val(appID);
+                    $("#app_modal_title").text("修改应用");
+                    $("#input_app_id").val(result.data.id);
+                    $("#input_app_id").attr("readonly",true);
+                    $("#input_app_desc").val(result.data.desc);
+                    $("#input_app_alias").val(result.data.alias);
+                    $('#app_modal').modal({
+                        show: true
+                    });
+                })
+            }
+        });
+    }
+
+    function requestModifyApp(appID) {
+        var url = app_url + appID;
+        $.ajax({
+            type: "PUT",
+            url: url,
+            data: JSON.stringify(formData2Json("app_create_form")),
+            dataType: "json",
+            success: function () {
+                show_success("修改成功", function () {
+                    $('#app_modal').modal("hide");
+                    reqAppList();
+                })
+            },
+            error: function (data) {
+                show_error(data.responseJSON.message);
+            }
+        });
+    }
+
+    function onDeleteApp(appID) {
         swal({
             title: "执行删除操作",
             text: "确定要删除选中内容?",
@@ -175,7 +227,7 @@
             closeOnConfirm: false
 
         }, function () {
-            var url = "http://127.0.0.1:8081/api/apps/" + appID;
+            var url = app_url + appID;
             $.ajax({
                 type: 'DELETE',
                 url: url,

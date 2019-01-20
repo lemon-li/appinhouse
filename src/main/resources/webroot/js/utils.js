@@ -19,3 +19,30 @@ function show_success(message, success_goto) {
         }
     });
 }
+
+function show_error(message, success_goto) {
+    swal({
+        title: "操作失败!",
+        text: message,
+        type: "error",
+        confirmButtonText: "确认",
+        confirmButtonColor: '#f27474'
+    }, function () {
+        if(null != success_goto) {
+            if (typeof success_goto == 'function') {
+                success_goto();
+            } else {
+                window.location.href = success_goto;
+            }
+        }
+    });
+}
+
+function formData2Json(form) {
+    var json_data = {};
+    var form_data = $("#" + form).serializeArray();
+    $.each(form_data, function () {
+        json_data[this.name] = this.value;
+    });
+    return json_data;
+}
