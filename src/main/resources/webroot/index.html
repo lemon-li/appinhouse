@@ -1,110 +1,92 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>加勒比海盗企业内部发布渠道</title>
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1,
-            user-scalable=no">
-        <link rel="shortcut icon" href="img/favicon_16.ico" />
-        <link rel="bookmark" href="img/favicon_16.ico" />
-        <!-- site css -->
-        <link rel="stylesheet" href="css/site.min.css">
-        <link rel="stylesheet" type="text/css"
-            href="jquery.confirm/jquery.confirm.css" />
-        <script type="text/javascript" src="js/site.min.js"></script>
-        <script type="text/javascript" src="js/inhouse.js"></script>
-        <script src="jquery.confirm/jquery.confirm.js"></script>
-        <script type="text/javascript" src="js/alert.js"></script>
-    </head>
+<head>
+    <meta charset="utf-8">
+    <title>加勒比海盗企业内部发布渠道</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
 
-    <body>
-        <!--nav-->
-        <nav role="navigation" class="navbar navbar-custom" id="history_info">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button data-target="#menu2" data-toggle="collapse"
-                        class="navbar-toggle" type="button">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a href="#" class="navbar-brand">
-                        <img src="img/dh.png"></a>
+    <link rel="shortcut icon" href="img/favicon_16.ico"/>
+    <link rel="bookmark" href="img/favicon_16.ico"/>
+    <link rel="stylesheet" href="css/site.min.css">
+    <link rel="stylesheet" type="text/css" href="jquery.confirm/jquery.confirm.css"/>
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/sweetalert.css">
+    <link rel="stylesheet" href="css/modal.css">
+
+    <script type="text/javascript" src="js/site.min.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script src="jquery.confirm/jquery.confirm.js"></script>
+    <script type="text/javascript" src="js/sweetalert.min.js"></script>
+
+    <style type="text/css">
+        #top_bar_bg{
+            width: 100%;
+            height: 100%;
+            background-image:url("/img/top-bg.jpg");
+            background-size: 100%;
+        }
+        .row{
+            margin-left:0;
+        }
+    </style>
+
+</head>
+
+<body class="mini-navbar no-skin-config full-height-layout cbp-spmenu-push">
+<nav role="navigation">
+    <div class="row" id="top_bar_bg">
+        <div class="col-xs-11" style="padding-left:40px;padding-top:4px;height: 50px"></div>
+    </div>
+</nav>
+<!--header-->
+<div class="container-fluid">
+    <!--documents-->
+    <div id="page-wrapper" class="gray-bg">
+        <div id="main_container" class="col-xs-12 col-sm-12 full-height border-right-green no-padding">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="pull-right">
+                        <button style="padding: 15px;" type="button" class="btn btn-w-m btn-primary" onclick="createApp()">创建应用
+                        </button>
+                    </div>
+                    <h4 class="text-navy"><i class="fa fa-info-circle"></i> 项目列表</h4>
                 </div>
-            </div>
-            <!-- /.container-fluid -->
-        </nav>
-        <!--header-->
-        <div class="container-fluid">
-            <!--documents-->
-            <div class="row row-offcanvas row-offcanvas-left">
-                <div class="col-xs-12 col-sm-9 content">
-                    <div class="panel panel-default">
-                        <div class="panel-heading clearfix">
-                            <div class="pull-right">
-                                <button type="button" class="btn btn-w-m
-                                    btn-primary">创建应用</button></div>
-                            <h4>项目列表</h4>
-                        </div>
-                        <div class="content-row-typography-my">
-                                <h4>
-                                    <span>声明:本发布渠道的目的仅限内部测试用途,不作为对外产品发布.</span>
-                                </h4>
-                        </div>
-                        <div class="content-row-typography-my">
-                                <h4>
-                                    <span>本服务提供客户端下载功能。提供给北京西山居,深圳西山居等多个地方.</span>
-                                </h4>
-                        </div>
-                        <div class="panel-body">
-                            <div class="content-row">
-                                <div id="alert_msg"></div>
-                                <div class="row" id="list_row">
-                                    <div class="hidden">
-                                        <input type="text" id="platform"
-                                            value="ios">
-                                        <input type="text" id="env"
-                                            value="release"></div>
-                                    <div class="bs-example">
-                                        <table class="table
-                                            table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        <h5>名称</h5>
-                                                    </th>
-                                                    <th>
-                                                        <h5>描述</h5>
-                                                    </th>
-                                                    <th>
-                                                        <h5>ID</h5>
-                                                    </th>
-                                                    <th>
-                                                        <h5>#</h5>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="list_body"></tbody>
-                                        </table>
-                                    </div>
-                                    <div class="row content-row-pagination"
-                                        id="list_page" style="display: none;">
-                                        <div class="hidden">
-                                            <input type="text" id="page"
-                                                value="0"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- panel body -->
+                <div class="content-row-typography-my">
+                    <h4>
+                        <i class="fa fa-warning"></i><span> 本发布渠道的目的仅限内部测试用途,不作为对外产品发布.</span>
+                    </h4>
+                </div>
+                <div class="content-row-typography-my">
+                    <h4>
+                        <i class="fa fa-warning"></i><span> 本服务提供客户端下载功能。提供给北京西山居,深圳西山居等多个地方.</span>
+                    </h4>
+                </div>
+                <div class="panel-body ibox-content profile-content">
+                    <table role="presentation" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th width="25%">名称</th>
+                            <th width="25%">描述</th>
+                            <th width="25%">ID</th>
+                            <th width="25%">#</th>
+                        </tr>
+                        </thead>
+                        <tbody id="list_body"></tbody>
+                    </table>
+                    <div class="hidden">
+                        <input type="text" id="page" value="0">
                     </div>
                 </div>
-                <!-- content -->
+                <!-- panel body -->
             </div>
+        </div><!-- content -->
+        <div id="modal_content">
+
         </div>
-    </body>
+    </div>
+</div>
+
+</body>
 
 </html>
 <script type="text/javascript">
@@ -118,7 +100,7 @@
         if (page) {
             suffix = "?last_key=" + $('#page').val()
         }
-        var url = "/api/apps" + suffix;
+        var url = "http://127.0.0.1:8081/api/apps" + suffix;
         $.ajax({
             type: 'GET',
             url: url,
@@ -128,36 +110,84 @@
 
                 $.each(data.data.list,
                     function (index, item) {
-                        var trclass = ""
-                        if (index % 2 == 0) {
-                            trclass = "success"
-                        } else {
-                            trclass = "active"
-                        }
-
-                        var appname = item.id
+                        var appname = item.id;
                         if (item.alias) {
                             appname = item.alias
                         }
 
-                        $('#list_body').append(' <tr class="' + trclass + '">' +
-                            '<td><h3><a href="index_re.html?app=' + item.id + '" >' + appname +
-                            '</a></h3></td>' + '<td><h3>' + item.desc + '</h3></td>' + '<td><h3>' +
-                            item.id + '</h3></td>' +
-                            '<td><button type="button" class="btn btn-w-m btn-info">修改</button>' +
-                            '<button type="button" class="btn btn-w-m btn-danger">删除</button></td>' +
-                            '</tr>')
+                        var modifyButton = $('<button/>')
+                            .addClass('btn btn-info')
+                            .text('修改')
+                            .on('click', function () {
+                                modifyApp(item.id)
+                            });
+
+                        var deleteButton = $('<button/>')
+                            .addClass('btn btn-danger')
+                            .text('删除')
+                            .on('click', function () {
+                                deleteApp(item.id)
+                            });
+
+                        var row =
+                            $(
+                                '<tr>' +
+                                '<td width="25%"><a href="index_re.html?app=' + item.id + '" >' + appname + '</a></td>' +
+                                '<td width="25%">' + item.desc + '</td>' +
+                                '<td width="25%">' + item.id + '</td>' +
+                                '</tr>'
+                            );
+                        row.append($('<td width="25%" />').append(modifyButton).append(deleteButton));
+                        $('#list_body').append(row);
                     });
             }
         });
     }
 
-    function modifyApp() {
-
+    function createApp() {
+        $.get("html/appinfo.html",function (data) {
+            $("#modal_content").html(data);
+            $("#app_modal_title").text("创建应用");
+            $('#app_modal').modal({
+                show: true
+            });
+        })
     }
 
-    function deleteApp() {
+    function modifyApp(appID) {
+        $.get("html/appinfo.html",function (data) {
+            $("#modal_content").html(data);
+            //set attr
+            $("#app_modal_title").text("修改应用");
+            $('#app_modal').modal({
+                show: true
+            });
+        })
+    }
 
+    function deleteApp(appID) {
+        swal({
+            title: "执行删除操作",
+            text: "确定要删除选中内容?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确认删除!",
+            closeOnConfirm: false
+
+        }, function () {
+            var url = "http://127.0.0.1:8081/api/apps/" + appID;
+            $.ajax({
+                type: 'DELETE',
+                url: url,
+                dateType: "json",
+                success: function (data) {
+                    show_success("删除成功",function () {
+                        reqAppList();
+                    })
+                }
+            });
+        });
     }
 
 </script>
