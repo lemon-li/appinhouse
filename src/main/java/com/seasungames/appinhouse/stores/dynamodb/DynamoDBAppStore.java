@@ -108,7 +108,7 @@ public class DynamoDBAppStore implements AppStore {
         Map<String, AttributeValue> lastEvaluatedKeys = result.getLastEvaluatedKey();
         String lastEvaluatedKey = "";
         if (null != lastEvaluatedKeys) {
-            lastEvaluatedKey = result.getLastEvaluatedKey().get(AppTable.HASH_KEY_APPID).toString();
+            lastEvaluatedKey = result.getLastEvaluatedKey().get(AppTable.HASH_KEY_APPID).getS();
         }
         return new AppListResponseVo().setList(appLists).setLastKey(lastEvaluatedKey);
     }
