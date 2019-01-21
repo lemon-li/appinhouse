@@ -5,69 +5,67 @@
     <title>加勒比海盗企业内部发布渠道</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
 
-    <link rel="shortcut icon" href="img/favicon_16.ico"/>
-    <link rel="bookmark" href="img/favicon_16.ico"/>
-    <link rel="stylesheet" href="css/site.min.css">
-    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/sweetalert.css">
-    <link rel="stylesheet" href="css/modal.css">
+    <link rel="shortcut icon" href="/img/favicon_16.ico"/>
+    <link rel="bookmark" href="/img/favicon_16.ico"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/modal.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/sweetalert.css">
+    <link rel="stylesheet" href="/css/toastr.min.css">
 
-    <script type="text/javascript" src="js/site.min.js"></script>
-    <script type="text/javascript" src="js/utils.js"></script>
-    <script type="text/javascript" src="js/sweetalert.min.js"></script>
-    <script type="text/javascript" src="js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/utils.js"></script>
+    <script type="text/javascript" src="/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/js/toastr.min.js"></script>
 
     <style type="text/css">
-        #top_bar_bg{
-            width: 100%;
-            height: 100%;
-            background-image:url("/img/top-bg.jpg");
-            background-size: 100%;
-        }
-        .row{
-            margin-left:0;
-        }
+        body.stop-scrolling {height:auto !important; overflow:visible !important;}
     </style>
-
 </head>
 
-<body class="mini-navbar no-skin-config full-height-layout cbp-spmenu-push">
-<nav role="navigation">
-    <div class="row" id="top_bar_bg">
-        <div class="col-xs-12" style="padding-left:40px;padding-top:4px;height: 50px"></div>
-    </div>
-</nav>
+<body class="top-navigation pace-done">
 <!--header-->
-<div class="container-fluid">
-    <!--documents-->
-    <div id="page-wrapper" class="gray-bg">
-        <div id="main_container" class="col-xs-12 col-sm-12 full-height border-right-green no-padding">
-            <div class="panel panel-default">
+<div class="wrapper">
+    <div id="page-wrapper" class="gray-bg" style="min-height: 756px;">
+        <div class="row border-bottom white-bg">
+            <nav class="navbar navbar-static-top" role="navigation">
+                <div class="navbar-header">
+                    <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse"
+                            class="navbar-toggle collapsed" type="button">
+                        <i class="fa fa-reorder"></i>
+                    </button>
+                    <a href="#" class="navbar-brand">西山居</a>
+                </div>
+                <div class="navbar-collapse collapse" id="navbar">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a aria-expanded="false" role="button" href="#"> 主页</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="wrapper wrapper-content">
+            <div class="panel panel-default row">
                 <div class="panel-heading">
                     <div class="pull-right">
-                        <button style="padding: 15px;" type="button" class="btn btn-w-m btn-primary" onclick="onCreateApp()">创建应用
+                        <button type="button" class="btn btn-w-m btn-primary" onclick="onCreateApp()">创建应用
                         </button>
                     </div>
-                    <h4 class="text-navy"><i class="fa fa-info-circle"></i> 项目列表</h4>
+                    <h3 class="text-navy"><i class="fa fa-info-circle"></i> 项目列表</h3>
                 </div>
-                <div class="content-row-typography-my">
-                    <h4>
-                        <i class="fa fa-warning"></i><span> 本发布渠道的目的仅限内部测试用途,不作为对外产品发布.</span>
-                    </h4>
-                </div>
-                <div class="content-row-typography-my">
-                    <h4>
-                        <i class="fa fa-warning"></i><span> 本服务提供客户端下载功能。提供给北京西山居,深圳西山居等多个地方.</span>
-                    </h4>
-                </div>
-                <div class="panel-body ibox-content profile-content">
+                <div class="panel-body ibox-content">
                     <table role="presentation" class="table table-striped">
                         <thead>
                         <tr>
-                            <th width="25%"><h5>名称</h5></th>
-                            <th width="25%"><h5>描述</h5></th>
-                            <th width="25%"><h5>ID</h5></th>
-                            <th width="25%"><h5>#</h5></th>
+                            <th width="25%"><h3 class="font-bold no-margins">名称</h3></th>
+                            <th width="25%"><h3 class="font-bold no-margins">描述</h3></th>
+                            <th width="25%"><h3 class="font-bold no-margins">ID</h3></th>
+                            <th width="25%"><h3 class="font-bold no-margins">#</h3></th>
                         </tr>
                         </thead>
                         <tbody id="list_body"></tbody>
@@ -79,20 +77,33 @@
                 <!-- panel body -->
             </div>
         </div><!-- content -->
-        <div id="modal_content">
-
+        <div class="footer">
+            <div>
+                <strong>Copyright</strong> 西山居 Company © 2019-2020
+            </div>
         </div>
     </div>
+    <div id="modal_content">
+
+    </div>
 </div>
-
 </body>
-
 </html>
 <script type="text/javascript">
 
     var app_url = "http://127.0.0.1:8081/api/apps/";
 
-    $(function () {
+    $(document).ready(function() {
+        setTimeout(function () {
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'slideDown',
+                timeOut: 4000
+            };
+            toastr.success('西山居', 'Welcome to AppInHouse');
+        }, 1300);
+
         reqAppList();
     });
 
@@ -110,39 +121,40 @@
                 $('#list_body').empty();
 
                 $.each(data.data.list, function (index, item) {
-                        var appname = item.id;
-                        if (item.alias) {
-                            appname = item.alias
-                        }
-                        var modifyButton = $('<button/>')
-                            .addClass('btn btn-info')
-                            .text('修改')
-                            .on('click', function () {
-                                onModifyApp(item.id)
-                            });
-                        var deleteButton = $('<button/>')
-                            .addClass('btn btn-danger')
-                            .text('删除')
-                            .on('click', function () {
-                                onDeleteApp(item.id)
-                            });
-                        var row =
-                            $(
-                                '<tr>' +
-                                '<td width="25%"><h6><a href="index_re.html?app=' + item.id + '" >' + appname + '</a></h6></td>' +
-                                '<td width="25%"><h6>' + item.desc + '</h6></td>' +
-                                '<td width="25%"><h6>' + item.id + '</h6></td>' +
-                                '</tr>'
-                            );
-                        row.append($('<td width="25%" />').append(modifyButton).append(deleteButton));
-                        $('#list_body').append(row);
-                    });
+                    var appname = item.id;
+                    if (item.alias) {
+                        appname = item.alias
+                    }
+                    var modifyButton = $('<button/>')
+                        .addClass('btn btn-info')
+                        .text('修改')
+                        .on('click', function () {
+                            onModifyApp(item.id)
+                        });
+                    var deleteButton = $('<button/>')
+                        .addClass('btn btn-danger')
+                        .text('删除')
+                        .on('click', function () {
+                            onDeleteApp(item.id)
+                        });
+                    //<a href="http://127.0.0.1:8081/app/' + item.id + '" >
+                    var row =
+                        $(
+                            '<tr>' +
+                            '<td width="25%"><h3 class="font-bold no-margins" ><a class="text-info" href="http://127.0.0.1:8081/version/' + item.id + '" >' + appname + '</a></h3></td>' +
+                            '<td width="25%"><h3 class="font-bold no-margins">' + item.desc + '</h3></td>' +
+                            '<td width="25%"><h3 class="font-bold no-margins">' + item.id + '</h3></td>' +
+                            '</tr>'
+                        );
+                    row.append($('<td width="25%" />').append(modifyButton).append(deleteButton));
+                    $('#list_body').append(row);
+                });
             }
         });
     }
 
     function onCreateApp() {
-        $.get("html/appinfo.html",function (data) {
+        $.get("html/appinfo.html", function (data) {
             $("#modal_content").html(data);
             $("#app_owner").val("");
             $("#app_modal_title").text("创建应用");
@@ -168,7 +180,8 @@
                 }
             },
             error: function (data) {
-                show_error(data.responseJSON.message);
+                console.log(data);
+                show_error(data.responseText);
             }
         });
     }
@@ -186,7 +199,7 @@
                     $("#app_owner").val(appID);
                     $("#app_modal_title").text("修改应用");
                     $("#input_app_id").val(result.data.id);
-                    $("#input_app_id").attr("readonly",true);
+                    $("#input_app_id").attr("readonly", true);
                     $("#input_app_desc").val(result.data.desc);
                     $("#input_app_alias").val(result.data.alias);
                     $('#app_modal').modal({
@@ -233,7 +246,7 @@
                 url: url,
                 dateType: "json",
                 success: function (data) {
-                    show_success("删除成功",function () {
+                    show_success("删除成功", function () {
                         reqAppList();
                     })
                 }

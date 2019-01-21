@@ -1,10 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>"Hello World Version"</title>
+    <meta charset="utf-8">
+    <title>加勒比海盗企业内部发布渠道</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <link rel="shortcut icon" href="/img/favicon_16.ico"/>
+    <link rel="bookmark" href="/img/favicon_16.ico"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/sweetalert.css">
+    <link rel="stylesheet" href="/css/modal.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script type="text/javascript" src="/js/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/utils.js"></script>
+    <script type="text/javascript" src="/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
+
 </head>
-<body>
-    <h1>Version</h1>
+
+<body class="top-navigation pace-done">
+
+<div class="wrapper">
+    <div id="page-wrapper" class="gray-bg" style="min-height: 756px;">
+        <div class="row border-bottom white-bg">
+            <nav class="navbar navbar-static-top" role="navigation">
+                <div class="navbar-header">
+                    <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse"
+                            class="navbar-toggle collapsed" type="button">
+                        <i class="fa fa-reorder"></i>
+                    </button>
+                    <a href="#" class="navbar-brand">西山居</a>
+                </div>
+                <div class="navbar-collapse collapse" id="navbar">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a aria-expanded="false" role="button" href="../"> 主页</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="wrapper wrapper-content">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="text-navy"><i class="fa fa-info-circle"></i> 各平台版本列表</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="tabs-container">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#ios" aria-expanded="true"> <i
+                                            class="fa fa-apple"></i>IOS</a></li>
+                                    <li class=""><a data-toggle="tab" href="#android" aria-expanded="false"><i
+                                            class="fa fa-android"></i>Android</a></li>
+                                    <li class=""><a data-toggle="tab" href="#window" aria-expanded="false"><i
+                                            class="fa fa-windows"></i>Window</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="ios" class="tab-pane active">
+                                        <div class="panel-body">
+                                            <strong>没有可查看的历史版本</strong>
+
+                                            <table role="presentation" class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th width="15%"><h3 class="font-bold no-margins">创建时间</h3></th>
+                                                    <th width="10%"><h3 class="font-bold no-margins">版本号</h3></th>
+                                                    <th width="15%"><h3 class="font-bold no-margins">版本描述</h3></th>
+                                                    <th width="25%"><h3 class="font-bold no-margins">Jenkins构建地址</h3>
+                                                    </th>
+                                                    <th width="20%"><h3 class="font-bold no-margins">#</h3></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="ios_list_body"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div id="android" class="tab-pane">
+                                        <div class="panel-body">
+                                            <strong>没有可查看的历史版本</strong>
+                                            <table role="presentation" class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th width="15%"><h3 class="font-bold no-margins">创建时间</h3></th>
+                                                    <th width="10%"><h3 class="font-bold no-margins">版本号</h3></th>
+                                                    <th width="15%"><h3 class="font-bold no-margins">版本描述</h3></th>
+                                                    <th width="25%"><h3 class="font-bold no-margins">Jenkins构建地址</h3>
+                                                    </th>
+                                                    <th width="20%"><h3 class="font-bold no-margins">#</h3></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="android_list_body"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div id="window" class="tab-pane">
+                                        <div class="panel-body">
+                                            <strong>没有可查看的历史版本</strong>
+                                            <table role="presentation" class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th width="15%"><h3 class="font-bold no-margins">创建时间</h3></th>
+                                                    <th width="10%"><h3 class="font-bold no-margins">版本号</h3></th>
+                                                    <th width="15%"><h3 class="font-bold no-margins">版本描述</h3></th>
+                                                    <th width="25%"><h3 class="font-bold no-margins">Jenkins构建地址</h3>
+                                                    </th>
+                                                    <th width="20%"><h3 class="font-bold no-margins">#</h3></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="window_list_body"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- panel body -->
+            </div>
+        </div><!-- content -->
+        <div class="footer">
+            <div>
+                <strong>Copyright</strong> 西山居 Company © 2019-2020
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
+
+<script type="text/javascript">
+    var appID = -1;
+    $(function () {
+        //init tab event
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var target = $(e.target).attr("href");
+            var platform = target.slice(1, target.length);
+            reqVersionList(1, platform);
+        });
+        appID = getAppIdByPathParams();
+        if(appID) {
+            reqVersionList(appID, "ios");
+        }
+    });
+
+    function reqVersionList(appId, platform) {
+        var url = "http://127.0.0.1:8081/api/versions/" + appId + "/" + platform + "/history";
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: "json",
+            success: function (result) {
+                genVersionHtml(result.data);
+            },
+            error: function (data) {
+                console.log(data);
+                show_error(data.responseText);
+            }
+        });
+    }
+
+    function genVersionHtml(data) {
+        $('#list_body').empty();
+
+        $.each(data, function (index, item) {
+            var downloadButton = $('<button/>')
+                .addClass('btn btn-info')
+                .text('下载')
+                .on('click', function () {
+                    downloadApp(item.platform, item.version)
+                });
+
+            var row =
+                $(
+                    '<tr>' +
+                    '<td width="15%"><h3 class="font-bold no-margins">' + item.info.create_time + '</h3></td>' +
+                    '<td width="10%"><h3 class="font-bold no-margins">' + item.version + '</h3></td>' +
+                    '<td width="10%"><h3 class="font-bold no-margins">' + item.info.desc + '</h3></td>' +
+                    '<td width="25%"><h3 class="font-bold no-margins">' + '<a class="text-info" href="http://www.baidu.com" target="_blank">点我跳转</a></h3></td>' +
+                    '</tr>'
+                );
+            row.append($('<td width="20%" />').append(downloadButton));
+
+            $('#list_body').append(row);
+        });
+    }
+
+    function downloadApp(platform, version) {
+        if (platform == "ios") {
+
+        } else {
+
+        }
+    }
+</script>

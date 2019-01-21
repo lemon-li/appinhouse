@@ -5,6 +5,17 @@ function getQueryString(name) {
     return null;
 }
 
+function getAppIdByPathParams() {
+    var src = window.location.toString();
+    var index = src.indexOf('/version/');
+    if(index == -1) {
+        return null;
+    } else {
+        appID = src.substr(index);
+        return appID;
+    }
+}
+
 function show_success(message, success_goto) {
     swal({
         title: "操作成功!",
