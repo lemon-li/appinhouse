@@ -5,7 +5,7 @@ public class APIConstant {
     public static final String WEBROOT = "webroot";
 
     public static final String INDEX_APP = "/app/:app";
-    public static final String INDEX_VERSION = "/app/:id/:pf/:version";
+    public static final String INDEX_VERSION = "/version/:app";
 
 
     public static final String API_APPS = "/api/apps";
