@@ -1,0 +1,99 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>加勒比海盗企业内部发布渠道</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <link rel="shortcut icon" href="/img/favicon_16.ico"/>
+    <link rel="bookmark" href="/img/favicon_16.ico"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script type="text/javascript" src="/js/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/utils.js"></script>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="widget red-bg p-lg text-center">
+        <div class="m-b-md">
+            <i class="fa fa-bell fa-4x"></i>
+            <h1 class="m-xs">AppInHouse</h1>
+            <h3 class="font-bold no-margins">
+                App下载页面
+            </h3>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <a id="download_btn" type="button" class="btn btn-block btn-primary">Download App</a>
+    </div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var isWeixin = is_weixin();
+        var cssText = "#weixin-tip{position: fixed; left:0; top:0; background: rgba(0,0,0,0.8); filter:alpha(opacity=80); width: 100%; height:100%; z-index: 100;} #weixin-tip p{text-align: center; margin-top: 10%; padding:0 5%;}";
+        if (isWeixin) {
+            loadHtml();
+            loadStyleText(cssText);
+        } else {
+            if (getMobileOperatingSystem() === "Android") {
+                var download_url = getQueryString("url");
+                $('#download_btn').attr('href', download_url);
+            } else if (getMobileOperatingSystem() === "iOS") {
+                var app_id = getQueryString("id");
+                var platform = getQueryString('platform');
+                var version = getQueryString('version');
+                var url = "/api/versions/" + app_id + "/" + platform + "/" + version;
+                var ios_href = 'itms-services:///?action=download-manifest&url=' + url;
+                $('#download_btn').attr('href', ios_href);
+            } else {
+                alert('coming soon...');
+            }
+        }
+    });
+
+    function is_weixin() {
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function loadHtml() {
+        var div = document.createElement('div');
+        div.id = 'weixin-tip';
+        div.innerHTML = '<p><img src="/img/live_weixin.png" alt="微信打开"/></p>';
+        document.body.appendChild(div);
+    }
+
+    function loadStyleText(cssText) {
+        var style = document.createElement('style');
+        style.rel = 'stylesheet';
+        style.type = 'text/css';
+        try {
+            style.appendChild(document.createTextNode(cssText));
+        } catch (e) {
+            style.styleSheet.cssText = cssText; //ie9以下
+        }
+        var head = document.getElementsByTagName("head")[0]; //head标签之间加上style样式
+        head.appendChild(style);
+    }
+</script>

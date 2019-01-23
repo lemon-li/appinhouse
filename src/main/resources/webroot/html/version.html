@@ -18,13 +18,14 @@
     <script type="text/javascript" src="/js/utils.js"></script>
     <script type="text/javascript" src="/js/sweetalert.min.js"></script>
     <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.qrcode.min.js"></script>
 
 </head>
 
 <body class="top-navigation pace-done">
 
 <div class="wrapper">
-    <div id="page-wrapper" class="gray-bg" style="min-height: 756px;">
+    <div id="page-wrapper" class="gray-bg">
         <div class="row border-bottom white-bg">
             <nav class="navbar navbar-static-top" role="navigation">
                 <div class="navbar-header">
@@ -56,67 +57,21 @@
                             <div class="tabs-container">
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a data-toggle="tab" href="#ios" aria-expanded="true"> <i
-                                            class="fa fa-apple"></i>IOS</a></li>
+                                        class="fa fa-apple"></i>IOS</a></li>
                                     <li class=""><a data-toggle="tab" href="#android" aria-expanded="false"><i
-                                            class="fa fa-android"></i>Android</a></li>
+                                        class="fa fa-android"></i>Android</a></li>
                                     <li class=""><a data-toggle="tab" href="#window" aria-expanded="false"><i
-                                            class="fa fa-windows"></i>Window</a></li>
+                                        class="fa fa-windows"></i>Window</a></li>
                                 </ul>
                                 <div class="tab-content">
                                     <div id="ios" class="tab-pane active">
-                                        <div class="panel-body">
-                                            <strong>没有可查看的历史版本</strong>
-
-                                            <table role="presentation" class="table table-bordered">
-                                                <thead>
-                                                <tr>
-                                                    <th width="15%"><h3 class="font-bold no-margins">创建时间</h3></th>
-                                                    <th width="10%"><h3 class="font-bold no-margins">版本号</h3></th>
-                                                    <th width="15%"><h3 class="font-bold no-margins">版本描述</h3></th>
-                                                    <th width="25%"><h3 class="font-bold no-margins">Jenkins构建地址</h3>
-                                                    </th>
-                                                    <th width="20%"><h3 class="font-bold no-margins">#</h3></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="ios_list_body"></tbody>
-                                            </table>
-                                        </div>
+                                        <div id="ios_tab_panel" class="panel-body"></div>
                                     </div>
                                     <div id="android" class="tab-pane">
-                                        <div class="panel-body">
-                                            <strong>没有可查看的历史版本</strong>
-                                            <table role="presentation" class="table table-bordered">
-                                                <thead>
-                                                <tr>
-                                                    <th width="15%"><h3 class="font-bold no-margins">创建时间</h3></th>
-                                                    <th width="10%"><h3 class="font-bold no-margins">版本号</h3></th>
-                                                    <th width="15%"><h3 class="font-bold no-margins">版本描述</h3></th>
-                                                    <th width="25%"><h3 class="font-bold no-margins">Jenkins构建地址</h3>
-                                                    </th>
-                                                    <th width="20%"><h3 class="font-bold no-margins">#</h3></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="android_list_body"></tbody>
-                                            </table>
-                                        </div>
+                                        <div id="android_tab_panel" class="panel-body"></div>
                                     </div>
                                     <div id="window" class="tab-pane">
-                                        <div class="panel-body">
-                                            <strong>没有可查看的历史版本</strong>
-                                            <table role="presentation" class="table table-bordered">
-                                                <thead>
-                                                <tr>
-                                                    <th width="15%"><h3 class="font-bold no-margins">创建时间</h3></th>
-                                                    <th width="10%"><h3 class="font-bold no-margins">版本号</h3></th>
-                                                    <th width="15%"><h3 class="font-bold no-margins">版本描述</h3></th>
-                                                    <th width="25%"><h3 class="font-bold no-margins">Jenkins构建地址</h3>
-                                                    </th>
-                                                    <th width="20%"><h3 class="font-bold no-margins">#</h3></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="window_list_body"></tbody>
-                                            </table>
-                                        </div>
+                                        <div id="window_tab_panel" class="panel-body"></div>
                                     </div>
                                 </div>
                             </div>
@@ -125,6 +80,21 @@
                 </div>
                 <!-- panel body -->
             </div>
+
+            <div class="modal fade bs-example-modal-sm" id="myModal" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">扫码下载</h4>
+                        </div>
+                        <div id="qrcode_modal" class="modal-body" style="text-align: center"></div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
+
+
         </div><!-- content -->
         <div class="footer">
             <div>
@@ -140,45 +110,75 @@
 <script type="text/javascript">
     var appID = -1;
     $(function () {
+        initTabPanel();
         //init tab event
+        appID = getAppIdByPathParams();
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             var target = $(e.target).attr("href");
             var platform = target.slice(1, target.length);
-            reqVersionList(1, platform);
+            reqVersionList(appID, platform);
         });
-        appID = getAppIdByPathParams();
-        if(appID) {
+        if (appID) {
             reqVersionList(appID, "ios");
         }
     });
 
+    function initTabPanel() {
+        var table =
+            '<table role="presentation" class="table table-bordered">' +
+            '<thead>' +
+            '<tr>' +
+            '<th width="15%"><h3 class="font-bold no-margins">创建时间</h3></th>' +
+            '<th width="10%"><h3 class="font-bold no-margins">版本号</h3></th>' +
+            '<th width="15%"><h3 class="font-bold no-margins">版本描述</h3></th>' +
+            '<th width="25%"><h3 class="font-bold no-margins">Jenkins构建地址</h3></th>' +
+            '<th width="20%"><h3 class="font-bold no-margins">#</h3></th>' +
+            '</tr>' +
+            '</thead>' +
+            '<tbody class="tab_list_body"></tbody></table>';
+        $('#ios_tab_panel').append(table);
+        $('#android_tab_panel').append(table);
+        $('#window_tab_panel').append(table);
+    }
+
     function reqVersionList(appId, platform) {
-        var url = "http://127.0.0.1:8081/api/versions/" + appId + "/" + platform + "/history";
+        var url = "http://10.230.66.40:8081/api/versions/" + appId + "/" + platform + "/history";
         $.ajax({
             type: "GET",
             url: url,
             dataType: "json",
             success: function (result) {
-                genVersionHtml(result.data);
+                genVersionHtml(platform, result.data);
             },
             error: function (data) {
-                console.log(data);
                 show_error(data.responseText);
             }
         });
     }
 
-    function genVersionHtml(data) {
-        $('#list_body').empty();
-
+    function genVersionHtml(platform, data) {
+        var list_body = $('#' + platform + '_tab_panel').find('.tab_list_body');
+        list_body.empty();
         $.each(data, function (index, item) {
-            var downloadButton = $('<button/>')
+            var downloadButton = $('<a/>')
                 .addClass('btn btn-info')
-                .text('下载')
-                .on('click', function () {
-                    downloadApp(item.platform, item.version)
-                });
+                .attr("href", "http://10.230.66.40:8091/html/qrcode_download.html")
+                //.attr("href", item.info.download_url)
+                //.attr("download", "")
+                .text('下载');
 
+            var qrcodeButton = $('<button data-toggle="modal" data-target="#myModal"/>')
+                .addClass('btn btn-primary')
+                .append($('<div class="fa fa-qrcode"/>'))
+                .on('click', function () {
+                    if (item.platform != 'ios') {
+                        //genAndroidQRCode(item.info.download_url);
+                        genAndroidQRCode("https://jenkins.intranet.rog2.org/job/Pirates/job/Client/job/android/job/master/lastSuccessfulBuild/artifact/pirates-master-b4896-20190124-development.apk");
+                    } else {
+                        alert('IOS');
+                        genIOSQRCode(item.platform, item.version)
+                    }
+                });
             var row =
                 $(
                     '<tr>' +
@@ -188,17 +188,28 @@
                     '<td width="25%"><h3 class="font-bold no-margins">' + '<a class="text-info" href="http://www.baidu.com" target="_blank">点我跳转</a></h3></td>' +
                     '</tr>'
                 );
-            row.append($('<td width="20%" />').append(downloadButton));
-
-            $('#list_body').append(row);
+            row.append($('<td width="20%" />').append(downloadButton).append(qrcodeButton));
+            list_body.append(row);
         });
     }
 
-    function downloadApp(platform, version) {
-        if (platform == "ios") {
+    function genAndroidQRCode(download_url) {
+        var params = "?url=" + download_url;
+        $('#qrcode_modal').empty();
+        $('#qrcode_modal').qrcode({
+            width: 200,
+            height: 200,
+            text: "http://10.230.66.40:8091/html/qrcode_download.html" + params
+        });
+    }
 
-        } else {
-
-        }
+    function genIOSQRCode(platform, version) {
+        var params = "?id=" + appID + "&platform=" + platform + "&version=" + version;
+        $('#qrcode_modal').empty();
+        $('#qrcode_modal').qrcode({
+            width: 200,
+            height: 200,
+            text: "http://10.230.66.40:8091/html/qrcode_download.html" + params
+        });
     }
 </script>
