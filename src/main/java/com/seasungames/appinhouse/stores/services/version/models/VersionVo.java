@@ -2,6 +2,7 @@ package com.seasungames.appinhouse.stores.services.version.models;
 
 import com.seasungames.appinhouse.application.PlatformEnum;
 import io.vertx.codegen.annotations.DataObject;
+import io.vertx.codegen.annotations.GenIgnore;
 import io.vertx.core.json.JsonObject;
 
 @DataObject(generateConverter = true)
@@ -119,6 +120,7 @@ public class VersionVo {
         this.createTime = createTime;
     }
 
+    @GenIgnore
     public boolean isIOS() {
         return this.platform.equals(PlatformEnum.IOS.getPlatform());
     }
