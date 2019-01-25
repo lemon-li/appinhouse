@@ -142,7 +142,7 @@
     }
 
     function reqVersionList(appId, platform) {
-        var url = "http://10.230.66.40:8081/api/versions/" + appId + "/" + platform + "/history";
+        var url = "https://10.230.66.40/api/versions/" + appId + "/" + platform + "/history";
         $.ajax({
             type: "GET",
             url: url,
@@ -162,7 +162,7 @@
         $.each(data, function (index, item) {
             var downloadButton = $('<a/>')
                 .addClass('btn btn-info')
-                .attr("href", "http://10.230.66.40:8091/html/qrcode_download.html")
+                .attr("href", "https://10.230.66.40/html/qrcode_download.html")
                 //.attr("href", item.info.download_url)
                 //.attr("download", "")
                 .text('下载');
@@ -173,9 +173,8 @@
                 .on('click', function () {
                     if (item.platform != 'ios') {
                         //genAndroidQRCode(item.info.download_url);
-                        genAndroidQRCode("https://jenkins.intranet.rog2.org/job/Pirates/job/Client/job/android/job/master/lastSuccessfulBuild/artifact/pirates-master-b4896-20190124-development.apk");
+                        genAndroidQRCode("https://jenkins.intranet.rog2.org/job/Pirates/job/Client/job/android/job/master/lastSuccessfulBuild/artifact/pirates-master-b4897-20190125-development.apk");
                     } else {
-                        alert('IOS');
                         genIOSQRCode(item.platform, item.version)
                     }
                 });
@@ -199,7 +198,7 @@
         $('#qrcode_modal').qrcode({
             width: 200,
             height: 200,
-            text: "http://10.230.66.40:8091/html/qrcode_download.html" + params
+            text: "https://10.230.66.40/html/qrcode_download.html" + params
         });
     }
 
@@ -209,7 +208,7 @@
         $('#qrcode_modal').qrcode({
             width: 200,
             height: 200,
-            text: "http://10.230.66.40:8091/html/qrcode_download.html" + params
+            text: "https://10.230.66.40/html/qrcode_download.html" + params
         });
     }
 </script>

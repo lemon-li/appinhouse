@@ -59,8 +59,9 @@
                 var app_id = getQueryString("id");
                 var platform = getQueryString('platform');
                 var version = getQueryString('version');
-                var url = "/api/versions/" + app_id + "/" + platform + "/" + version;
-                var ios_href = 'itms-services:///?action=download-manifest&url=' + url;
+                var url = "https://10.230.66.40/api/versions/" + app_id + "/" + platform + "/" + version + "/plist";
+                var ios_href = 'itms-services://?action=download-manifest&url=https://10.230.66.40/api/versions/rog1/ios/2.0/plist'
+                alert(ios_href);
                 $('#download_btn').attr('href', ios_href);
             } else {
                 alert('coming soon...');
