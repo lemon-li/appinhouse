@@ -8,23 +8,15 @@
     <link rel="shortcut icon" href="/img/favicon_16.ico"/>
     <link rel="bookmark" href="/img/favicon_16.ico"/>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/sweetalert.css">
+    <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/plugins/alert/sweetalert.css">
     <link rel="stylesheet" href="/css/modal.css">
     <link rel="stylesheet" href="/css/style.css">
-
-    <script type="text/javascript" src="/js/jquery-2.1.1.js"></script>
-    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/js/utils.js"></script>
-    <script type="text/javascript" src="/js/sweetalert.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.qrcode.min.js"></script>
-
 </head>
 
-<body class="top-navigation pace-done">
+<body class="top-navigation pace-done white-bg">
 
-<div class="wrapper">
+<div id="wrapper">
     <div id="page-wrapper" class="gray-bg">
         <div class="row border-bottom white-bg">
             <nav class="navbar navbar-static-top" role="navigation">
@@ -57,11 +49,11 @@
                             <div class="tabs-container">
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a data-toggle="tab" href="#ios" aria-expanded="true"> <i
-                                        class="fa fa-apple"></i>IOS</a></li>
+                                            class="fa fa-apple"></i>IOS</a></li>
                                     <li class=""><a data-toggle="tab" href="#android" aria-expanded="false"><i
-                                        class="fa fa-android"></i>Android</a></li>
+                                            class="fa fa-android"></i>Android</a></li>
                                     <li class=""><a data-toggle="tab" href="#window" aria-expanded="false"><i
-                                        class="fa fa-windows"></i>Window</a></li>
+                                            class="fa fa-windows"></i>Window</a></li>
                                 </ul>
                                 <div class="tab-content">
                                     <div id="ios" class="tab-pane active">
@@ -104,8 +96,16 @@
     </div>
 </div>
 
-</body>
-</html>
+<!-- Mainly scripts -->
+<script type="text/javascript" src="/js/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script type="text/javascript" src="/js/plugins/alert/sweetalert.min.js"></script>
+<script type="text/javascript" src="/js/plugins/qrcode/jquery.qrcode.min.js"></script>
+<script type="text/javascript" src="/js/appinhouse.js"></script>
+<script type="text/javascript" src="/js/utils.js"></script>
 
 <script type="text/javascript">
     var appID = -1;
@@ -142,16 +142,15 @@
     }
 
     function reqVersionList(appId, platform) {
-        var url = "https://10.230.66.40/api/versions/" + appId + "/" + platform + "/history";
         $.ajax({
             type: "GET",
-            url: url,
+            url: toRestAPI('/api/versions', appId, platform, 'history'),
             dataType: "json",
             success: function (result) {
                 genVersionHtml(platform, result.data);
             },
             error: function (data) {
-                show_error(data.responseText);
+                showError(data.responseText);
             }
         });
     }
@@ -162,21 +161,15 @@
         $.each(data, function (index, item) {
             var downloadButton = $('<a/>')
                 .addClass('btn btn-info')
-                .attr("href", "https://10.230.66.40/html/qrcode_download.html")
-                //.attr("href", item.info.download_url)
-                //.attr("download", "")
+                .attr("href", item.info.download_url)
+                .attr("download", "")
                 .text('下载');
 
             var qrcodeButton = $('<button data-toggle="modal" data-target="#myModal"/>')
                 .addClass('btn btn-primary')
                 .append($('<div class="fa fa-qrcode"/>'))
                 .on('click', function () {
-                    if (item.platform != 'ios') {
-                        //genAndroidQRCode(item.info.download_url);
-                        genAndroidQRCode("https://jenkins.intranet.rog2.org/job/Pirates/job/Client/job/android/job/master/lastSuccessfulBuild/artifact/pirates-master-b4897-20190125-development.apk");
-                    } else {
-                        genIOSQRCode(item.platform, item.version)
-                    }
+                    genQRCode(item);
                 });
             var row =
                 $(
@@ -184,7 +177,7 @@
                     '<td width="15%"><h3 class="font-bold no-margins">' + item.info.create_time + '</h3></td>' +
                     '<td width="10%"><h3 class="font-bold no-margins">' + item.version + '</h3></td>' +
                     '<td width="10%"><h3 class="font-bold no-margins">' + item.info.desc + '</h3></td>' +
-                    '<td width="25%"><h3 class="font-bold no-margins">' + '<a class="text-info" href="http://www.baidu.com" target="_blank">点我跳转</a></h3></td>' +
+                    '<td width="25%"><h3 class="font-bold no-margins">' + '<a class="text-info" href= ' + item.info.jenkins_url + ' target="_blank">Jenkins传送</a></h3></td>' +
                     '</tr>'
                 );
             row.append($('<td width="20%" />').append(downloadButton).append(qrcodeButton));
@@ -192,23 +185,29 @@
         });
     }
 
-    function genAndroidQRCode(download_url) {
-        var params = "?url=" + download_url;
+    function genQRCode(item) {
+        var params = "";
+        if (item.platform == 'ios') {
+            params = genIOSQRCodeParams(item.platform, item.version);
+        } else {
+            params = getAndroidQRCodeParams(item.info.download_url);
+        }
         $('#qrcode_modal').empty();
         $('#qrcode_modal').qrcode({
             width: 200,
             height: 200,
-            text: "https://10.230.66.40/html/qrcode_download.html" + params
+            text: "http://10.230.66.40:8081/html/qrcode_download.html" + params
         });
     }
 
-    function genIOSQRCode(platform, version) {
-        var params = "?id=" + appID + "&platform=" + platform + "&version=" + version;
-        $('#qrcode_modal').empty();
-        $('#qrcode_modal').qrcode({
-            width: 200,
-            height: 200,
-            text: "https://10.230.66.40/html/qrcode_download.html" + params
-        });
+    function getAndroidQRCodeParams(download_url) {
+        return "?url=" + download_url;
+    }
+
+    function genIOSQRCodeParams(platform, version) {
+        return "?id=" + appID + "&platform=" + platform + "&version=" + version;
     }
 </script>
+
+</body>
+</html>

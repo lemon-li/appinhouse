@@ -3,40 +3,33 @@
 <head>
     <meta charset="utf-8">
     <title>加勒比海盗企业内部发布渠道</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 
     <link rel="shortcut icon" href="/img/favicon_16.ico"/>
     <link rel="bookmark" href="/img/favicon_16.ico"/>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/plugins/alert/sweetalert.css">
+    <link rel="stylesheet" href="/css/plugins/toastr/toastr.min.css">
     <link rel="stylesheet" href="/css/modal.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/sweetalert.css">
-    <link rel="stylesheet" href="/css/toastr.min.css">
-
-    <script type="text/javascript" src="/js/jquery-2.1.1.js"></script>
-    <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/js/utils.js"></script>
-    <script type="text/javascript" src="/js/sweetalert.min.js"></script>
-    <script type="text/javascript" src="/js/toastr.min.js"></script>
 
     <style type="text/css">
-        body.stop-scrolling {height:auto !important; overflow:visible !important;}
+        body.stop-scrolling {
+            height: auto !important;
+            overflow: visible !important;
+        }
     </style>
 </head>
 
 <body class="top-navigation pace-done">
-<!--header-->
-<div class="wrapper">
+
+<div id="wrapper">
     <div id="page-wrapper" class="gray-bg">
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top white-bg" role="navigation">
                 <div class="navbar-header">
-                    <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse"
-                            class="navbar-toggle collapsed" type="button">
-                        <i class="fa fa-reorder"></i>
-                    </button>
                     <a href="#" class="navbar-brand">西山居</a>
                 </div>
                 <div class="navbar-collapse collapse" id="navbar">
@@ -50,33 +43,35 @@
             </nav>
         </div>
         <div class="row">
-        <div class="wrapper wrapper-content">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="pull-right">
-                        <button type="button" class="btn btn-w-m btn-primary" onclick="onCreateApp()"><i class="fa fa-plus"></i>创建应用</button>
+            <div class="wrapper wrapper-content">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-w-m btn-primary" onclick="onCreateApp()"><i
+                                    class="fa fa-plus"></i>创建应用
+                            </button>
+                        </div>
+                        <h3 class="text-navy"><i class="fa fa-info-circle"></i> 项目列表</h3>
                     </div>
-                    <h3 class="text-navy"><i class="fa fa-info-circle"></i> 项目列表</h3>
-                </div>
-                <div class="panel-body ibox-content">
-                    <table role="presentation" class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th width="25%"><h3 class="font-bold no-margins">名称</h3></th>
-                            <th width="25%"><h3 class="font-bold no-margins">描述</h3></th>
-                            <th width="25%"><h3 class="font-bold no-margins">ID</h3></th>
-                            <th width="25%"><h3 class="font-bold no-margins">#</h3></th>
-                        </tr>
-                        </thead>
-                        <tbody id="list_body"></tbody>
-                    </table>
-                    <div class="hidden">
-                        <input type="text" id="page" value="0">
+                    <div class="panel-body ibox-content">
+                        <table role="presentation" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th width="25%"><h3 class="font-bold no-margins">名称</h3></th>
+                                <th width="25%"><h3 class="font-bold no-margins">描述</h3></th>
+                                <th width="25%"><h3 class="font-bold no-margins">ID</h3></th>
+                                <th width="25%"><h3 class="font-bold no-margins">#</h3></th>
+                            </tr>
+                            </thead>
+                            <tbody id="list_body"></tbody>
+                        </table>
+                        <div class="hidden">
+                            <input type="text" id="page" value="0">
+                        </div>
                     </div>
+                    <!-- panel body -->
                 </div>
-                <!-- panel body -->
-            </div>
-        </div><!-- content -->
+            </div><!-- content -->
         </div>
         <div class="footer">
             <div>
@@ -88,35 +83,39 @@
 
     </div>
 </div>
-</body>
-</html>
+
+<!-- Mainly scripts -->
+<script type="text/javascript" src="/js/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script type="text/javascript" src="/js/plugins/validate/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/js/plugins/alert/sweetalert.min.js"></script>
+<script type="text/javascript" src="/js/plugins/toastr/toastr.min.js"></script>
+<script type="text/javascript" src="/js/appinhouse.js"></script>
+<script type="text/javascript" src="/js/utils.js"></script>
+
 <script type="text/javascript">
-
-    var app_url = "https://10.230.66.40/api/apps/";
-
-    $(document).ready(function() {
+    $(document).ready(function () {
         setTimeout(function () {
             toastr.options = {
                 closeButton: true,
                 progressBar: true,
                 showMethod: 'slideDown',
-                timeOut: 4000
+                timeOut: 3000
             };
-            toastr.success('西山居', 'Welcome to AppInHouse');
-        }, 1300);
+            toastr.success('Welcome to AppInHouse', '西山居');
+        }, 1500);
 
         reqAppList();
     });
 
     function reqAppList(page) {
-        var suffix = "";
-        if (page) {
-            suffix = "?last_key=" + $('#page').val()
-        }
-        var url = app_url + suffix;
+        var suffix = page ? ("?last_key=" + $('#page').val()) : "";
         $.ajax({
             type: 'GET',
-            url: url,
+            url: toRestAPI('/api/apps', suffix),
             dateType: "json",
             success: function (data) {
                 $('#list_body').empty();
@@ -138,12 +137,12 @@
                         .on('click', function () {
                             onDeleteApp(item.id)
                         });
-                    //href="http://127.0.0.1:8091/version/' + item.id + '" >
+
                     var row =
                         $(
                             '<tr>' +
-                            '<td width="25%"><h3 class="font-bold no-margins" ><a class="text-info" href="http://10.230.66.40:8091/html/version.html" >' + appname + '</a>' +
-                                '<i class="fa fa-hand-o-left fa"></i></h3></td>' +
+                            '<td width="25%"><h3 class="font-bold no-margins" ><a class="text-info" href=' + toRestAPI('/version', item.id) + ' >' + appname + '</a>' +
+                            '<i class="fa fa-hand-o-left fa"></i></h3></td>' +
                             '<td width="25%"><h3 class="font-bold no-margins">' + item.desc + '</h3></td>' +
                             '<td width="25%"><h3 class="font-bold no-margins">' + item.id + '</h3></td>' +
                             '</tr>'
@@ -167,15 +166,14 @@
     }
 
     function requestCreateApp() {
-        var url = app_url;
         $.ajax({
             type: "POST",
-            url: url,
+            url: toRestAPI('/api/apps'),
             data: JSON.stringify(formData2Json("app_create_form")),
             dataType: "text",
             statusCode: {
                 201: function (data, textStatus, jqXHR) {
-                    show_success("成功创建应用", function () {
+                    showSuccess("成功创建应用", function () {
                         $('#app_modal').modal("hide");
                         reqAppList();
                     })
@@ -183,19 +181,17 @@
             },
             error: function (data) {
                 console.log(data);
-                show_error(data.responseText);
+                showError(data.responseText);
             }
         });
     }
 
     function onModifyApp(appID) {
-        var url = app_url + appID;
         $.ajax({
             type: "GET",
-            url: url,
+            url: toRestAPI('/api/apps', appID),
             dateType: "json",
             success: function (result) {
-                //request app info html
                 $.get("html/appinfo.html", function (data) {
                     $("#modal_content").html(data);
                     $("#app_owner").val(appID);
@@ -213,20 +209,19 @@
     }
 
     function requestModifyApp(appID) {
-        var url = app_url + appID;
         $.ajax({
             type: "PUT",
-            url: url,
+            url: toRestAPI('/api/apps', appID),
             data: JSON.stringify(formData2Json("app_create_form")),
             dataType: "json",
             success: function () {
-                show_success("修改成功", function () {
+                showSuccess("修改成功", function () {
                     $('#app_modal').modal("hide");
                     reqAppList();
                 })
             },
             error: function (data) {
-                show_error(data.responseJSON.message);
+                showError(data.responseJSON.message);
             }
         });
     }
@@ -242,18 +237,19 @@
             closeOnConfirm: false
 
         }, function () {
-            var url = app_url + appID;
             $.ajax({
                 type: 'DELETE',
-                url: url,
+                url: toRestAPI('/api/apps', appID),
                 dateType: "json",
                 success: function (data) {
-                    show_success("删除成功", function () {
+                    showSuccess("删除成功", function () {
                         reqAppList();
                     })
                 }
             });
         });
     }
-
 </script>
+
+</body>
+</html>
