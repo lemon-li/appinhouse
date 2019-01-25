@@ -21,7 +21,6 @@ import io.vertx.ext.web.handler.LoggerHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -51,7 +50,6 @@ public class RoutesManager implements Async {
     RouteVersionHandler versionHandler;
 
     @Inject
-    @Named("HTTP")
     HttpServer webServer;
 
     @Inject
