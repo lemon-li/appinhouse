@@ -1,5 +1,6 @@
 package com.seasungames.appinhouse.services.impl;
 
+import com.seasungames.appinhouse.application.Errors;
 import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.stores.services.app.AppDBService;
 import com.seasungames.appinhouse.stores.services.app.models.AppVo;
@@ -53,7 +54,7 @@ public class AppServiceImpl implements AppService {
 
         future.setHandler(ar -> {
             if (ar.succeeded() && ar.result() == null) {
-                String error = String.format("The app with id: %s can not be found", id);
+                String error = String.format(Errors.NOT_FOUND_APP_ID_MESSAGE, id);
                 resultHandler.handle(Future.failedFuture(new NotFoundException(error)));
             } else {
                 resultHandler.handle(ar);

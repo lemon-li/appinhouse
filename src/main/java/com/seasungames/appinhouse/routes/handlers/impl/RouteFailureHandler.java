@@ -1,5 +1,6 @@
 package com.seasungames.appinhouse.routes.handlers.impl;
 
+import com.seasungames.appinhouse.application.Errors;
 import com.seasungames.appinhouse.routes.exception.HttpException;
 import com.seasungames.appinhouse.routes.handlers.BaseHandler;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -39,11 +40,11 @@ public class RouteFailureHandler extends BaseHandler implements Handler<RoutingC
     }
 
     private void handleException(RoutingContext rc, ValidationException e) {
-        toResponseJson(rc, HttpResponseStatus.BAD_REQUEST.code(), "Validation failed");
+        toResponseJson(rc, HttpResponseStatus.BAD_REQUEST.code(), Errors.VALIDATION_ERROR_TYPE);
     }
 
     private void handleException(RoutingContext rc, DecodeException e) {
-        toResponseJson(rc, HttpResponseStatus.BAD_REQUEST.code(), "Failed to decode Json");
+        toResponseJson(rc, HttpResponseStatus.BAD_REQUEST.code(), Errors.DECODE_JSON_ERROR_TYPE);
     }
 
     private void handleException(RoutingContext rc, HttpException e) {
@@ -51,10 +52,10 @@ public class RouteFailureHandler extends BaseHandler implements Handler<RoutingC
     }
 
     private void handleException(RoutingContext rc, ServiceException e) {
-        toResponseJson(rc, HttpResponseStatus.INTERNAL_SERVER_ERROR.code(), e.getMessage());
+        toResponseJson(rc, HttpResponseStatus.INTERNAL_SERVER_ERROR.code(), Errors.SERVICE_ERROR_TYPE);
     }
 
     private void handleException(RoutingContext rc, Throwable e) {
-        toResponseJson(rc, HttpResponseStatus.INTERNAL_SERVER_ERROR.code(), e.getMessage());
+        toResponseJson(rc, HttpResponseStatus.INTERNAL_SERVER_ERROR.code(), Errors.SERVICE_ERROR_TYPE);
     }
 }

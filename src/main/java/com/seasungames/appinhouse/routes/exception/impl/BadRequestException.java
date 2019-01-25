@@ -1,6 +1,8 @@
 package com.seasungames.appinhouse.routes.exception.impl;
 
+import com.seasungames.appinhouse.application.Errors;
 import com.seasungames.appinhouse.routes.exception.HttpException;
+import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
  * Created by lile on 1/7/2019
@@ -8,10 +10,10 @@ import com.seasungames.appinhouse.routes.exception.HttpException;
 public class BadRequestException extends HttpException {
 
     public BadRequestException() {
-        super(400, "Bad request");
+        super(HttpResponseStatus.BAD_REQUEST.code(), Errors.CLIENT_ERROR_TYPE);
     }
 
     public BadRequestException(String msg) {
-        super(400, "Bad request. " + msg);
+        super(HttpResponseStatus.BAD_REQUEST.code(), msg);
     }
 }

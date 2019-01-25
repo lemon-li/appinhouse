@@ -1,5 +1,6 @@
 package com.seasungames.appinhouse.services.impl;
 
+import com.seasungames.appinhouse.application.Errors;
 import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.stores.services.app.AppDBService;
 import com.seasungames.appinhouse.stores.services.app.models.AppResponseVo;
@@ -66,7 +67,7 @@ public class VersionServiceImpl implements VersionService {
                     String result = PlistUtils.genPlist(vo.getDownloadUrl(), vo.getIOSBundleId(), vo.getIOSTitle());
                     resultHandler.handle(Future.succeededFuture(result));
                 } else {
-                    String error = String.format("The Version not found , id: %s, platform: %s, version: %s", appId, platform, version);
+                    String error = String.format(Errors.NOT_FOUND_VERSION_MESSAGE, appId, platform, version);
                     resultHandler.handle(Future.failedFuture(new NotFoundException(error)));
                 }
             } else {
