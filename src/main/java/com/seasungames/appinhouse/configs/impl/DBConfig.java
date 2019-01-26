@@ -1,23 +1,11 @@
-package com.seasungames.appinhouse.application;
+package com.seasungames.appinhouse.configs.impl;
 
-import org.aeonbits.owner.Config;
+import com.seasungames.appinhouse.configs.BaseConfig;
 
 /**
- * Created by lile on 12/27/2018
+ * Created by lile on 2019-01-26
  */
-@Config.LoadPolicy(Config.LoadType.MERGE)
-@Config.Sources({"file:~/.appinhouse.properties",
-    "file:appinhouse.properties",
-    "classpath:appinhouse.properties"})
-public interface Configuration extends Config {
-
-    @Key("http.host")
-    @DefaultValue("0.0.0.0")
-    String httpHost();
-
-    @Key("http.port")
-    @DefaultValue("8443")
-    int httpPort();
+public interface DBConfig extends BaseConfig {
 
     @Key("dynamodb.region")
     @DefaultValue("local")

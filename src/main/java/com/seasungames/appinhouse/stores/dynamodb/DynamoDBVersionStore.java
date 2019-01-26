@@ -9,8 +9,8 @@ import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
-import com.seasungames.appinhouse.application.Configuration;
 import com.seasungames.appinhouse.application.PlatformEnum;
+import com.seasungames.appinhouse.configs.impl.DBConfig;
 import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.stores.services.version.models.VersionVo;
 import com.seasungames.appinhouse.stores.services.version.models.VersionResponseVo;
@@ -33,13 +33,13 @@ public class DynamoDBVersionStore implements VersionStore {
 
     private String tableName;
 
-    public Configuration conf;
+    public DBConfig conf;
 
     private Table table;
     private AmazonDynamoDB ddb;
 
     @Inject
-    public DynamoDBVersionStore(AmazonDynamoDB ddb, Configuration conf) {
+    public DynamoDBVersionStore(AmazonDynamoDB ddb, DBConfig conf) {
         this.ddb = ddb;
         this.conf = conf;
 

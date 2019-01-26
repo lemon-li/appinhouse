@@ -5,7 +5,7 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.seasungames.appinhouse.application.Configuration;
+import com.seasungames.appinhouse.configs.impl.DBConfig;
 import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.stores.AppStore;
 import com.seasungames.appinhouse.stores.VersionStore;
@@ -25,7 +25,7 @@ public class DBModule {
 
     @Provides
     @AppInHouse
-    AmazonDynamoDB provideAmazonDynamoDB(Configuration conf) {
+    AmazonDynamoDB provideAmazonDynamoDB(DBConfig conf) {
         AmazonDynamoDBClient client;
         String region = conf.dynamodbRegion();
         AmazonDynamoDBClientBuilder builder = AmazonDynamoDBClientBuilder.standard().

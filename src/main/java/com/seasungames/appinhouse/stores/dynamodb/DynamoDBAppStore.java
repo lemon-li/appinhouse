@@ -10,7 +10,7 @@ import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
-import com.seasungames.appinhouse.application.Configuration;
+import com.seasungames.appinhouse.configs.impl.DBConfig;
 import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.stores.services.app.models.AppVo;
 import com.seasungames.appinhouse.stores.services.app.models.AppListResponseVo;
@@ -39,13 +39,13 @@ public class DynamoDBAppStore implements AppStore {
 
     private String tableName;
 
-    private Configuration conf;
+    private DBConfig conf;
 
     private Table table;
     private AmazonDynamoDB ddb;
 
     @Inject
-    public DynamoDBAppStore(AmazonDynamoDB ddb, Configuration conf) {
+    public DynamoDBAppStore(AmazonDynamoDB ddb, DBConfig conf) {
         this.ddb = ddb;
         this.conf = conf;
 

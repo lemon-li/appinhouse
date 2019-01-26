@@ -1,6 +1,7 @@
 package com.seasungames.appinhouse.dagger.common.module;
 
-import com.seasungames.appinhouse.application.Configuration;
+import com.seasungames.appinhouse.configs.impl.DBConfig;
+import com.seasungames.appinhouse.configs.impl.RouteConfig;
 import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import dagger.Module;
 import dagger.Provides;
@@ -14,7 +15,13 @@ public class ConfModule {
 
     @Provides
     @AppInHouse
-    Configuration provideConfiguration() {
-        return ConfigFactory.create(Configuration.class);
+    DBConfig provideDBConfig() {
+        return ConfigFactory.create(DBConfig.class);
+    }
+
+    @Provides
+    @AppInHouse
+    RouteConfig provideRouteConfig() {
+        return ConfigFactory.create(RouteConfig.class);
     }
 }

@@ -2,7 +2,7 @@ package com.seasungames.appinhouse.routes;
 
 import com.seasungames.appinhouse.application.APIConstant;
 import com.seasungames.appinhouse.application.Async;
-import com.seasungames.appinhouse.application.Configuration;
+import com.seasungames.appinhouse.configs.impl.RouteConfig;
 import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.routes.exception.impl.BadRequestException;
 import com.seasungames.appinhouse.routes.handlers.impl.RouteFailureHandler;
@@ -53,7 +53,7 @@ public class RoutesManager implements Async {
     HttpServer webServer;
 
     @Inject
-    Configuration conf;
+    RouteConfig conf;
 
     @Inject
     public RoutesManager(Router router) {
