@@ -65,9 +65,6 @@
                             </thead>
                             <tbody id="list_body"></tbody>
                         </table>
-                        <div class="hidden">
-                            <input type="text" id="page" value="0">
-                        </div>
                     </div>
                     <!-- panel body -->
                 </div>
@@ -97,7 +94,18 @@
 <script type="text/javascript" src="/js/utils.js"></script>
 
 <script type="text/javascript">
+    var scrollLoad = false;
+    var last_key = "";
     $(document).ready(function () {
+
+        $(window).scroll(function () {
+            if (scrollLoad && $(window).scrollTop() >= $(document).height() - $(window).height()) {
+                scrollLoad = false;
+                reqAppList(last_key);
+                console.log("load more");
+            }
+        });
+
         setTimeout(function () {
             toastr.options = {
                 closeButton: true,
@@ -112,13 +120,12 @@
     });
 
     function reqAppList(page) {
-        var suffix = page ? ("?last_key=" + $('#page').val()) : "";
+        var suffix = page ? ("?last_key=" + page) : "";
         $.ajax({
             type: 'GET',
             url: toRestAPI('/api/apps', suffix),
             dateType: "json",
             success: function (data) {
-                $('#list_body').empty();
 
                 $.each(data.data.list, function (index, item) {
                     var appname = item.id;
@@ -150,6 +157,8 @@
                     row.append($('<td width="25%" />').append(modifyButton).append(deleteButton));
                     $('#list_body').append(row);
                 });
+                last_key = data.data.last_key;
+                scrollLoad = !isEmpty(last_key);
             }
         });
     }
