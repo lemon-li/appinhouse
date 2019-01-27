@@ -5,6 +5,7 @@ import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.stores.services.app.AppDBService;
 import com.seasungames.appinhouse.stores.services.app.models.AppResponseVo;
 import com.seasungames.appinhouse.stores.services.version.VersionDBService;
+import com.seasungames.appinhouse.stores.services.version.models.VersionListResponseVo;
 import com.seasungames.appinhouse.stores.services.version.models.VersionVo;
 import com.seasungames.appinhouse.stores.services.version.models.VersionResponseVo;
 import com.seasungames.appinhouse.routes.exception.impl.NotFoundException;
@@ -15,7 +16,6 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.List;
 
 /**
@@ -36,9 +36,9 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    public void getPlatformList(String appId, String platform,
-                                Handler<AsyncResult<List<VersionResponseVo>>> resultHandler) {
-        versionDBServiceProxy.getPlatformList(appId, platform, resultHandler);
+    public void getPlatformList(String appId, String platform, String lastKey,
+                                Handler<AsyncResult<VersionListResponseVo>> resultHandler) {
+        versionDBServiceProxy.getPlatformList(appId, platform, lastKey, resultHandler);
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.seasungames.appinhouse.application.PlatformEnum;
 import com.seasungames.appinhouse.configs.impl.DBConfig;
 import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
+import com.seasungames.appinhouse.stores.services.version.models.VersionListResponseVo;
 import com.seasungames.appinhouse.stores.services.version.models.VersionVo;
 import com.seasungames.appinhouse.stores.services.version.models.VersionResponseVo;
 import com.seasungames.appinhouse.stores.VersionStore;
@@ -30,6 +31,8 @@ import java.util.*;
 public class DynamoDBVersionStore implements VersionStore {
 
     private static final Logger LOG = LoggerFactory.getLogger(DynamoDBVersionStore.class);
+
+    private final String LASY_KEY_FLAG = "@";
 
     private String tableName;
 
@@ -169,21 +172,35 @@ public class DynamoDBVersionStore implements VersionStore {
     }
 
     @Override
-    public List<VersionResponseVo> getPlatformList(String appId, String platform) {
+    public VersionListResponseVo getPlatformList(String appId, String platform, String lastKey) {
         QuerySpec querySpec = new QuerySpec();
+
+        if (lastKey != null && !lastKey.isEmpty()) {
+            String[] lastKeys = lastKey.split(LASY_KEY_FLAG);
+            querySpec.withExclusiveStartKey(VersionTable.HASH_KEY_APPID, lastKeys[0], VersionTable.RANGE_KEY_VERSION, lastKeys[1]);
+        }
+
         querySpec.withKeyConditionExpression("#id = :v_id")
             .withNameMap(new NameMap().with("#id", VersionTable.HASH_KEY_APPID))
             .withValueMap(new ValueMap().withString(":v_id", getPrimaryKey(appId, platform)))
-            .withScanIndexForward(false);
+            .withScanIndexForward(false)
+            .setMaxResultSize(conf.perPageSize());
 
         ItemCollection<QueryOutcome> items = table.query(querySpec);
         Iterator<Item> iterator = items.iterator();
         List<VersionResponseVo> versionListResponseVos = new ArrayList<>();
 
+        Item item = null;
         while (iterator.hasNext()) {
-            VersionResponseVo vo = Json.decodeValue(iterator.next().toJSON(), VersionResponseVo.class);
+            item = iterator.next();
+            VersionResponseVo vo = Json.decodeValue(item.toJSON(), VersionResponseVo.class);
             versionListResponseVos.add(vo);
         }
-        return versionListResponseVos;
+
+        String lastEvaluatedKey = "";
+        if (items.getAccumulatedItemCount() >= conf.perPageSize() && item != null) {
+            lastEvaluatedKey = item.getString(VersionTable.HASH_KEY_APPID) + LASY_KEY_FLAG + item.getString(VersionTable.RANGE_KEY_VERSION);
+        }
+        return new VersionListResponseVo().setList(versionListResponseVos).setLastKey(lastEvaluatedKey);
     }
 }

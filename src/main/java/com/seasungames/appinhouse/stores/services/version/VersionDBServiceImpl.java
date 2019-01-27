@@ -3,6 +3,7 @@ package com.seasungames.appinhouse.stores.services.version;
 import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.stores.exception.DBException;
 import com.seasungames.appinhouse.stores.VersionStore;
+import com.seasungames.appinhouse.stores.services.version.models.VersionListResponseVo;
 import com.seasungames.appinhouse.stores.services.version.models.VersionVo;
 import com.seasungames.appinhouse.stores.services.version.models.VersionResponseVo;
 import io.vertx.core.AsyncResult;
@@ -27,9 +28,9 @@ public class VersionDBServiceImpl implements VersionDBService {
     }
 
     @Override
-    public void getPlatformList(String appId, String platform, Handler<AsyncResult<List<VersionResponseVo>>> resultHandler) {
+    public void getPlatformList(String appId, String platform, String lastKey, Handler<AsyncResult<VersionListResponseVo>> resultHandler) {
         try {
-            List<VersionResponseVo> versionResponseVos = versionStore.getPlatformList(appId, platform);
+            VersionListResponseVo versionResponseVos = versionStore.getPlatformList(appId, platform, lastKey);
             resultHandler.handle(Future.succeededFuture(versionResponseVos));
         } catch (Exception e) {
             resultHandler.handle(DBException.fail(e));

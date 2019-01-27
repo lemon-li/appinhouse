@@ -17,7 +17,7 @@ function toRestAPI() {
 }
 
 function getAppIdByPathParams() {
-    var src = "/version/rog1";//window.location.toString();
+    var src = window.location.toString();
     var index = src.indexOf('/version/');
     if (index == -1) {
         return null;

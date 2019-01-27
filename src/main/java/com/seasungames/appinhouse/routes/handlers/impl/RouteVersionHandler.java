@@ -53,8 +53,9 @@ public class RouteVersionHandler extends BaseHandler {
     private void apiHistoryVersion(RoutingContext rc) {
         String appId = rc.request().getParam("id");
         String platform = rc.request().getParam("platform");
+        String lastKey = rc.request().getParam("last_key");
 
-        versionService.getPlatformList(appId, platform, resultVoidHandler(rc));
+        versionService.getPlatformList(appId, platform, lastKey, resultVoidHandler(rc));
     }
 
     private void apiCreateVersion(RoutingContext rc) {

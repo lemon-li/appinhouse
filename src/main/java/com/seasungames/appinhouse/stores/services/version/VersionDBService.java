@@ -1,5 +1,6 @@
 package com.seasungames.appinhouse.stores.services.version;
 
+import com.seasungames.appinhouse.stores.services.version.models.VersionListResponseVo;
 import com.seasungames.appinhouse.stores.services.version.models.VersionVo;
 import com.seasungames.appinhouse.stores.services.version.models.VersionResponseVo;
 import io.vertx.codegen.annotations.ProxyClose;
@@ -17,7 +18,7 @@ public interface VersionDBService {
 
     String SERVICE_ADDRESS = "com.seasungames.appinhouse.version-dynamodb-service";
 
-    void getPlatformList(String appId, String platform, Handler<AsyncResult<List<VersionResponseVo>>> resultHandler);
+    void getPlatformList(String appId, String platform, String lastKey, Handler<AsyncResult<VersionListResponseVo>> resultHandler);
 
     void getLatestList(String appId, Handler<AsyncResult<List<VersionResponseVo>>> resultHandler);
 
