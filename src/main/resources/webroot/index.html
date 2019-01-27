@@ -23,7 +23,7 @@
     </style>
 </head>
 
-<body class="top-navigation pace-done">
+<body class="top-navigation">
 
 <div id="wrapper">
     <div id="page-wrapper" class="gray-bg">
@@ -96,7 +96,7 @@
 <script type="text/javascript">
     var scrollLoad = false;
     var last_key = "";
-    $(function () {
+    $(document).ready(function () {
 
         $(window).scroll(function () {
             if (scrollLoad && $(window).scrollTop() >= $(document).height() - $(window).height()) {
