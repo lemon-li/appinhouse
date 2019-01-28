@@ -11,6 +11,8 @@ public final class Errors {
 
     public static final String VALIDATION_ERROR_TYPE = "ValidationError";
 
+    public static final String FORBIDDEN_ERROR_TYPE = "Not authorized";
+
     public static final String DECODE_JSON_ERROR_TYPE = "Failed to decode Json";
 
     public static final String NOT_FOUND_ERROR_TYPE = "Not Found";

@@ -168,9 +168,7 @@
             $("#modal_content").html(data);
             $("#app_owner").val("");
             $("#app_modal_title").text("创建应用");
-            $('#app_modal').modal({
-                show: true
-            });
+            $('#app_modal').modal("show");
         })
     }
 
@@ -180,6 +178,9 @@
             url: toRestAPI('/api/apps'),
             data: JSON.stringify(formData2Json("app_create_form")),
             dataType: "text",
+            headers: {
+                'X-SecretKey': $('#input_secret').val()
+            },
             statusCode: {
                 201: function (data, textStatus, jqXHR) {
                     showSuccess("成功创建应用", function () {
@@ -189,8 +190,9 @@
                 }
             },
             error: function (data) {
-                console.log(data);
-                showError(data.responseText);
+                showError(data.responseText, function () {
+                    $('#app_modal').modal("hide");
+                });
             }
         });
     }
@@ -209,9 +211,7 @@
                     $("#input_app_id").attr("readonly", true);
                     $("#input_app_desc").val(result.data.desc);
                     $("#input_app_alias").val(result.data.alias);
-                    $('#app_modal').modal({
-                        show: true
-                    });
+                    $('#app_modal').modal("show");
                 })
             }
         });
@@ -223,6 +223,9 @@
             url: toRestAPI('/api/apps', appID),
             data: JSON.stringify(formData2Json("app_create_form")),
             dataType: "json",
+            headers: {
+                'X-SecretKey': $('#input_secret').val()
+            },
             success: function () {
                 showSuccess("修改成功", function () {
                     $('#app_modal').modal("hide");
@@ -230,7 +233,9 @@
                 })
             },
             error: function (data) {
-                showError(data.responseJSON.message);
+                showError(data.responseJSON.message,function () {
+                    $('#app_modal').modal("hide");
+                });
             }
         });
     }

@@ -6,6 +6,7 @@ import com.seasungames.appinhouse.configs.impl.RouteConfig;
 import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.routes.exception.impl.BadRequestException;
 import com.seasungames.appinhouse.routes.handlers.impl.RouteFailureHandler;
+import com.seasungames.appinhouse.routes.handlers.impl.RouteFilterHandler;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
@@ -43,6 +44,8 @@ public class RoutesManager implements Async {
 
     private final Router router;
 
+    private final RouteConfig conf;
+
     @Inject
     RouteAppHandler appHandler;
 
@@ -53,12 +56,14 @@ public class RoutesManager implements Async {
     HttpServer webServer;
 
     @Inject
-    RouteConfig conf;
-
-    @Inject
-    public RoutesManager(Router router) {
+    public RoutesManager(Router router, RouteConfig conf) {
         this.router = router;
+        this.conf = conf;
 
+        router.route()
+            .method(HttpMethod.POST)
+            .method(HttpMethod.PUT)
+            .handler(RouteFilterHandler.create(conf.httpSecureKey()));
         router.route().handler(BodyHandler.create());
         router.route().handler(LoggerHandler.create());
         router.route().handler(StaticHandler.create()

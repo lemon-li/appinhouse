@@ -14,4 +14,8 @@ public interface RouteConfig extends BaseConfig {
     @Key("http.port")
     @DefaultValue("8443")
     int httpPort();
+
+    @Key("http.secureKey")
+    @DefaultValue("")
+    String httpSecureKey();
 }
