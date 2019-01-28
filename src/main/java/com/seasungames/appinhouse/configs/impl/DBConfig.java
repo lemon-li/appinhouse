@@ -39,7 +39,7 @@ public interface DBConfig extends BaseConfig {
     @DefaultValue("")
     String versionsTableName();
 
-    @Key("webclient.page.size")
+    @Key("dynamodb.page.size")
     @DefaultValue("10")
-    int perPageSize();
+    int dynamodbPageSize();
 }

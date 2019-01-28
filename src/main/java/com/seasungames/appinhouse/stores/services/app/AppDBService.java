@@ -14,8 +14,6 @@ import io.vertx.core.Handler;
 @ProxyGen
 public interface AppDBService {
 
-    String SERVICE_ADDRESS = "com.seasungames.appinhouse.app-dynamodb-service";
-
     void getAppsList(String lastKey, Handler<AsyncResult<AppListResponseVo>> resultHandler);
 
     void updateApps(AppVo vo, Handler<AsyncResult<AppResponseVo>> resultHandler);

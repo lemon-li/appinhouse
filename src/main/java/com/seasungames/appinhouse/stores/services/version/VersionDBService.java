@@ -16,8 +16,6 @@ import java.util.List;
 @ProxyGen
 public interface VersionDBService {
 
-    String SERVICE_ADDRESS = "com.seasungames.appinhouse.version-dynamodb-service";
-
     void getPlatformList(String appId, String platform, String lastKey, Handler<AsyncResult<VersionListResponseVo>> resultHandler);
 
     void getLatestList(String appId, Handler<AsyncResult<List<VersionResponseVo>>> resultHandler);

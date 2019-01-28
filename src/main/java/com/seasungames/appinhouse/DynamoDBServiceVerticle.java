@@ -1,5 +1,6 @@
 package com.seasungames.appinhouse;
 
+import com.seasungames.appinhouse.configs.impl.ServiceConfig;
 import com.seasungames.appinhouse.dagger.db.DBComponent;
 import com.seasungames.appinhouse.dagger.db.DaggerDBComponent;
 import com.seasungames.appinhouse.stores.services.app.AppDBService;
@@ -25,6 +26,9 @@ public class DynamoDBServiceVerticle extends AbstractVerticle {
     @Inject
     VersionDBService versionDBService;
 
+    @Inject
+    ServiceConfig serviceConfig;
+
     @Override
     public void start(Future<Void> startFuture) throws Exception {
         injectDependencies();
@@ -40,13 +44,13 @@ public class DynamoDBServiceVerticle extends AbstractVerticle {
 
     private void startAppDBService() {
         new ServiceBinder(vertx)
-            .setAddress(AppDBService.SERVICE_ADDRESS)
+            .setAddress(serviceConfig.serviceAppAddress())
             .register(AppDBService.class, appDBService);
     }
 
     private void startVersionDBService() {
         new ServiceBinder(vertx)
-            .setAddress(VersionDBService.SERVICE_ADDRESS)
+            .setAddress(serviceConfig.serviceVersionAddress())
             .register(VersionDBService.class, versionDBService);
     }
 

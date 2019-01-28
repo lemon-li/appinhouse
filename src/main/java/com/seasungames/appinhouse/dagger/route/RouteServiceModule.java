@@ -1,5 +1,6 @@
 package com.seasungames.appinhouse.dagger.route;
 
+import com.seasungames.appinhouse.configs.impl.ServiceConfig;
 import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import com.seasungames.appinhouse.services.AppService;
 import com.seasungames.appinhouse.services.VersionService;
@@ -10,10 +11,9 @@ import com.seasungames.appinhouse.stores.services.version.VersionDBService;
 import dagger.Module;
 import dagger.Provides;
 import io.vertx.core.Vertx;
+import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.serviceproxy.ServiceProxyBuilder;
-
-import javax.inject.Named;
 
 @Module
 public class RouteServiceModule {
@@ -38,17 +38,23 @@ public class RouteServiceModule {
 
     @Provides
     @AppInHouse
-    AppDBService provideAppDBService(Vertx vertx) {
+    AppDBService provideAppDBService(Vertx vertx, ServiceConfig serviceConfig) {
         return new ServiceProxyBuilder(vertx)
-            .setAddress(AppDBService.SERVICE_ADDRESS)
+            .setAddress(serviceConfig.serviceAppAddress())
+            .setOptions(new DeliveryOptions()
+                .setLocalOnly(true)
+                .setSendTimeout(serviceConfig.serviceProxySendTimeout()))
             .build(AppDBService.class);
     }
 
     @Provides
     @AppInHouse
-    VersionDBService provideVersionDBService(Vertx vertx) {
+    VersionDBService provideVersionDBService(Vertx vertx, ServiceConfig serviceConfig) {
         return new ServiceProxyBuilder(vertx)
-            .setAddress(VersionDBService.SERVICE_ADDRESS)
+            .setAddress(serviceConfig.serviceVersionAddress())
+            .setOptions(new DeliveryOptions()
+                .setLocalOnly(true)
+                .setSendTimeout(serviceConfig.serviceProxySendTimeout()))
             .build(VersionDBService.class);
     }
 }

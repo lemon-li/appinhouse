@@ -88,7 +88,7 @@ public class DynamoDBAppStore implements AppStore {
 
         ScanRequest scanRequest = new ScanRequest()
             .withTableName(tableName)
-            .withLimit(conf.perPageSize());
+            .withLimit(conf.dynamodbPageSize());
 
         if (lastKey != null && !lastKey.isEmpty()) {
             Map<String, AttributeValue> startKey = new HashMap<>();

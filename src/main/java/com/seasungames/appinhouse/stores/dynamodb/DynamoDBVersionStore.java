@@ -184,7 +184,7 @@ public class DynamoDBVersionStore implements VersionStore {
             .withNameMap(new NameMap().with("#id", VersionTable.HASH_KEY_APPID))
             .withValueMap(new ValueMap().withString(":v_id", getPrimaryKey(appId, platform)))
             .withScanIndexForward(false)
-            .setMaxResultSize(conf.perPageSize());
+            .setMaxResultSize(conf.dynamodbPageSize());
 
         ItemCollection<QueryOutcome> items = table.query(querySpec);
         Iterator<Item> iterator = items.iterator();
@@ -198,7 +198,7 @@ public class DynamoDBVersionStore implements VersionStore {
         }
 
         String lastEvaluatedKey = "";
-        if (items.getAccumulatedItemCount() >= conf.perPageSize() && item != null) {
+        if (items.getAccumulatedItemCount() >= conf.dynamodbPageSize() && item != null) {
             lastEvaluatedKey = item.getString(VersionTable.HASH_KEY_APPID) + LASY_KEY_FLAG + item.getString(VersionTable.RANGE_KEY_VERSION);
         }
         return new VersionListResponseVo().setList(versionListResponseVos).setLastKey(lastEvaluatedKey);
