@@ -128,39 +128,39 @@
             success: function (data) {
 
                 $.each(data.data.list, function (index, item) {
-                    var appname = item.id;
-                    if (item.alias) {
-                        appname = item.alias
-                    }
-                    var modifyButton = $('<button/>')
-                        .addClass('btn btn-info')
-                        .text('修改')
-                        .on('click', function () {
-                            onModifyApp(item.id)
-                        });
-                    var deleteButton = $('<button/>')
-                        .addClass('btn btn-danger')
-                        .text('删除')
-                        .on('click', function () {
-                            onDeleteApp(item.id)
-                        });
-
-                    var row =
-                        $(
-                            '<tr>' +
-                            '<td width="25%"><h3 class="font-bold no-margins" ><a class="text-info" href=' + toRestAPI('/version', item.id) + ' >' + appname + '</a>' +
-                            '<i class="fa fa-hand-o-left fa"></i></h3></td>' +
-                            '<td width="25%"><h3 class="font-bold no-margins">' + item.desc + '</h3></td>' +
-                            '<td width="25%"><h3 class="font-bold no-margins">' + item.id + '</h3></td>' +
-                            '</tr>'
-                        );
-                    row.append($('<td width="25%" />').append(modifyButton).append(deleteButton));
-                    $('#list_body').append(row);
+                    $('#list_body').append(createTableItemHtml(item));
                 });
                 last_key = data.data.last_key;
                 scrollLoad = !isEmpty(last_key);
             }
         });
+    }
+
+    function createTableItemHtml(item) {
+        var modifyButton = $('<button/>')
+            .addClass('btn btn-info')
+            .text('修改')
+            .on('click', function () {
+                onModifyApp(item.id)
+            });
+        var deleteButton = $('<button/>')
+            .addClass('btn btn-danger')
+            .text('删除')
+            .on('click', function () {
+                onDeleteApp(item.id)
+            });
+
+        var row =
+            $(
+                '<tr id="'+item.id+'">' +
+                '<td width="25%"><h3 class="app_alias font-bold no-margins" ><a class="text-info" href=' + toRestAPI('/version', item.id) + ' >' + item.alias + '</a>' +
+                '<i class="fa fa-hand-o-left fa"></i></h3></td>' +
+                '<td width="25%"><h3 class="app_desc font-bold no-margins">' + item.desc + '</h3></td>' +
+                '<td width="25%"><h3 class="font-bold no-margins">' + item.id + '</h3></td>' +
+                '</tr>'
+            );
+        row.append($('<td width="25%" />').append(modifyButton).append(deleteButton));
+        return row;
     }
 
     function onCreateApp() {
@@ -226,10 +226,11 @@
             headers: {
                 'X-SecretKey': $('#input_secret').val()
             },
-            success: function () {
+            success: function (result) {
+                $('#'+appID).find('.app_alias').text(result.data.alias);
+                $('#'+appID).find('.app_desc').text(result.data.desc);
                 showSuccess("修改成功", function () {
                     $('#app_modal').modal("hide");
-                    reqAppList();
                 })
             },
             error: function (data) {
@@ -257,7 +258,7 @@
                 dateType: "json",
                 success: function (data) {
                     showSuccess("删除成功", function () {
-                        reqAppList();
+                        $('#'+appID).remove();
                     })
                 }
             });
