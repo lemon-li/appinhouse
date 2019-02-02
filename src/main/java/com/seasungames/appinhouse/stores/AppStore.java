@@ -5,7 +5,7 @@ import com.seasungames.appinhouse.stores.services.app.models.AppListResponseVo;
 import com.seasungames.appinhouse.stores.services.app.models.AppResponseVo;
 
 /**
- * Created by lile on 12/28/2018
+ * @author lile on 2018-12-28
  */
 public interface AppStore {
 

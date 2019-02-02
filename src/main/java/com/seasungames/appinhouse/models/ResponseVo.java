@@ -3,6 +3,9 @@ package com.seasungames.appinhouse.models;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.vertx.core.json.Json;
 
+/**
+ * @author lile on 2019-01-09
+ */
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class ResponseVo<T> {
 

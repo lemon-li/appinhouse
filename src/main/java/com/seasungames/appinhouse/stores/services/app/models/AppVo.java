@@ -5,7 +5,7 @@ import io.vertx.codegen.annotations.DataObject;
 import io.vertx.core.json.JsonObject;
 
 /**
- * Created by lile on 12/28/2018
+ * @author lile on 2018-12-28
  */
 @DataObject(generateConverter = true)
 public class AppVo {

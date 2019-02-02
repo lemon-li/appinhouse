@@ -8,6 +8,9 @@ import io.vertx.core.Handler;
 
 import java.util.List;
 
+/**
+ * @author lile on 2019-01-04
+ */
 public interface VersionService {
 
     void getPlatformList(String appId, String platform, String lastKey, Handler<AsyncResult<VersionListResponseVo>> resultHandler);

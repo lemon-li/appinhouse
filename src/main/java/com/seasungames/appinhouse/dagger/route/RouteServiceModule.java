@@ -15,6 +15,9 @@ import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.serviceproxy.ServiceProxyBuilder;
 
+/**
+ * @author lile on 2019-01-06
+ */
 @Module
 public class RouteServiceModule {
 

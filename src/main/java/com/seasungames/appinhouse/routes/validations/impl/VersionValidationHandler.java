@@ -5,7 +5,7 @@ import com.seasungames.appinhouse.routes.validations.BaseValidationHandler;
 import io.vertx.ext.web.api.validation.HTTPRequestValidationHandler;
 
 /**
- * Created by lile on 1/7/2019
+ * @author lile on 2019-01-07
  */
 public class VersionValidationHandler extends BaseValidationHandler {
 

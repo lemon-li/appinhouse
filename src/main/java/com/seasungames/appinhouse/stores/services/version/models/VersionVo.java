@@ -5,6 +5,9 @@ import io.vertx.codegen.annotations.DataObject;
 import io.vertx.codegen.annotations.GenIgnore;
 import io.vertx.core.json.JsonObject;
 
+/**
+ * @author lile on 2019-01-01
+ */
 @DataObject(generateConverter = true)
 public class VersionVo {
 

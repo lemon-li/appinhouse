@@ -7,7 +7,7 @@ import io.vertx.core.json.JsonObject;
 import java.util.List;
 
 /**
- * Created by lile on 2019-01-27
+ * @author lile on 2019-01-27
  */
 @DataObject(generateConverter = true)
 public class VersionListResponseVo {

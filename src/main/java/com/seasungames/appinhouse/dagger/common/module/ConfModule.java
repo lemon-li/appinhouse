@@ -9,7 +9,7 @@ import dagger.Provides;
 import org.aeonbits.owner.ConfigFactory;
 
 /**
- * Created by lile on 1/18/2019
+ * @author lile on 2019-01-18
  */
 @Module
 public class ConfModule {

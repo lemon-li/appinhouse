@@ -3,7 +3,7 @@ package com.seasungames.appinhouse.utils;
 import com.seasungames.appinhouse.application.APIConstant;
 
 /**
- * Created by lile on 12/27/2018
+ * @author lile on 2018-12-27
  */
 public class PathUtils {
 

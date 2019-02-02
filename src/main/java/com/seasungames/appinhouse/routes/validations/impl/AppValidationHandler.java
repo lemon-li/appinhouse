@@ -5,7 +5,7 @@ import com.seasungames.appinhouse.stores.services.app.models.AppVo;
 import io.vertx.ext.web.api.validation.HTTPRequestValidationHandler;
 
 /**
- * Created by lile on 1/7/2019
+ * @author lile on 2019-01-07
  */
 public class AppValidationHandler extends BaseValidationHandler {
 

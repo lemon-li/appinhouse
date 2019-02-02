@@ -7,9 +7,8 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 
 /**
- * Created by lile on 1/3/2019
+ * @author lile on 2019-01-03
  */
-
 @Module
 public class RouteModule {
 

@@ -6,7 +6,7 @@ import dagger.Provides;
 import io.vertx.core.Vertx;
 
 /**
- * Created by lile on 1/3/2019
+ * @author lile on 2019-01-03
  */
 @Module
 public class VertxModule {

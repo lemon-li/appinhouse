@@ -1,5 +1,8 @@
 package com.seasungames.appinhouse.application;
 
+/**
+ * @author lile on 2019-01-05
+ */
 public class APIConstant {
 
     public static final String WEBROOT = "webroot";

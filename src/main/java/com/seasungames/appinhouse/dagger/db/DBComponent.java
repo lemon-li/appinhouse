@@ -7,7 +7,7 @@ import com.seasungames.appinhouse.dagger.common.scope.AppInHouse;
 import dagger.Component;
 
 /**
- * Created by lile on 1/18/2019
+ * @author lile on 2019-01-18
  */
 @AppInHouse
 @Component(modules = {

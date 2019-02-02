@@ -6,6 +6,9 @@ import com.seasungames.appinhouse.stores.services.app.models.AppResponseVo;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 
+/**
+ * @author lile on 2019-01-04
+ */
 public interface AppService {
 
     void getAppsList(String lastKey, Handler<AsyncResult<AppListResponseVo>> resultHandler);

@@ -1,7 +1,7 @@
 package com.seasungames.appinhouse.application;
 
 /**
- * Created by lile on 1/25/2019
+ * @author lile on 2019-01-25
  */
 public final class Errors {
 

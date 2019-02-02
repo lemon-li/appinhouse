@@ -18,8 +18,9 @@ import com.seasungames.appinhouse.stores.services.version.VersionDBServiceImpl;
 import dagger.Module;
 import dagger.Provides;
 
-import javax.inject.Named;
-
+/**
+ * @author lile on 2019-01-18
+ */
 @Module
 public class DBModule {
 

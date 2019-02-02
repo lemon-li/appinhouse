@@ -5,7 +5,7 @@ import com.seasungames.appinhouse.routes.exception.HttpException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 /**
- * Created by lile on 1/7/2019
+ * @author lile on 2019-01-07
  */
 public class BadRequestException extends HttpException {
 

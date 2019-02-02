@@ -3,7 +3,7 @@ package com.seasungames.appinhouse.configs.impl;
 import com.seasungames.appinhouse.configs.BaseConfig;
 
 /**
- * Created by lile on 2019-01-26
+ * @author lile on 2019-01-26
  */
 public interface RouteConfig extends BaseConfig {
 

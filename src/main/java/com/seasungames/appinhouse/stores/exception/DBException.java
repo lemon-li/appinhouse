@@ -6,7 +6,7 @@ import io.vertx.core.Future;
 import io.vertx.serviceproxy.ServiceException;
 
 /**
- * Created by lile on 1/16/2019
+ * @author lile on 2019-01-16
  */
 public class DBException {
 

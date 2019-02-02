@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by lile on 12/28/2018
+ * @author lile on 2018-12-28
  */
 @AppInHouse
 public class DynamoDBAppStore implements AppStore {

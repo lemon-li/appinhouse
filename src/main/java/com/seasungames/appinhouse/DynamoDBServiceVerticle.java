@@ -14,7 +14,7 @@ import io.vertx.serviceproxy.ServiceBinder;
 import javax.inject.Inject;
 
 /**
- * Created by lile on 1/14/2019
+ * @author lile on 2019-01-14
  */
 public class DynamoDBServiceVerticle extends AbstractVerticle {
 

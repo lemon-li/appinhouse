@@ -3,7 +3,7 @@ package com.seasungames.appinhouse.application;
 import io.vertx.core.Future;
 
 /**
- * Created by lile on 1/18/2019
+ * @author lile on 2019-01-18
  */
 public interface Async {
 

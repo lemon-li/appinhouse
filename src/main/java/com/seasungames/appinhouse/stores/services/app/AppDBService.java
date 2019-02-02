@@ -9,7 +9,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 
 /**
- * Created by lile on 1/15/2019
+ * @author lile on 2019-01-15
  */
 @ProxyGen
 public interface AppDBService {

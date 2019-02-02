@@ -6,6 +6,9 @@ import com.seasungames.appinhouse.stores.services.version.models.VersionResponse
 
 import java.util.List;
 
+/**
+ * @author lile on 2019-01-03
+ */
 public interface VersionStore {
 
     VersionListResponseVo getPlatformList(String appId, String platform, String lastKey);

@@ -3,7 +3,7 @@ package com.seasungames.appinhouse.configs.impl;
 import com.seasungames.appinhouse.configs.BaseConfig;
 
 /**
- * Created by lile on 1/28/2019
+ * @author lile on 2019-01-28
  */
 public interface ServiceConfig extends BaseConfig {
 

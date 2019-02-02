@@ -1,5 +1,8 @@
 package com.seasungames.appinhouse.application;
 
+/**
+ * @author lile on 2019-01-01
+ */
 public enum PlatformEnum {
 
     IOS("ios"), ANDROID("android"), WINDOW("window");
