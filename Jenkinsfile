@@ -1,13 +1,40 @@
 #!/usr/bin/env groovy
+def loadAppinhouseConf() {
+    def resource = libraryResource 'appinhouse.conf'
+    return readProperties(text: resource)
+}
 
-def deployAppinhouse(String glob, String sls) {
-    def targetEnvName = 'appinhouse'
-    def artifact = saltArtifact glob: glob, env: targetEnvName, job: env.JOB_NAME, build: env.BUILD_NUMBER
-    saltDeploy(env: targetEnvName,
-        artifact: artifact,
-        sls: sls,
-        nodegroup: 'appinhouse'
-    )
+def getHost() {
+    def appinhouseConf = loadAppinhouseConf()
+    def remote = [:]
+    remote.name = appinhouseConf.name
+    remote.host = appinhouseConf.host
+    remote.allowAnyHosts = true
+    remote.user = appinhouseConf.userName
+    return remote
+}
+
+remote = getHost()
+
+def deployAppinhouseServer(String secretKey) {
+    sshPut remote: remote, from: env.SERVER_TARBALL, into: '/tmp'
+    sshPut remote: remote, from: env.WORKSPACE + '/src/appinhouse/deploy/appinhouse.service', into: '/tmp'
+    sshPut remote: remote, from: env.WORKSPACE + '/src/appinhouse/deploy/server.sh', into: '/tmp'
+    sshCommand remote: remote, command: "bash /tmp/server.sh "+ env.SERVER_TARBALL + " " + secretKey
+    sshRemove remote: remote, path: '/tmp/' + env.SERVER_TARBALL
+}
+
+def deployAppinhouseWeb() {
+    sshPut remote: remote, from: env.WEB_TARBALL, into: '/tmp'
+    sshPut remote: remote, from: env.WORKSPACE + '/src/appinhouse/deploy/web.sh', into: '/tmp'
+    sshCommand remote: remote, command: "bash /tmp/web.sh "+ env.WEB_TARBALL
+    sshRemove remote: remote, path: '/tmp/' + env.WEB_TARBALL
+}
+
+def deployAppinhouseNginxConf() {
+    sshPut remote: remote, from: env.WORKSPACE + '/src/appinhouse/deploy/appinhouse.conf', into: '/tmp'
+    sshPut remote: remote, from: env.WORKSPACE + '/src/appinhouse/deploy/nginx.sh', into: '/tmp'
+    sshCommand remote: remote, command: "bash /tmp/nginx.sh"
 }
 
 pipeline {
@@ -30,6 +57,9 @@ pipeline {
         booleanParam(name: 'DEPLOY_WEB',
             defaultValue: false,
             description: 'When checked, will automatically deploy web (frontend).')
+        booleanParam(name: 'DEPLOY_NGINX',
+            defaultValue: false,
+            description: 'When checked, will automatically deploy nginx (frontend).')
     }
     environment {
         GITHUB_URL = 'https://github.com/rog2/appinhouse'
@@ -91,7 +121,13 @@ pipeline {
             }
             steps {
                 script {
-                    deployAppinhouse(env.SERVER_TARBALL, 'appinhouse.server')
+                    withCredentials([sshUserPrivateKey(credentialsId: 'jenkins.ssh', keyFileVariable: 'identity')]) {
+                        remote.identityFile = identity
+                        def appinhouseConf = loadAppinhouseConf()
+                        withCredentials([string(credentialsId: appinhouseConf.credential, variable: 'secretKey')]) {
+                            deployAppinhouseServer(secretKey)
+                        }
+                    }
                 }
             }
         }
@@ -103,7 +139,25 @@ pipeline {
             }
             steps {
                 script {
-                    deployAppinhouse(env.WEB_TARBALL, 'appinhouse.web')
+                    withCredentials([sshUserPrivateKey(credentialsId: 'jenkins.ssh', keyFileVariable: 'identity')]) {
+                        remote.identityFile = identity
+                        deployAppinhouseWeb()
+                    }   
+                }
+            }
+        }
+        stage('Deploy Nginx conf') {
+            when {
+                expression {
+                    return params.DEPLOY_NGINX
+                }
+            }
+            steps {
+                script {
+                    withCredentials([sshUserPrivateKey(credentialsId: 'jenkins.ssh', keyFileVariable: 'identity')]) {
+                        remote.identityFile = identity
+                        deployAppinhouseNginxConf()
+                    }
                 }
             }
         }
